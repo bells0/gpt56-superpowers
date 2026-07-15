@@ -1,113 +1,112 @@
 # GPT-5.6 Superpowers
 
-A lean, outcome-first replacement for the ceremony-heavy Superpowers workflow, designed for GPT-5.6 Sol and Codex.
+A lean, effect-first replacement for the ceremony-heavy Superpowers workflow, designed for GPT-5.6 Sol and Codex.
 
-It keeps the valuable invariants—permission boundaries, evidence before claims, root-cause debugging, preservation of user changes—and removes mandatory brainstorming, micro-plans, universal TDD, per-task review chains, automatic worktrees, and repeated full-suite verification.
-
-The result is one explicitly invoked Skill with five references loaded only when they change a decision.
+Version 0.2 uses a hub-and-spoke structure: one compact coordinator for genuinely multi-phase work and five independent narrow Skills. A clear task can use one narrow Skill directly—or no Skill at all—without entering a mandatory chain.
 
 ## Why this exists
 
-[OpenAI's GPT-5.6 prompting guidance](https://developers.openai.com/api/docs/guides/prompt-guidance-gpt-5p6) recommends defining outcomes, constraints, evidence, autonomy, validation, and stop rules while removing repeated process instructions and examples. In OpenAI's directional internal sample, leaner prompts improved scores by about 10–15% while reducing tokens by 41–66% and cost by 33–67%. Those figures are not a promise for this project; evaluate it on your own representative tasks.
+[OpenAI's GPT-5.6 prompting guidance](https://developers.openai.com/api/docs/guides/prompt-guidance-gpt-5p6) recommends defining outcomes, constraints, evidence, autonomy, validation, and stop rules while removing repeated process instructions the model already performs reliably.
 
-GPT-5.6 Superpowers applies that guidance to a development workflow:
+This suite keeps the useful invariants—permission boundaries, project grounding, root-cause diagnosis, evidence before claims, preservation of user changes—and removes methodology ritual. In particular, it does not impose fail-first development, repeated broad suites, automatic worktrees, per-task review chains, or mandatory commits.
 
-- outcome contract instead of prescribed ceremony;
-- low, medium, and high risk routes;
-- explicit permission boundaries without repeated approval prompts;
-- targeted evidence matched to each completion claim;
-- dependency-aware tools and delegation;
-- sparse phase updates and concrete stop rules.
+## Structure
 
-## Measured prompt footprint
+| Skill | Use it for |
+|---|---|
+| `gpt56-superpowers` | Two or more dependent development phases that need end-to-end coordination |
+| `gpt56-design-planning` | Consequential ambiguity in product, UX, architecture, interfaces, migrations, or scope |
+| `gpt56-debugging` | Ambiguous, intermittent, environment-dependent, or multi-component failures |
+| `gpt56-verification` | Choosing proportionate evidence for material completion claims |
+| `gpt56-delegation-review` | Genuinely independent parallel work or a focused independent review |
+| `gpt56-git-delivery` | Authorized branches, worktrees, commits, pushes, pull requests, merges, or cleanup |
 
-The baseline was a local 14-Skill installation from obra/superpowers at commit b55764852ac78870e65c6565fb585b6cd8b3c5c9.
+All six are siblings. None requires another. Narrow trigger descriptions allow implicit routing without an always-on router; explicit `$skill-name` invocation remains available.
 
-| Measure | Baseline | This project | Reduction |
+## Prompt footprint
+
+The comparison baseline is a local 14-Skill installation from `obra/superpowers` at commit `b55764852ac78870e65c6565fb585b6cd8b3c5c9`.
+
+| Measure | Baseline | Version 0.2 | Reduction |
 |---|---:|---:|---:|
-| Discovered workflow Skills | 14 | 1 | 92.9% |
-| Discoverable SKILL.md words | 15,737 | 775 | 95.1% |
+| Workflow Skills | 14 | 6 | 57.1% |
+| Total `SKILL.md` words | 15,737 | 1,589 | 89.9% |
 | Always-trigger router | Yes | No | Removed |
 
-The 775-word core is the normal loaded body. Conditional references total 1,476 words, so the maximum package is 2,251 words. For transparency, a high-risk authentication route that loads design, delegation, and testing is 1,735 words; adding Git delivery makes it 2,010. These are structural route footprints, not a same-task runtime benchmark. Word count is a proxy for prompt size, not a claim about tokenization or model quality.
+A normal routed task loads one body of 233–307 words. The representative multi-phase route—core plus design and verification—is 829 words. The full 1,589-word package is not a mandatory prompt chain. Word count is a structural proxy, not a model-quality or tokenization guarantee.
 
 ## Install
 
 ### New installation
 
-Codex's built-in GitHub Skill installer can copy the single Skill:
+Install all six Skills from GitHub:
 
-    python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-      --repo bells0/gpt56-superpowers \
-      --path skills/gpt56-superpowers
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo bells0/gpt56-superpowers \
+  --path \
+    skills/gpt56-superpowers \
+    skills/gpt56-design-planning \
+    skills/gpt56-debugging \
+    skills/gpt56-verification \
+    skills/gpt56-delegation-review \
+    skills/gpt56-git-delivery
+```
 
 Start a new Codex task after installation so Skill discovery refreshes.
 
-### Replace an existing obra/superpowers installation
+### Replace an existing `obra/superpowers` installation
 
-Clone the repository, then run the migration installer:
+```bash
+git clone git@github.com:bells0/gpt56-superpowers.git
+cd gpt56-superpowers
+./scripts/install-local.sh
+```
 
-    git clone git@github.com:bells0/gpt56-superpowers.git
-    cd gpt56-superpowers
-    ./scripts/install-local.sh
+The migration is transactional: it validates the package, locks the Skills directory, backs up legacy or conflicting entries outside discovery, installs six exact symlinks, and records which links were preserved or created. Restore the newest READY transaction with:
 
-The script validates the repository, rejects unsafe source/target ancestry, takes a shared transaction lock, moves the 14 legacy Skill directories to an exclusive backup outside the discovery root, verifies the new link, and marks the backup READY. It is idempotent and prints the backup path.
+```bash
+./scripts/restore-original.sh
+```
 
-Restore the newest backup with:
-
-    ./scripts/restore-original.sh
-
-Or pass a specific READY backup directory as the first argument. Restore performs collision and manifest checks before mutation; empty installations can also be cleanly removed.
+You can also pass a specific backup directory. Existing version-0.1 backups remain restorable.
 
 ## Use
 
-Implicit invocation is disabled to eliminate an always-on routing tax. Invoke it when you want the complete workflow:
+Implicit routing handles strong matches. Invoke a Skill explicitly when you want a specific lens:
 
-    Use $gpt56-superpowers to implement this change end to end.
+```text
+Use $gpt56-debugging to diagnose this intermittent cross-service failure.
 
-    Use $gpt56-superpowers to diagnose and fix this bug with proportionate validation.
+Use $gpt56-verification to choose proportionate evidence for this release claim.
 
-Ordinary questions and small edits can use Codex directly.
+Use $gpt56-superpowers to coordinate this migration end to end.
+```
 
-## Architecture
+Ordinary questions, clear documentation edits, and simple local changes should use Codex directly.
 
-The core Skill establishes:
+## Validation
 
-1. goal, success criteria, constraints, evidence, permission, and stop conditions;
-2. a low, medium, or high risk route;
-3. the smallest coherent implementation and validation loop;
-4. an outcome-first final report.
+The repository uses deterministic package checks, an eight-case routing specification, and isolated install/restore transaction smoke tests. The scenarios constrain intended behavior; they are not a live model benchmark:
 
-Five one-level references add detail only when needed:
+```bash
+make validate
+```
 
-- design-and-planning.md
-- testing-and-verification.md
-- debugging.md
-- delegation-and-review.md
-- git-and-delivery.md
+Run the canonical Codex Skill and plugin validators with:
+
+```bash
+make dev-deps
+make local-codex-validate
+```
 
 See [architecture](docs/architecture.md), [migration mapping](docs/migration-from-obra-superpowers.md), and [evaluation](docs/evaluation.md).
 
-## Validate
-
-The repository deliberately avoids a large test ceremony. It uses deterministic checks for the artifact being distributed:
-
-    make validate
-
-This runs repository manifest and Skill validation, prompt-budget and legacy-rule checks, the six-scenario eval-manifest check, and isolated transaction/install/restore smoke tests. CI installs PyYAML so agents/openai.yaml is parsed as YAML.
-
-For the canonical Codex validators on a machine with Codex installed:
-
-    make dev-deps
-    make local-codex-validate
-
 ## 中文说明
 
-这是为 GPT-5.6 Sol 重写的一套轻量 Superpowers。核心变化不是把旧 Skill 缩短一点，而是删除强制串联：不再默认要求头脑风暴、逐步计划、worktree、TDD、每任务双重审查、全量测试和分支收尾。
+这是为 GPT-5.6 Sol 重写的轻量 Superpowers：`1 个跨阶段核心 + 5 个独立窄领域 Skill`。普通任务不加载，单领域任务只加载一个，真正复杂的任务才由核心协调并最多组合少量窄 Skill。
 
-本项目只保留一个显式调用的核心 Skill，按风险选择流程，五份参考资料按需加载。本地迁移脚本会先把旧 14 个 Skill 备份到 ~/.codex/skill-backups/gpt56-superpowers/，再建立符号链接；可以一键恢复。
-
-设计目标是减少无意义 token、工具调用、等待和验证，同时保留权限、安全、证据与可回滚性。性能收益必须在你自己的真实任务上比较，仓库提供六个代表场景和统一指标。
+本版本彻底移除了开发方法论强制，不要求先写失败测试、不要求 RED/GREEN/REFACTOR、不要求重复跑全量测试。保留的是更薄的“声明—证据”验证：文档看 diff/schema/link，Bug 复查原始症状，行为跑最相关检查，视觉实际渲染，发布遵守项目门禁；无法验证就明确缺口。
 
 ## License and attribution
 

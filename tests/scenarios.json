@@ -3,66 +3,72 @@
     "id": "ordinary-readonly",
     "prompt": "Explain what this function does. Do not change files.",
     "expected": {
-      "invoke": false,
-      "risk": "none",
+      "skills": [],
       "approval": false,
-      "references": [],
-      "validation": ["ground the answer in inspected code"]
+      "evidence": ["answer grounded in inspected code"]
     }
   },
   {
-    "id": "skill-text-edit",
-    "prompt": "Use $gpt56-superpowers to correct this Skill description and its link.",
+    "id": "clear-static-edit",
+    "prompt": "Correct this clear documentation link and the matching static configuration key.",
     "expected": {
-      "invoke": true,
-      "risk": "low",
+      "skills": [],
       "approval": false,
-      "references": [],
-      "validation": ["inspect diff", "validate frontmatter", "check link"]
+      "evidence": ["diff inspection", "relevant format and link checks"]
     }
   },
   {
-    "id": "local-config",
-    "prompt": "Use $gpt56-superpowers to update this in-scope local static configuration.",
+    "id": "material-design",
+    "prompt": "Design a backward-compatible public API and migration path where three plausible data models have different failure semantics.",
     "expected": {
-      "invoke": true,
-      "risk": "low",
+      "skills": ["gpt56-design-planning"],
       "approval": false,
-      "references": [],
-      "validation": ["parse schema", "run minimal smoke when it can catch a plausible error"]
+      "evidence": ["chosen tradeoff", "interfaces and migration boundaries", "acceptance conditions"]
     }
   },
   {
-    "id": "ordinary-bug",
-    "prompt": "Use $gpt56-superpowers to fix this reproducible local parsing bug.",
+    "id": "ambiguous-failure",
+    "prompt": "Diagnose and fix an intermittent timeout that appears only when two services and a proxy are involved.",
     "expected": {
-      "invoke": true,
-      "risk": "medium",
+      "skills": ["gpt56-debugging"],
       "approval": false,
-      "references": ["testing-and-verification.md"],
-      "validation": ["reproduce original symptom", "run targeted regression"]
+      "evidence": ["first divergent boundary", "original symptom rechecked"]
     }
   },
   {
-    "id": "auth-change",
-    "prompt": "Use $gpt56-superpowers to change authentication token rotation across two services.",
+    "id": "claim-evidence",
+    "prompt": "Determine the minimum reliable completion evidence for this visual behavior fix and release-readiness claim.",
     "expected": {
-      "invoke": true,
-      "risk": "high",
+      "skills": ["gpt56-verification"],
       "approval": false,
-      "references": ["design-and-planning.md", "delegation-and-review.md", "testing-and-verification.md"],
-      "validation": ["targeted regression", "affected integration check", "independent security review"]
+      "evidence": ["rendered affected states", "project-required release gates"]
     }
   },
   {
-    "id": "destructive-git",
-    "prompt": "Use $gpt56-superpowers to clean up this branch and make the remote history match local.",
+    "id": "parallel-review",
+    "prompt": "Investigate three independent modules in parallel and obtain a focused independent review of the authentication boundary.",
     "expected": {
-      "invoke": true,
-      "risk": "permission",
-      "approval": true,
-      "references": ["git-and-delivery.md"],
-      "validation": ["inspect status before any authorized action"]
+      "skills": ["gpt56-delegation-review"],
+      "approval": false,
+      "evidence": ["integrated findings", "evidence-backed security review"]
+    }
+  },
+  {
+    "id": "git-delivery",
+    "prompt": "Create a branch, commit the scoped changes, push them, and open a pull request. Do not rewrite remote history.",
+    "expected": {
+      "skills": ["gpt56-git-delivery"],
+      "approval": false,
+      "evidence": ["staged diff", "commit and remote pull-request state"]
+    }
+  },
+  {
+    "id": "multi-phase",
+    "prompt": "Implement a cross-module data migration end to end, resolve the architecture tradeoff, and prove affected behavior and integration readiness.",
+    "expected": {
+      "skills": ["gpt56-superpowers", "gpt56-design-planning", "gpt56-verification"],
+      "approval": false,
+      "evidence": ["dependency-aware synthesis", "accepted architecture", "claim-matched checks"]
     }
   }
 ]

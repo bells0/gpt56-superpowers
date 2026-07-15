@@ -2,69 +2,78 @@
 
 ## Goal
 
-Give GPT-5.6 a compact development contract that preserves correctness and autonomy without re-teaching capabilities the model already performs reliably.
+Give GPT-5.6 a small set of precise development lenses without re-teaching reliable base-model behavior or forcing every task through one workflow.
 
-## Non-goals
+## Hub and spokes
 
-- Reproduce the original Superpowers Skill graph.
-- Automatically activate on every conversation.
-- Enforce one development methodology for every task.
-- Replace project-specific rules, security policy, or user decisions.
-- Claim lower token use automatically means better task quality.
+The suite contains six sibling Skills:
+
+```text
+gpt56-superpowers              cross-phase coordination
+├── gpt56-design-planning      material ambiguity
+├── gpt56-debugging            non-obvious failures
+├── gpt56-verification         claim-matched evidence
+├── gpt56-delegation-review    independent work or judgment
+└── gpt56-git-delivery         repository delivery state
+```
+
+The diagram describes ownership, not a required call chain. Every spoke is a direct entry point and contains all instructions needed for its domain. None links to or requires a sibling.
+
+## Routing rules
+
+- Clear, local, low-ambiguity work: no suite Skill.
+- One consequential decision domain: one narrow Skill.
+- Two or more dependent phases whose ordering and synthesis affect success: core plus only the one or two narrow Skills that change a decision.
+- External or destructive action: a permission boundary independent of task complexity.
+
+All Skills allow implicit invocation, but their descriptions deliberately require a material match. This replaces both the old always-trigger router and version 0.1's single explicit bottleneck.
 
 ## Design decisions
 
-### One explicit entry point
+### Outcome over ritual
 
-The plugin exposes one Skill and sets allow_implicit_invocation to false. This removes the old always-trigger router and fourteen overlapping trigger descriptions. Users opt into the workflow with $gpt56-superpowers; ordinary Codex behavior remains untouched.
+The core resolves goal, success, constraints, evidence, permission, and stop conditions, then sequences dependent work. It does not prescribe an implementation methodology.
 
-### Outcome contract
+### Independent ownership
 
-The core resolves goal, success criteria, constraints, evidence, permission, and stopping conditions. These describe the destination while leaving search, tool, and implementation choices to GPT-5.6.
-
-### Risk is a route, not a ritual
-
-Low-risk work goes directly to a deterministic check. Medium-risk behavior changes get targeted regression evidence. High-risk work adds durable decisions, isolation, independent review, and broader affected checks only where justified.
-
-External writes and destructive actions remain a separate authorization boundary. Risk does not imply repeated approval, and local authorization does not imply permission to mutate remote state.
-
-### Conditional depth
-
-The core links five references. They are one level deep, never cross-linked, and each owns one decision domain. A normal task loads the core plus zero or one reference rather than a chain of complete Skills.
+Each spoke owns one decision domain. Trigger overlap is minimized by separating design uncertainty, causal uncertainty, evidence selection, coordination value, and Git delivery state.
 
 ### Claim-based verification
 
-Evidence is selected from the completion claim:
+Verification starts with the statement being made:
 
-- changed artifact: inspect diff and schema;
-- fixed bug: exercise the original symptom;
-- working behavior: targeted test or smoke;
-- integration: affected build, type, lint, or integration check;
-- release readiness: project-required broader suite.
+- artifact validity: diff, format, schema, links;
+- bug fixed: original symptom;
+- behavior works: narrow reliable check or smoke;
+- visual correctness: rendered affected states;
+- integration health: affected type, lint, build, contract, or integration check;
+- release readiness: project-required and risk-justified gates.
 
-This eliminates repeated full-suite runs while preserving the rule that unverified states cannot be reported as passed.
+The scope broadens only when the claim, observed failures, uncertain dependency boundary, release risk, or project rules require it.
 
-### Bounded delegation
+### Bounded coordination
 
-Parallel agents are used for independent work, elapsed-time savings, specialist context, or fresh high-risk review. The architecture explicitly rejects per-task implementer plus spec-review plus quality-review chains.
+Delegation is justified by independent deliverables, elapsed-time savings, or fresh judgment that can change a material decision. Review is focused on named risks rather than added as a universal stage.
 
 ## Mapping to GPT-5.6 guidance
 
 | Official guidance | Implementation |
 |---|---|
-| Simplify repeated instructions | One core, five conditional references, no compatibility aliases |
-| State outcomes and stop rules | Six-part contract and explicit finish/fallback conditions |
-| Define autonomy | Read-only versus change requests plus one permission boundary |
-| Route tools by dependency | Parallel independent reads, sequential dependent work, synthesize before action |
-| Use PTC only for bounded aggregation | Deterministic-reduction rule in the core |
-| Use sparse progress updates | Preamble plus major-phase changes only |
-| Validate what matters | Risk and claim-to-evidence matrices |
-| Evaluate representative tasks | Six-scenario manifest plus documented metrics for live comparisons |
+| State outcomes and stop rules | Six-part core contract and completion conditions |
+| Remove repeated process instructions | Six small self-contained bodies; no mandatory chain |
+| Define autonomy and permissions | Local change authority separated from external/destructive authority |
+| Route tools by dependency | Parallel independent work; sequential dependencies; synthesis before claims |
+| Validate what matters | Claim-to-evidence selection and explicit gaps |
+| Keep progress sparse | Outcome-first reporting and phase-level updates |
+| Evaluate representative work | Stable eight-scenario routing manifest |
 
 ## Prompt budget
 
-Repository validation enforces a maximum of 900 words for the core and 2,500 words for the complete Skill package. The current version is 775 core words and 2,251 total words. Limits are guardrails, not a target to fill.
+Repository validation enforces:
 
-## Change policy
+- core: at most 350 words;
+- each spoke: at most 300 words;
+- complete package: at most 1,650 words;
+- no nested resource documents or required sibling calls.
 
-Change one behavioral rule at a time when tuning an established deployment. Re-run the same representative traces with the same model and reasoning effort. Add an instruction only for a measured failure mode; remove it again if it does not improve the pass criteria.
+Version 0.2 currently uses 307 core words and 1,589 words total. These are guardrails, not targets.

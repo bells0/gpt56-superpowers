@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic repository checks for the GPT-5.6 Superpowers artifact."""
+"""Deterministic package checks for the GPT-5.6 Superpowers suite."""
 
 from __future__ import annotations
 
@@ -15,15 +15,18 @@ except ModuleNotFoundError:
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL = ROOT / "skills" / "gpt56-superpowers"
-CORE = SKILL / "SKILL.md"
-REFERENCES = (
-    "debugging.md",
-    "delegation-and-review.md",
-    "design-and-planning.md",
-    "git-and-delivery.md",
-    "testing-and-verification.md",
+SKILLS_ROOT = ROOT / "skills"
+SKILL_NAMES = (
+    "gpt56-superpowers",
+    "gpt56-design-planning",
+    "gpt56-debugging",
+    "gpt56-verification",
+    "gpt56-delegation-review",
+    "gpt56-git-delivery",
 )
+CORE_WORD_LIMIT = 350
+SATELLITE_WORD_LIMIT = 300
+PACKAGE_WORD_LIMIT = 1650
 failures: list[str] = []
 
 
@@ -71,50 +74,73 @@ if isinstance(manifest, dict):
         "plugin interface is missing required fields",
     )
 
-core_text = CORE.read_text(encoding="utf-8")
-frontmatter = re.match(r"\A---\n(.*?)\n---\n", core_text, flags=re.DOTALL)
-check(frontmatter is not None, "SKILL.md must start with YAML frontmatter")
-if frontmatter:
-    header = frontmatter.group(1)
-    check(re.search(r"^name: gpt56-superpowers$", header, flags=re.MULTILINE) is not None, "Skill name is invalid")
-    description = re.search(r"^description: (.+)$", header, flags=re.MULTILINE)
-    check(description is not None and description.group(1).startswith("Use when "), "Skill description must start with 'Use when '")
+actual_skill_dirs = {
+    path.name for path in SKILLS_ROOT.iterdir() if path.is_dir() and not path.name.startswith(".")
+}
+check(actual_skill_dirs == set(SKILL_NAMES), "skills/ must contain exactly the six supported Skills")
 
-openai_yaml = (SKILL / "agents" / "openai.yaml").read_text(encoding="utf-8")
-check('allow_implicit_invocation: false' in openai_yaml, "implicit invocation must remain disabled")
-check("$gpt56-superpowers" in openai_yaml, "default prompt must explicitly invoke the Skill")
-if yaml is not None:
-    try:
-        openai_config = yaml.safe_load(openai_yaml)
-        check(isinstance(openai_config, dict), "agents/openai.yaml must contain a mapping")
+word_counts: dict[str, int] = {}
+skill_corpus: list[str] = []
+for name in SKILL_NAMES:
+    skill_dir = SKILLS_ROOT / name
+    skill_path = skill_dir / "SKILL.md"
+    config_path = skill_dir / "agents" / "openai.yaml"
+    check(skill_path.is_file(), f"missing {name}/SKILL.md")
+    check(config_path.is_file(), f"missing {name}/agents/openai.yaml")
+    if not skill_path.is_file() or not config_path.is_file():
+        continue
+
+    skill_text = skill_path.read_text(encoding="utf-8")
+    skill_corpus.append(skill_text.lower())
+    frontmatter = re.match(r"\A---\n(.*?)\n---\n", skill_text, flags=re.DOTALL)
+    check(frontmatter is not None, f"{name}/SKILL.md must start with YAML frontmatter")
+    if frontmatter:
+        header = frontmatter.group(1)
         check(
-            openai_config.get("policy", {}).get("allow_implicit_invocation") is False,
-            "agents/openai.yaml policy must parse as false",
+            re.search(rf"^name: {re.escape(name)}$", header, flags=re.MULTILINE) is not None,
+            f"{name} frontmatter name is invalid",
         )
-    except yaml.YAMLError as exc:
-        failures.append(f"agents/openai.yaml is not valid YAML: {exc}")
+        description = re.search(r"^description: (.+)$", header, flags=re.MULTILINE)
+        check(description is not None and len(description.group(1)) >= 80, f"{name} needs a specific trigger description")
 
-for reference in REFERENCES:
-    path = SKILL / "references" / reference
-    check(path.is_file(), f"missing reference: {reference}")
-    check(f"references/{reference}" in core_text, f"core does not route to {reference}")
+    config_text = config_path.read_text(encoding="utf-8")
+    check(f"${name}" in config_text, f"{name} default prompt must explicitly invoke the Skill")
+    check("allow_implicit_invocation: true" in config_text, f"{name} must allow narrow implicit routing")
+    if yaml is not None:
+        try:
+            config = yaml.safe_load(config_text)
+            check(isinstance(config, dict), f"{name}/agents/openai.yaml must contain a mapping")
+            check(
+                config.get("policy", {}).get("allow_implicit_invocation") is True,
+                f"{name} implicit invocation policy must parse as true",
+            )
+        except yaml.YAMLError as exc:
+            failures.append(f"{name}/agents/openai.yaml is not valid YAML: {exc}")
 
-core_words = words(core_text)
-package_words = sum(words(path.read_text(encoding="utf-8")) for path in SKILL.rglob("*.md"))
-check(core_words <= 900, f"core budget exceeded: {core_words} > 900 words")
-check(package_words <= 2500, f"package budget exceeded: {package_words} > 2500 words")
+    extra_dirs = {
+        path.name for path in skill_dir.iterdir() if path.is_dir() and path.name != "agents"
+    }
+    check(not extra_dirs, f"{name} contains unnecessary resource directories: {sorted(extra_dirs)}")
+    check("$gpt56-" not in skill_text, f"{name} body must not require another sibling Skill")
+    word_counts[name] = words(skill_text)
 
-legacy_rules = (
-    "even a 1% chance",
-    "no production code",
-    "delete it and start over",
-    "every project must",
-    "two-stage review",
-    "fresh full command",
-)
-skill_corpus = "\n".join(path.read_text(encoding="utf-8").lower() for path in SKILL.rglob("*.md"))
-for phrase in legacy_rules:
-    check(phrase not in skill_corpus, f"legacy absolute rule reintroduced: {phrase}")
+check(word_counts.get("gpt56-superpowers", 0) <= CORE_WORD_LIMIT, "core prompt budget exceeded")
+for name in SKILL_NAMES[1:]:
+    check(word_counts.get(name, 0) <= SATELLITE_WORD_LIMIT, f"{name} prompt budget exceeded")
+package_words = sum(word_counts.values())
+check(package_words <= PACKAGE_WORD_LIMIT, f"package prompt budget exceeded: {package_words} > {PACKAGE_WORD_LIMIT}")
+
+corpus = "\n".join(skill_corpus)
+obsolete_patterns = {
+    "methodology acronym": r"\btdd\b",
+    "fail-first ritual": r"fail[- ]first",
+    "test-first ritual": r"test[- ]first",
+    "red-green-refactor ritual": r"red.{0,12}green.{0,12}refactor",
+    "mandatory full suite": r"mandatory full[- ]suite|always run (?:the )?full suite",
+    "forced restart": r"delete (?:the )?(?:implementation|code).{0,20}start over",
+}
+for label, pattern in obsolete_patterns.items():
+    check(re.search(pattern, corpus, flags=re.IGNORECASE | re.DOTALL) is None, f"obsolete {label} reintroduced")
 
 for markdown in ROOT.rglob("*.md"):
     if ".git" in markdown.parts:
@@ -125,41 +151,51 @@ for markdown in ROOT.rglob("*.md"):
         if target.startswith(("http://", "https://", "#", "mailto:")):
             continue
         clean = target.split("#", 1)[0]
-        if not clean:
-            continue
-        check((markdown.parent / clean).resolve().exists(), f"broken link in {markdown.relative_to(ROOT)}: {target}")
+        if clean:
+            check((markdown.parent / clean).resolve().exists(), f"broken link in {markdown.relative_to(ROOT)}: {target}")
 
 scenarios = load_json(ROOT / "tests" / "scenarios.json")
 expected_ids = {
     "ordinary-readonly",
-    "skill-text-edit",
-    "local-config",
-    "ordinary-bug",
-    "auth-change",
-    "destructive-git",
+    "clear-static-edit",
+    "material-design",
+    "ambiguous-failure",
+    "claim-evidence",
+    "parallel-review",
+    "git-delivery",
+    "multi-phase",
 }
 if isinstance(scenarios, list):
     ids = {item.get("id") for item in scenarios if isinstance(item, dict)}
-    check(ids == expected_ids, "scenario manifest must contain the six canonical cases")
-    risks = {item.get("expected", {}).get("risk") for item in scenarios if isinstance(item, dict)}
-    check({"none", "low", "medium", "high", "permission"}.issubset(risks), "scenario manifest must cover all routes")
+    check(ids == expected_ids, "scenario manifest must contain the eight canonical cases")
+    routed = set()
     for item in scenarios:
         if not isinstance(item, dict):
             failures.append("scenario entries must be objects")
             continue
         expected = item.get("expected")
         check(
-            isinstance(expected, dict)
-            and {"invoke", "risk", "approval", "references", "validation"}.issubset(expected),
+            isinstance(expected, dict) and {"skills", "approval", "evidence"}.issubset(expected),
             f"scenario {item.get('id')} is missing expected fields",
         )
+        if not isinstance(expected, dict):
+            continue
+        skills = expected.get("skills")
+        check(isinstance(skills, list), f"scenario {item.get('id')} skills must be a list")
+        if isinstance(skills, list):
+            check(set(skills).issubset(SKILL_NAMES), f"scenario {item.get('id')} names an unknown Skill")
+            check(len(skills) <= 3, f"scenario {item.get('id')} routes too many Skills")
+            routed.update(skills)
+        check(isinstance(expected.get("approval"), bool), f"scenario {item.get('id')} approval must be boolean")
+        check(bool(expected.get("evidence")), f"scenario {item.get('id')} needs decisive evidence")
+    check(routed == set(SKILL_NAMES), "scenario manifest must exercise every Skill")
 
 if failures:
     for failure in failures:
         print(f"FAIL: {failure}", file=sys.stderr)
     raise SystemExit(1)
 
-print(f"PASS: plugin and Skill structure")
-print(f"PASS: core budget {core_words}/900 words")
-print(f"PASS: package budget {package_words}/2500 words")
-print(f"PASS: {len(REFERENCES)} conditional references and 6 eval scenarios")
+print("PASS: plugin and six-Skill structure")
+print(f"PASS: core budget {word_counts['gpt56-superpowers']}/{CORE_WORD_LIMIT} words")
+print(f"PASS: package budget {package_words}/{PACKAGE_WORD_LIMIT} words")
+print("PASS: independent-routing specification, lean workflow rules, links, and 8 scenarios")

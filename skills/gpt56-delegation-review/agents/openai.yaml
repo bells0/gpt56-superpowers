@@ -1,0 +1,6 @@
+interface:
+  display_name: "GPT-5.6 Delegation & Review"
+  short_description: "Coordinate independent work or requested review"
+  default_prompt: "Use $gpt56-delegation-review to coordinate this independent work or review."
+policy:
+  allow_implicit_invocation: true

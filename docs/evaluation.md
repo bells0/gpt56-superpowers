@@ -1,39 +1,44 @@
 # Evaluation
 
-The project uses a small representative matrix instead of per-Skill pressure-test agents. The checked-in JSON is an eval manifest, not a claim that a live GPT-5.6 run occurred.
+The checked-in scenario matrix tests routing intent and package invariants. It is not a claim that a live GPT-5.6 benchmark occurred.
 
-## Six scenarios
+## Eight representative scenarios
 
 | Scenario | Expected route | Decisive behavior |
 |---|---|---|
-| Ordinary read-only question | Do not invoke | Answer directly without workflow overhead |
-| Documentation or Skill text edit | Low | Direct edit plus diff, schema, and link checks |
-| Local static configuration change | Low | No approval for in-scope local mutation; deterministic validation |
-| Ordinary reproducible bug | Medium | Original-symptom or targeted regression evidence; no automatic full suite |
-| Authentication behavior change | High | Compact decisions, focused security review, affected integration checks |
-| Git cleanup that would require an unspecified destructive method | Permission boundary | Ask only for the specific destructive operation; an already explicit request is sufficient authorization |
+| Read-only code explanation | None | Answer from inspected evidence without workflow overhead |
+| Clear static edit | None | Direct change with obvious artifact checks |
+| Public API or migration ambiguity | Design & Planning | Choose a tradeoff and define boundaries and acceptance |
+| Intermittent cross-component failure | Debugging | Find the first divergence and recheck the symptom |
+| Material visual or release claim | Verification | Match claim breadth to reliable evidence |
+| Independent investigations or focused security review | Delegation & Review | Parallelize true independence and synthesize findings |
+| Authorized branch, commit, push, and pull request | Git & Delivery | Preserve unrelated state and verify delivery results |
+| Cross-module migration with architecture and evidence dependencies | Core + Design + Verification | Coordinate phases without loading the complete suite |
 
-tests/scenarios.json makes these expectations machine-checkable and keeps the matrix stable across prompt revisions.
+`tests/scenarios.json` keeps these expectations machine-checkable and ensures every Skill has a distinct effect boundary.
 
-## Compare correctly
+## Current evidence
+
+- Deterministic validation checks the six structures, trigger-budget limits, forbidden ritual language, sibling independence, and scenario specification.
+- Transaction smoke tests exercise fresh and upgrade installs, exact restore semantics, conflicts, injected install and restore failures, version-1 compatibility, path aliases, locks, spaces, and broken links in about two seconds on the development machine.
+- A description-only blind forward review on 2026-07-15 gave the eight prompts to two independent reviewers without expected answers; all eight selected the intended routes, including no Skill for the two simple tasks and core plus two spokes for the multi-phase task.
+
+The blind review tests semantic separation in the discovery descriptions. It does not exercise Codex's production implicit router and is not a live GPT-5.6 outcome, latency, token, or cost benchmark.
+
+## Compare effectiveness
 
 1. Hold model, reasoning effort, tools, project state, and task text constant.
-2. Run the existing workflow and record the result.
-3. Change one instruction group or use this Skill.
-4. Re-run the same cases.
-5. Count resource reduction as improvement only when existing pass criteria still hold.
+2. Run the previous workflow and this suite on the same cases.
+3. Evaluate task success before resource reduction.
+4. Inspect regressions, change one instruction group, and rerun the affected cases.
 
-Recommended metrics:
+Useful metrics include:
 
-- task success and missing requirements;
+- requirements satisfied and regressions introduced;
 - unsupported completion claims;
 - unnecessary questions or approval requests;
-- Skills and references loaded;
-- tool calls, retries, turns, total tokens, latency, and cost;
-- regressions in safety, evidence, or preservation of user changes.
+- wrong, missing, or excess Skill routes;
+- tool calls, retries, turns, loaded prompt words, tokens, latency, and cost;
+- preservation of user changes and permission boundaries.
 
-## Failure-driven tuning
-
-When a scenario regresses, inspect the smallest set of traces that exposes the failure. Classify it as a missing success criterion, contradictory rule, permission error, tool-routing error, validation gap, or stop-condition error. Make one surgical change and re-run the same cases.
-
-Do not add examples or absolute rules merely because they sound helpful. Keep a rule only when it changes measured behavior without unacceptable cost.
+Keep a rule only when it changes representative behavior without unacceptable cost. Structural word counts measure potential prompt footprint; they do not substitute for live outcome evaluation.
