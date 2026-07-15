@@ -1,0 +1,23 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install validation dependency
+        run: python3 -m pip install -r requirements-dev.txt
+      - name: Static validation
+        run: python3 scripts/validate.py
+      - name: Install and restore smoke test
+        run: bash tests/test-install.sh

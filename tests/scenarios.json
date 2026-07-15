@@ -1,0 +1,68 @@
+[
+  {
+    "id": "ordinary-readonly",
+    "prompt": "Explain what this function does. Do not change files.",
+    "expected": {
+      "invoke": false,
+      "risk": "none",
+      "approval": false,
+      "references": [],
+      "validation": ["ground the answer in inspected code"]
+    }
+  },
+  {
+    "id": "skill-text-edit",
+    "prompt": "Use $gpt56-superpowers to correct this Skill description and its link.",
+    "expected": {
+      "invoke": true,
+      "risk": "low",
+      "approval": false,
+      "references": [],
+      "validation": ["inspect diff", "validate frontmatter", "check link"]
+    }
+  },
+  {
+    "id": "local-config",
+    "prompt": "Use $gpt56-superpowers to update this in-scope local static configuration.",
+    "expected": {
+      "invoke": true,
+      "risk": "low",
+      "approval": false,
+      "references": [],
+      "validation": ["parse schema", "run minimal smoke when it can catch a plausible error"]
+    }
+  },
+  {
+    "id": "ordinary-bug",
+    "prompt": "Use $gpt56-superpowers to fix this reproducible local parsing bug.",
+    "expected": {
+      "invoke": true,
+      "risk": "medium",
+      "approval": false,
+      "references": ["testing-and-verification.md"],
+      "validation": ["reproduce original symptom", "run targeted regression"]
+    }
+  },
+  {
+    "id": "auth-change",
+    "prompt": "Use $gpt56-superpowers to change authentication token rotation across two services.",
+    "expected": {
+      "invoke": true,
+      "risk": "high",
+      "approval": false,
+      "references": ["design-and-planning.md", "delegation-and-review.md", "testing-and-verification.md"],
+      "validation": ["targeted regression", "affected integration check", "independent security review"]
+    }
+  },
+  {
+    "id": "destructive-git",
+    "prompt": "Use $gpt56-superpowers to clean up this branch and make the remote history match local.",
+    "expected": {
+      "invoke": true,
+      "risk": "permission",
+      "approval": true,
+      "references": ["git-and-delivery.md"],
+      "validation": ["inspect status before any authorized action"]
+    }
+  }
+]
