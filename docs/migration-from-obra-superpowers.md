@@ -4,7 +4,7 @@ This project is an original GPT-5.6 rewrite, not a compatibility layer. It delib
 
 ## Capability mapping
 
-| Previous Skill | Version 0.2 decision |
+| Previous Skill | Version 0.3 decision |
 |---|---|
 | `using-superpowers` | Narrow implicit descriptions plus direct invocation; no every-message router |
 | `brainstorming`, `writing-plans` | `gpt56-design-planning` only for consequential ambiguity or dependency planning |
@@ -13,7 +13,7 @@ This project is an original GPT-5.6 rewrite, not a compatibility layer. It delib
 | `verification-before-completion` | `gpt56-verification` matches evidence to material claims |
 | `dispatching-parallel-agents`, `subagent-driven-development` | `gpt56-delegation-review` only for genuinely independent work |
 | `requesting-code-review`, `receiving-code-review` | Focused evidence-backed review in `gpt56-delegation-review` |
-| `using-git-worktrees`, `finishing-a-development-branch` | `gpt56-git-delivery` when Git state is part of the requested outcome |
+| `using-git-worktrees`, `finishing-a-development-branch` | `gpt56-git-delivery` for explicit Git state and the default scoped local commit after completed repository changes |
 | `test-driven-development` | Removed as a Skill and methodology requirement; project or user rules still govern when specified |
 | `writing-skills` | Base model plus repository-specific creators and validators |
 
@@ -23,7 +23,7 @@ This project is an original GPT-5.6 rewrite, not a compatibility layer. It delib
 - Design approval and micro-plans before every edit.
 - Fail-first development, named phase rituals, and deletion of pre-test implementation.
 - Implementer-plus-reviewer chains for routine work.
-- Automatic worktrees, commits, pushes, and branch menus.
+- Automatic worktrees, pushes, and branch menus.
 - Repeated broad checks at multiple workflow stages.
 
 ## Preserved invariants
@@ -33,6 +33,7 @@ This project is an original GPT-5.6 rewrite, not a compatibility layer. It delib
 - Obtain specific authority for unapproved external or destructive actions.
 - Diagnose non-obvious failures from evidence and revisit the original symptom.
 - Match material completion claims to proportionate evidence and disclose gaps.
+- Commit each completed repository-changing outcome locally by default while preserving explicit opt-outs and separate push authority.
 - Evaluate review findings technically rather than applying them blindly.
 
 ## Transactional local migration

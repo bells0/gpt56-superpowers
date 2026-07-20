@@ -2,18 +2,19 @@
 
 The checked-in scenario matrix tests routing intent and package invariants. It is not a claim that a live GPT-5.6 benchmark occurred.
 
-## Eight representative scenarios
+## Nine representative scenarios
 
 | Scenario | Expected route | Decisive behavior |
 |---|---|---|
 | Read-only code explanation | None | Answer from inspected evidence without workflow overhead |
-| Clear static edit | None | Direct change with obvious artifact checks |
+| Clear static edit | Git & Delivery | Direct change, obvious artifact checks, and a scoped local commit |
 | Public API or migration ambiguity | Design & Planning | Choose a tradeoff and define boundaries and acceptance |
-| Intermittent cross-component failure | Debugging | Find the first divergence and recheck the symptom |
+| Intermittent cross-component failure and fix | Debugging + Git & Delivery | Find the first divergence, recheck the symptom, and commit the completed fix |
 | Material visual or release claim | Verification | Match claim breadth to reliable evidence |
 | Independent investigations or focused security review | Delegation & Review | Parallelize true independence and synthesize findings |
 | Authorized branch, commit, push, and pull request | Git & Delivery | Preserve unrelated state and verify delivery results |
 | Cross-module migration with architecture and evidence dependencies | Core + Design + Verification | Coordinate phases without loading the complete suite |
+| Explicit no-commit request | Git & Delivery | Verify the change while leaving it uncommitted |
 
 `tests/scenarios.json` keeps these expectations machine-checkable and ensures every Skill has a distinct effect boundary.
 
@@ -21,7 +22,7 @@ The checked-in scenario matrix tests routing intent and package invariants. It i
 
 - Deterministic validation checks the six structures, trigger-budget limits, forbidden ritual language, sibling independence, and scenario specification.
 - Transaction smoke tests exercise fresh and upgrade installs, exact restore semantics, conflicts, injected install and restore failures, version-1 compatibility, path aliases, locks, spaces, and broken links in about two seconds on the development machine.
-- A description-only blind forward review on 2026-07-15 gave the eight prompts to two independent reviewers without expected answers; all eight selected the intended routes, including no Skill for the two simple tasks and core plus two spokes for the multi-phase task.
+- A three-case blind forward review on 2026-07-20 covered an implicit simple-change commit, an explicit no-commit request, and a multi-repository completion. All three followed the version-0.3 local-commit contract.
 
 The blind review tests semantic separation in the discovery descriptions. It does not exercise Codex's production implicit router and is not a live GPT-5.6 outcome, latency, token, or cost benchmark.
 

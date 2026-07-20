@@ -21,7 +21,8 @@ The diagram describes ownership, not a required call chain. Every spoke is a dir
 
 ## Routing rules
 
-- Clear, local, low-ambiguity work: no suite Skill.
+- Read-only and clear non-repository work: no suite Skill.
+- Completed repository-changing work: Git & Delivery supplies the default scoped local commit.
 - One consequential decision domain: one narrow Skill.
 - Two or more dependent phases whose ordering and synthesis affect success: core plus only the one or two narrow Skills that change a decision.
 - External or destructive action: a permission boundary independent of task complexity.
@@ -36,7 +37,11 @@ The core resolves goal, success, constraints, evidence, permission, and stop con
 
 ### Independent ownership
 
-Each spoke owns one decision domain. Trigger overlap is minimized by separating design uncertainty, causal uncertainty, evidence selection, coordination value, and Git delivery state.
+Each spoke owns one decision domain. Trigger overlap is minimized by separating design uncertainty, causal uncertainty, evidence selection, coordination value, and Git delivery state. Git & Delivery additionally owns the suite-wide local completion commit for repository changes.
+
+### Scoped completion commits
+
+One completed user-visible outcome maps to one local commit per affected repository. Task-owned paths or hunks are staged explicitly, unrelated user changes remain untouched, and explicit opt-outs or unsafe, incomplete, failed, blocked, or empty work remains uncommitted. Push and other remote authority stay separate.
 
 ### Claim-based verification
 
@@ -61,11 +66,11 @@ Delegation is justified by independent deliverables, elapsed-time savings, or fr
 |---|---|
 | State outcomes and stop rules | Six-part core contract and completion conditions |
 | Remove repeated process instructions | Six small self-contained bodies; no mandatory chain |
-| Define autonomy and permissions | Local change authority separated from external/destructive authority |
+| Define autonomy and permissions | Completed local changes include a scoped commit; remote and destructive authority stay separate |
 | Route tools by dependency | Parallel independent work; sequential dependencies; synthesis before claims |
 | Validate what matters | Claim-to-evidence selection and explicit gaps |
 | Keep progress sparse | Outcome-first reporting and phase-level updates |
-| Evaluate representative work | Stable eight-scenario routing manifest |
+| Evaluate representative work | Stable nine-scenario routing manifest |
 
 ## Prompt budget
 
@@ -76,4 +81,4 @@ Repository validation enforces:
 - complete package: at most 1,650 words;
 - no nested resource documents or required sibling calls.
 
-Version 0.2 currently uses 307 core words and 1,589 words total. These are guardrails, not targets.
+Version 0.3 currently uses 349 core words and 1,647 words total. These are guardrails, not targets.

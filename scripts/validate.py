@@ -164,10 +164,11 @@ expected_ids = {
     "parallel-review",
     "git-delivery",
     "multi-phase",
+    "explicit-no-commit",
 }
 if isinstance(scenarios, list):
     ids = {item.get("id") for item in scenarios if isinstance(item, dict)}
-    check(ids == expected_ids, "scenario manifest must contain the eight canonical cases")
+    check(ids == expected_ids, "scenario manifest must contain the nine canonical cases")
     routed = set()
     for item in scenarios:
         if not isinstance(item, dict):
@@ -175,7 +176,8 @@ if isinstance(scenarios, list):
             continue
         expected = item.get("expected")
         check(
-            isinstance(expected, dict) and {"skills", "approval", "evidence"}.issubset(expected),
+            isinstance(expected, dict)
+            and {"skills", "approval", "local_commit", "evidence"}.issubset(expected),
             f"scenario {item.get('id')} is missing expected fields",
         )
         if not isinstance(expected, dict):
@@ -187,6 +189,10 @@ if isinstance(scenarios, list):
             check(len(skills) <= 3, f"scenario {item.get('id')} routes too many Skills")
             routed.update(skills)
         check(isinstance(expected.get("approval"), bool), f"scenario {item.get('id')} approval must be boolean")
+        check(
+            isinstance(expected.get("local_commit"), bool),
+            f"scenario {item.get('id')} local_commit must be boolean",
+        )
         check(bool(expected.get("evidence")), f"scenario {item.get('id')} needs decisive evidence")
     check(routed == set(SKILL_NAMES), "scenario manifest must exercise every Skill")
 
@@ -198,4 +204,4 @@ if failures:
 print("PASS: plugin and six-Skill structure")
 print(f"PASS: core budget {word_counts['gpt56-superpowers']}/{CORE_WORD_LIMIT} words")
 print(f"PASS: package budget {package_words}/{PACKAGE_WORD_LIMIT} words")
-print("PASS: independent-routing specification, lean workflow rules, links, and 8 scenarios")
+print("PASS: independent-routing specification, lean workflow rules, links, and 9 scenarios")

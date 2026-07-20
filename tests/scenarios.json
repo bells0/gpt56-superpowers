@@ -5,6 +5,7 @@
     "expected": {
       "skills": [],
       "approval": false,
+      "local_commit": false,
       "evidence": ["answer grounded in inspected code"]
     }
   },
@@ -12,9 +13,10 @@
     "id": "clear-static-edit",
     "prompt": "Correct this clear documentation link and the matching static configuration key.",
     "expected": {
-      "skills": [],
+      "skills": ["gpt56-git-delivery"],
       "approval": false,
-      "evidence": ["diff inspection", "relevant format and link checks"]
+      "local_commit": true,
+      "evidence": ["diff inspection", "relevant format and link checks", "scoped local commit"]
     }
   },
   {
@@ -23,6 +25,7 @@
     "expected": {
       "skills": ["gpt56-design-planning"],
       "approval": false,
+      "local_commit": false,
       "evidence": ["chosen tradeoff", "interfaces and migration boundaries", "acceptance conditions"]
     }
   },
@@ -30,9 +33,10 @@
     "id": "ambiguous-failure",
     "prompt": "Diagnose and fix an intermittent timeout that appears only when two services and a proxy are involved.",
     "expected": {
-      "skills": ["gpt56-debugging"],
+      "skills": ["gpt56-debugging", "gpt56-git-delivery"],
       "approval": false,
-      "evidence": ["first divergent boundary", "original symptom rechecked"]
+      "local_commit": true,
+      "evidence": ["first divergent boundary", "original symptom rechecked", "scoped local commit"]
     }
   },
   {
@@ -41,6 +45,7 @@
     "expected": {
       "skills": ["gpt56-verification"],
       "approval": false,
+      "local_commit": false,
       "evidence": ["rendered affected states", "project-required release gates"]
     }
   },
@@ -50,6 +55,7 @@
     "expected": {
       "skills": ["gpt56-delegation-review"],
       "approval": false,
+      "local_commit": false,
       "evidence": ["integrated findings", "evidence-backed security review"]
     }
   },
@@ -59,6 +65,7 @@
     "expected": {
       "skills": ["gpt56-git-delivery"],
       "approval": false,
+      "local_commit": true,
       "evidence": ["staged diff", "commit and remote pull-request state"]
     }
   },
@@ -68,7 +75,18 @@
     "expected": {
       "skills": ["gpt56-superpowers", "gpt56-design-planning", "gpt56-verification"],
       "approval": false,
-      "evidence": ["dependency-aware synthesis", "accepted architecture", "claim-matched checks"]
+      "local_commit": true,
+      "evidence": ["dependency-aware synthesis", "accepted architecture", "claim-matched checks", "scoped local commit"]
+    }
+  },
+  {
+    "id": "explicit-no-commit",
+    "prompt": "Fix this configuration bug and verify it, but leave the completed changes uncommitted.",
+    "expected": {
+      "skills": ["gpt56-git-delivery"],
+      "approval": false,
+      "local_commit": false,
+      "evidence": ["verified diff", "working tree remains uncommitted"]
     }
   }
 ]

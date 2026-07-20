@@ -1,6 +1,6 @@
 interface:
   display_name: "GPT-5.6 Superpowers"
   short_description: "Coordinate multiple decision domains"
-  default_prompt: "Use $gpt56-superpowers to coordinate this multi-phase development outcome."
+  default_prompt: "Use $gpt56-superpowers to coordinate this multi-phase development outcome through verified, scoped completion."
 policy:
   allow_implicit_invocation: true

@@ -1,6 +1,6 @@
 {
   "name": "gpt56-superpowers",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A lean hub-and-spoke development Skill suite for GPT-5.6.",
   "author": {
     "name": "Wonderbell",
@@ -20,7 +20,7 @@
   "interface": {
     "displayName": "GPT-5.6 Superpowers",
     "shortDescription": "Six lean development Skills for GPT-5.6",
-    "longDescription": "One compact cross-phase coordinator and five independently routable Skills for design, debugging, verification, delegation and review, and Git delivery.",
+    "longDescription": "One compact cross-phase coordinator and five independently routable Skills for design, debugging, verification, delegation and review, and scoped Git delivery with default local completion commits.",
     "developerName": "Wonderbell",
     "category": "Developer Tools",
     "capabilities": [

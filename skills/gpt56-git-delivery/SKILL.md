@@ -1,29 +1,34 @@
 ---
 name: gpt56-git-delivery
-description: Handle authorized Git delivery involving isolation, worktrees, branches, staging, commits, pushes, pull requests, merges, or cleanup. Use when Git state or remote delivery is part of the requested outcome, not merely because the project uses Git.
+description: Handle safe Git delivery involving scoped commits, branches, worktrees, pushes, pull requests, merges, or cleanup. Use for explicit Git operations and automatically after any completed repository-changing request that should receive its default local completion commit.
 ---
 
 # GPT-5.6 Git & Delivery
 
 Deliver repository changes without losing user work or exceeding the requested authority.
 
+## Default completion commit
+
+A completed repository-changing request authorizes one local commit per affected repository without another prompt. Map one user-visible outcome to one coherent commit. Do not commit read-only or planning work, incomplete, failed, blocked, empty, opted-out, or unsafe-to-isolate work. A commit never authorizes a push.
+
 ## Prepare
 
 1. Inspect status, current branch, upstreams, remotes, and repository rules.
 2. Distinguish task changes from unrelated user changes; preserve the latter.
-3. Use the existing clean dedicated branch when sufficient. Add isolation only for parallel work, overlapping dirty state, a long-lived risky change, or an explicit request.
+3. Use the current suitable branch. Add isolation only for parallel work, overlapping state, long-lived risk, or an explicit request.
 4. Before a repository-local worktree, confirm its path is ignored.
 
 ## Deliver
 
-- Stage explicit paths and inspect the staged diff before committing.
-- Create a commit when requested, required for delivery, or useful as a coherent checkpoint.
-- Push, open or update a pull request, merge, tag, or delete remote state only within current authorization.
-- Obtain specific confirmation for force operations, history rewriting, permanent discard, or destructive cleanup unless already explicitly authorized.
-- Prefer non-interactive commands and avoid altering unrelated working-tree state.
+- Stage only task-owned paths or hunks; never broadly stage unrelated work.
+- Inspect the staged diff, follow message conventions, and create the completion commit.
+- Never bypass a failed hook. Stop if changes cannot be isolated truthfully.
+- Push, create pull requests, merge, tag, or change remote state only when authorized.
+- Confirm force operations, history rewriting, permanent discard, or destructive cleanup unless already authorized.
+- Prefer non-interactive commands.
 
-If remote state has moved, inspect divergence before choosing rebase, merge, or another reconciliation. Do not infer permission for a destructive reconciliation from a generic request to “sync.”
+If remote state moved, inspect divergence before reconciling. Do not infer destructive authority from a generic request to “sync.”
 
 ## Completion
 
-Verify the resulting status and relevant branch or remote relationship. Report the branch, commit, push or pull-request result, checks run, preserved unrelated changes, and any remaining delivery step. Clean up temporary isolation only when it is safe and within scope.
+Verify status and branch or remote relationships. Report the commit, checks, preserved unrelated changes, and authorized remote results. Clean temporary isolation only when safe and in scope.
