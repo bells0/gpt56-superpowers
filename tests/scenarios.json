@@ -88,5 +88,35 @@
       "local_commit": false,
       "evidence": ["verified diff", "working tree remains uncommitted"]
     }
+  },
+  {
+    "id": "implementation-plan",
+    "prompt": "The product and architecture decisions are settled. Inspect the repository and write an implementation-ready plan for a multi-module change without inventing paths or interfaces.",
+    "expected": {
+      "skills": ["gpt56-writing-plans"],
+      "approval": false,
+      "local_commit": false,
+      "evidence": ["provided, observed, proposed, and unresolved facts separated", "file and interface ownership", "task-level acceptance evidence"]
+    }
+  },
+  {
+    "id": "worktree-isolation",
+    "prompt": "Create a safe worktree for this long-lived change while preserving the dirty source checkout. Do not push or merge anything.",
+    "expected": {
+      "skills": ["gpt56-using-git-worktrees"],
+      "approval": false,
+      "local_commit": false,
+      "evidence": ["resolved Git state", "safe worktree path and branch", "preserved source changes", "baseline result"]
+    }
+  },
+  {
+    "id": "subagent-plan-execution",
+    "prompt": "Execute this implementation-ready plan whose three outcomes have disjoint file ownership. Use bounded subagents, integrate their changes, verify the result, and commit the completed outcome.",
+    "expected": {
+      "skills": ["gpt56-subagent-driven-development", "gpt56-git-delivery"],
+      "approval": false,
+      "local_commit": true,
+      "evidence": ["bounded ownership", "durable task state", "integrated diff and evidence", "scoped local commit"]
+    }
   }
 ]

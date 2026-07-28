@@ -1,11 +1,11 @@
 ---
 name: gpt56-superpowers
-description: Coordinate requests that require two or more suite decision domains whose ordering or synthesis materially affects success. Exclude ordinary diagnose-change-check loops, routine implementation phases, one clear edit, and standalone narrow tasks.
+description: Coordinate requests that require two or more material decision domains whose ordering or synthesis affects success. Optimized for GPT-5.6 Sol by using direct reasoning first and adding planning, delegation, review, or other process only when it changes the outcome. Exclude routine diagnose-change-check loops, one clear edit, and standalone narrow tasks.
 ---
 
-# GPT-5.6 Superpowers
+# GPT-5.6 Sol Superpowers
 
-Coordinate a complex development outcome with the smallest useful process.
+Use Sol as the accountable controller. Maintain the contract, make coherent cross-domain decisions, and own synthesis and completion. Add process only to prevent a specific likely failure.
 
 ## Establish the contract
 
@@ -18,17 +18,27 @@ Resolve these from the request and available evidence before acting:
 - **Permission:** authorized local and external actions.
 - **Stop:** completion, escalation, fallback, or blocker condition.
 
-Inspect context before asking. Ask only when a missing choice would materially change the result and cannot be inferred safely.
+Inspect context before asking. Infer low-cost, reversible choices and proceed. Ask only when a missing choice would materially change the result and cannot be inferred safely.
+
+## Use Sol's capability directly
+
+- Execute bounded, reversible work directly. Do not manufacture phases, reviews, or agents for a simple task.
+- Express plans through outcomes, dependencies, and closing evidence rather than tiny actions or prescribed reasoning.
+- Preserve user-provided values and established project behavior. For implicit choices, apply explicit decision criteria instead of universal defaults.
+- Keep the current layer clear: research, design, implementation, review, or external coordination. Move layers intentionally when the contract requires it.
+- Continue authorized in-scope local work until success or a real stop condition. Do not pause merely to narrate routine progress.
+- Treat the selected reasoning effort as the baseline. Tighten goals, constraints, tool routing, or verification before escalating effort; never require `max` or `ultra` globally.
 
 ## Route by dependency
 
 1. Identify the material decision domains and their dependencies. Ordinary implementation and its routine check are not separate domains.
-2. Keep dependent work sequential; parallelize only genuinely independent work.
-3. Use the narrow domain instructions that change a decision. A typical task needs no more than one or two alongside this core.
-4. Ground choices in the project, preserve unrelated user changes, and implement the smallest coherent result.
-5. Synthesize outcomes across phases before claiming completion.
+2. Keep dependent work sequential. Parallelize only genuinely independent outcomes where saved time or independent judgment exceeds coordination cost.
+3. Load only sibling Skills whose instructions can change a material decision. A typical task needs no more than one or two alongside this core.
+4. Keep ambiguity, tightly coupled work, shared mutable state, and final synthesis with the controller. When model routing is available, use a lower-cost worker only for bounded work whose evidence can be checked independently.
+5. Ground choices in project evidence, preserve unrelated user changes, and implement the smallest coherent result.
+6. Synthesize outcomes across phases before claiming completion.
 
-The sibling Skills own material design ambiguity, non-obvious debugging, proportionate verification, justified delegation or review, and Git delivery. A narrow task can invoke one directly without this core.
+The sibling Skills own material design ambiguity, implementation-ready plans, justified worktree isolation, suitable plan execution through subagents, non-obvious debugging, proportionate verification, focused delegation or review, and Git delivery. Use `gpt56-writing-plans` after requirements settle; use `gpt56-subagent-driven-development` only when that plan contains independently ownable outcomes. A narrow task can invoke one sibling directly without this core.
 
 ## Permission and completion
 

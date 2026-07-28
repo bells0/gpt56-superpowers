@@ -4,16 +4,19 @@ This project is an original GPT-5.6 rewrite, not a compatibility layer. It delib
 
 ## Capability mapping
 
-| Previous Skill | Version 0.3 decision |
+| Previous Skill | Version 0.4 decision |
 |---|---|
 | `using-superpowers` | Narrow implicit descriptions plus direct invocation; no every-message router |
-| `brainstorming`, `writing-plans` | `gpt56-design-planning` only for consequential ambiguity or dependency planning |
-| `executing-plans` | Base model execution; cross-phase synthesis in `gpt56-superpowers` |
+| `brainstorming` | `gpt56-design-planning` only for consequential ambiguity or dependency planning |
+| `writing-plans` | `gpt56-writing-plans` for repository-grounded, implementation-ready plans after decisions settle |
+| `executing-plans` | Base model execution for coupled work; `gpt56-subagent-driven-development` for independently ownable plan outcomes |
 | `systematic-debugging` | `gpt56-debugging` for non-obvious causal investigation |
 | `verification-before-completion` | `gpt56-verification` matches evidence to material claims |
-| `dispatching-parallel-agents`, `subagent-driven-development` | `gpt56-delegation-review` only for genuinely independent work |
+| `dispatching-parallel-agents` | `gpt56-delegation-review` only for genuinely independent work or focused judgment |
+| `subagent-driven-development` | `gpt56-subagent-driven-development` with Sol-owned contracts, disjoint write ownership, durable state, and proportional review |
 | `requesting-code-review`, `receiving-code-review` | Focused evidence-backed review in `gpt56-delegation-review` |
-| `using-git-worktrees`, `finishing-a-development-branch` | `gpt56-git-delivery` for explicit Git state and the default scoped local commit after completed repository changes |
+| `using-git-worktrees` | `gpt56-using-git-worktrees` only for explicit or materially justified isolation |
+| `finishing-a-development-branch` | `gpt56-git-delivery` for explicit Git state and the default scoped local commit after completed repository changes |
 | `test-driven-development` | Removed as a Skill and methodology requirement; project or user rules still govern when specified |
 | `writing-skills` | Base model plus repository-specific creators and validators |
 
@@ -38,7 +41,7 @@ This project is an original GPT-5.6 rewrite, not a compatibility layer. It delib
 
 ## Transactional local migration
 
-`scripts/install-local.sh` validates source and path safety, acquires a shared lock, and classifies each of the six target paths as:
+`scripts/install-local.sh` validates source and path safety, acquires a shared lock, and classifies each of the nine target paths as:
 
 - `preserved`: already an exact symlink to this checkout;
 - `created`: linked by the current transaction;
@@ -52,4 +55,4 @@ It also moves any of the fourteen legacy directories into an exclusive transacti
 
 The version-2 manifest records all managed, preserved, created, and moved names before the transaction becomes READY. Restore removes only links created by that transaction, never a preserved link, and returns backed-up entries after collision checks.
 
-Backups created by version 0.1 use the previous single-link manifest. The restore script retains compatibility so the original fourteen-Skill backup remains recoverable.
+Backups created by version 0.3 use the previous six-Skill version-2 manifest, while version 0.1 uses the earlier single-link manifest. The restore script retains compatibility with both formats so previous migrations remain recoverable.

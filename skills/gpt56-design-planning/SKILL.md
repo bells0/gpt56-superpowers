@@ -23,6 +23,8 @@ Turn consequential ambiguity into an implementable direction. Clear local edits 
 
 Create a compact plan when work spans dependent deliverables, multiple owners, or a risky transition. Organize it by outcomes and dependencies, not tiny actions. Each step should identify the artifact or behavior it produces and the evidence that closes it.
 
+Keep design planning at the level needed to settle the direction. When settled requirements need a durable file-level implementation plan, exact task interfaces, or downstream handoff, use `gpt56-writing-plans` rather than expanding the design process into microsteps.
+
 For low-cost and reversible choices, state a reasonable assumption and proceed. Record durable decisions where the project expects them.
 
 ## Completion

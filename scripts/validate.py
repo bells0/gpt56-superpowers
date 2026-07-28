@@ -19,14 +19,29 @@ SKILLS_ROOT = ROOT / "skills"
 SKILL_NAMES = (
     "gpt56-superpowers",
     "gpt56-design-planning",
+    "gpt56-writing-plans",
+    "gpt56-using-git-worktrees",
+    "gpt56-subagent-driven-development",
     "gpt56-debugging",
     "gpt56-verification",
     "gpt56-delegation-review",
     "gpt56-git-delivery",
 )
-CORE_WORD_LIMIT = 350
-SATELLITE_WORD_LIMIT = 300
-PACKAGE_WORD_LIMIT = 1650
+SKILL_WORD_LIMITS = {
+    "gpt56-superpowers": 600,
+    "gpt56-design-planning": 300,
+    "gpt56-writing-plans": 850,
+    "gpt56-using-git-worktrees": 600,
+    "gpt56-subagent-driven-development": 750,
+    "gpt56-debugging": 300,
+    "gpt56-verification": 300,
+    "gpt56-delegation-review": 450,
+    "gpt56-git-delivery": 300,
+}
+PACKAGE_WORD_LIMIT = 4300
+ALLOWED_RESOURCE_DIRS = {
+    "gpt56-subagent-driven-development": {"references", "scripts"},
+}
 failures: list[str] = []
 
 
@@ -77,7 +92,7 @@ if isinstance(manifest, dict):
 actual_skill_dirs = {
     path.name for path in SKILLS_ROOT.iterdir() if path.is_dir() and not path.name.startswith(".")
 }
-check(actual_skill_dirs == set(SKILL_NAMES), "skills/ must contain exactly the six supported Skills")
+check(actual_skill_dirs == set(SKILL_NAMES), "skills/ must contain exactly the nine supported Skills")
 
 word_counts: dict[str, int] = {}
 skill_corpus: list[str] = []
@@ -118,23 +133,34 @@ for name in SKILL_NAMES:
             failures.append(f"{name}/agents/openai.yaml is not valid YAML: {exc}")
 
     extra_dirs = {
-        path.name for path in skill_dir.iterdir() if path.is_dir() and path.name != "agents"
+        path.name
+        for path in skill_dir.iterdir()
+        if path.is_dir()
+        and path.name != "agents"
+        and path.name not in ALLOWED_RESOURCE_DIRS.get(name, set())
     }
     check(not extra_dirs, f"{name} contains unnecessary resource directories: {sorted(extra_dirs)}")
     check("$gpt56-" not in skill_text, f"{name} body must not require another sibling Skill")
     word_counts[name] = words(skill_text)
 
-check(word_counts.get("gpt56-superpowers", 0) <= CORE_WORD_LIMIT, "core prompt budget exceeded")
-for name in SKILL_NAMES[1:]:
-    check(word_counts.get(name, 0) <= SATELLITE_WORD_LIMIT, f"{name} prompt budget exceeded")
+for name, limit in SKILL_WORD_LIMITS.items():
+    check(word_counts.get(name, 0) <= limit, f"{name} prompt budget exceeded")
 package_words = sum(word_counts.values())
 check(package_words <= PACKAGE_WORD_LIMIT, f"package prompt budget exceeded: {package_words} > {PACKAGE_WORD_LIMIT}")
 
+sdd_root = SKILLS_ROOT / "gpt56-subagent-driven-development"
+for relative in (
+    "references/implementer-prompt.md",
+    "references/reviewer-prompt.md",
+    "scripts/sdd-tools.cjs",
+):
+    check((sdd_root / relative).is_file(), f"missing gpt56-subagent-driven-development/{relative}")
+
 corpus = "\n".join(skill_corpus)
 obsolete_patterns = {
-    "methodology acronym": r"\btdd\b",
+    "forced methodology acronym": r"(?:always|mandatory|must|required).{0,20}\btdd\b|\btdd\b.{0,20}(?:always|mandatory|required)",
     "fail-first ritual": r"fail[- ]first",
-    "test-first ritual": r"test[- ]first",
+    "forced test-first ritual": r"(?:always|mandatory|must).{0,20}test[- ]first|test[- ]first.{0,20}(?:always|mandatory|required)",
     "red-green-refactor ritual": r"red.{0,12}green.{0,12}refactor",
     "mandatory full suite": r"mandatory full[- ]suite|always run (?:the )?full suite",
     "forced restart": r"delete (?:the )?(?:implementation|code).{0,20}start over",
@@ -165,10 +191,13 @@ expected_ids = {
     "git-delivery",
     "multi-phase",
     "explicit-no-commit",
+    "implementation-plan",
+    "worktree-isolation",
+    "subagent-plan-execution",
 }
 if isinstance(scenarios, list):
     ids = {item.get("id") for item in scenarios if isinstance(item, dict)}
-    check(ids == expected_ids, "scenario manifest must contain the nine canonical cases")
+    check(ids == expected_ids, "scenario manifest must contain the twelve canonical cases")
     routed = set()
     for item in scenarios:
         if not isinstance(item, dict):
@@ -201,7 +230,10 @@ if failures:
         print(f"FAIL: {failure}", file=sys.stderr)
     raise SystemExit(1)
 
-print("PASS: plugin and six-Skill structure")
-print(f"PASS: core budget {word_counts['gpt56-superpowers']}/{CORE_WORD_LIMIT} words")
+print("PASS: plugin and nine-Skill structure")
+print(
+    "PASS: skill budgets "
+    + ", ".join(f"{name}={word_counts[name]}/{SKILL_WORD_LIMITS[name]}" for name in SKILL_NAMES)
+)
 print(f"PASS: package budget {package_words}/{PACKAGE_WORD_LIMIT} words")
-print("PASS: independent-routing specification, lean workflow rules, links, and 9 scenarios")
+print("PASS: dependency-aware routing, lean workflow rules, links, resources, and 12 scenarios")

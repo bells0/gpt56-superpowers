@@ -8,6 +8,18 @@ TMP_ROOT="$TMP_BASE/path with spaces"
 MANAGED_SKILLS=(
   gpt56-superpowers
   gpt56-design-planning
+  gpt56-writing-plans
+  gpt56-using-git-worktrees
+  gpt56-subagent-driven-development
+  gpt56-debugging
+  gpt56-verification
+  gpt56-delegation-review
+  gpt56-git-delivery
+)
+
+VERSION_03_MANAGED_SKILLS=(
+  gpt56-superpowers
+  gpt56-design-planning
   gpt56-debugging
   gpt56-verification
   gpt56-delegation-review
@@ -89,7 +101,7 @@ for name in "${LEGACY_SKILLS[@]}"; do
 done
 BASE_BACKUP="$(find "$BASE_BACKUPS" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
 grep -Fqx 'format_version=2' "$BASE_BACKUP/INSTALL_INFO"
-[[ "$(grep -c '^created=' "$BASE_BACKUP/INSTALL_INFO")" -eq 6 ]]
+[[ "$(grep -c '^created=' "$BASE_BACKUP/INSTALL_INFO")" -eq 9 ]]
 [[ "$(grep -c '^moved=' "$BASE_BACKUP/INSTALL_INFO")" -eq 14 ]]
 
 backup_count_before="$(find "$BASE_BACKUPS" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')"
@@ -115,7 +127,7 @@ done
 [[ -L "$BASE_SKILLS/using-superpowers" ]]
 [[ "$(readlink "$BASE_SKILLS/using-superpowers")" == "$BROKEN_DEST" ]]
 
-# Upgrade from version 0.1: preserve the existing core and remove only five new links on restore.
+# Upgrade from version 0.1: preserve the existing core and remove only eight new links on restore.
 UPGRADE_SKILLS="$TMP_ROOT/upgrade skills"
 UPGRADE_BACKUPS="$TMP_ROOT/upgrade backups"
 mkdir -p "$UPGRADE_SKILLS"
@@ -124,7 +136,7 @@ run_install "$UPGRADE_SKILLS" "$UPGRADE_BACKUPS"
 assert_managed_links "$UPGRADE_SKILLS"
 UPGRADE_BACKUP="$(find "$UPGRADE_BACKUPS" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
 grep -Fqx 'preserved=gpt56-superpowers' "$UPGRADE_BACKUP/INSTALL_INFO"
-[[ "$(grep -c '^created=' "$UPGRADE_BACKUP/INSTALL_INFO")" -eq 5 ]]
+[[ "$(grep -c '^created=' "$UPGRADE_BACKUP/INSTALL_INFO")" -eq 8 ]]
 run_restore "$UPGRADE_SKILLS" "$UPGRADE_BACKUPS" "$UPGRADE_BACKUP"
 [[ -L "$UPGRADE_SKILLS/gpt56-superpowers" ]]
 for name in "${MANAGED_SKILLS[@]:1}"; do
@@ -140,7 +152,8 @@ run_install "$CONFLICT_SKILLS" "$CONFLICT_BACKUPS"
 CONFLICT_BACKUP="$(find "$CONFLICT_BACKUPS" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
 grep -Fqx 'moved=gpt56-debugging' "$CONFLICT_BACKUP/INSTALL_INFO"
 run_restore "$CONFLICT_SKILLS" "$CONFLICT_BACKUPS" "$CONFLICT_BACKUP"
-for name in gpt56-superpowers gpt56-design-planning gpt56-verification gpt56-delegation-review gpt56-git-delivery; do
+for name in "${MANAGED_SKILLS[@]}"; do
+  [[ "$name" == "gpt56-debugging" ]] && continue
   [[ ! -e "$CONFLICT_SKILLS/$name" && ! -L "$CONFLICT_SKILLS/$name" ]]
 done
 [[ -d "$CONFLICT_SKILLS/gpt56-debugging" && ! -L "$CONFLICT_SKILLS/gpt56-debugging" ]]
@@ -162,7 +175,8 @@ if run_restore "$COLLISION_SKILLS" "$COLLISION_BACKUPS" "$COLLISION_BACKUP" 2>/d
 fi
 [[ ! -f "$COLLISION_BACKUP/RESTORED" ]]
 grep -Fqx replacement "$COLLISION_SKILLS/gpt56-debugging/marker"
-for name in gpt56-superpowers gpt56-design-planning gpt56-verification gpt56-delegation-review gpt56-git-delivery; do
+for name in "${MANAGED_SKILLS[@]}"; do
+  [[ "$name" == "gpt56-debugging" ]] && continue
   [[ -L "$COLLISION_SKILLS/$name" ]]
 done
 
@@ -176,7 +190,8 @@ rm "$USER_SKILLS/gpt56-verification"
 mkdir -p "$USER_SKILLS/gpt56-verification"
 printf '%s\n' user-owned > "$USER_SKILLS/gpt56-verification/marker"
 run_restore "$USER_SKILLS" "$USER_BACKUPS" "$USER_BACKUP"
-for name in gpt56-superpowers gpt56-design-planning gpt56-debugging gpt56-delegation-review gpt56-git-delivery; do
+for name in "${MANAGED_SKILLS[@]}"; do
+  [[ "$name" == "gpt56-verification" ]] && continue
   [[ ! -e "$USER_SKILLS/$name" && ! -L "$USER_SKILLS/$name" ]]
 done
 grep -Fqx user-owned "$USER_SKILLS/gpt56-verification/marker"
@@ -244,6 +259,29 @@ for name in "${LEGACY_SKILLS[@]}"; do
 done
 [[ ! -f "$RESTORE_FAIL_BACKUP/RESTORED" ]]
 
+# Version-0.3 six-Skill manifests remain restorable after the suite expands.
+V03_SKILLS="$TMP_ROOT/version 0.3 skills"
+V03_BACKUPS="$TMP_ROOT/version 0.3 backups"
+V03_BACKUP="$V03_BACKUPS/txn-00000000000000000001"
+mkdir -p "$V03_SKILLS" "$V03_BACKUP"
+for name in "${VERSION_03_MANAGED_SKILLS[@]}"; do
+  ln -s "$REPO_ROOT/skills/$name" "$V03_SKILLS/$name"
+done
+{
+  printf 'format_version=2\n'
+  printf 'source_root=%s\n' "$REPO_ROOT/skills"
+  printf 'skills_root=%s\n' "$V03_SKILLS"
+  printf 'installed_at=20260720T000000Z\n'
+  for name in "${VERSION_03_MANAGED_SKILLS[@]}"; do printf 'managed=%s\n' "$name"; done
+  for name in "${VERSION_03_MANAGED_SKILLS[@]}"; do printf 'created=%s\n' "$name"; done
+  printf 'state=READY\n'
+} > "$V03_BACKUP/INSTALL_INFO"
+printf '%s\n' READY > "$V03_BACKUP/READY"
+run_restore "$V03_SKILLS" "$V03_BACKUPS" "$V03_BACKUP"
+for name in "${VERSION_03_MANAGED_SKILLS[@]}"; do
+  [[ ! -e "$V03_SKILLS/$name" && ! -L "$V03_SKILLS/$name" ]]
+done
+
 # Version-1 manifests remain restorable.
 V1_SKILLS="$TMP_ROOT/v1 skills"
 V1_BACKUPS="$TMP_ROOT/v1 backups"
@@ -305,4 +343,4 @@ if env CODEX_HOME="$NESTED_CODEX" bash "$NESTED_REPO/scripts/install-local.sh" >
 fi
 [[ -d "$NESTED_REPO" && ! -L "$NESTED_REPO" ]]
 
-echo "PASS: six-Skill transactions, v1 compatibility, rollback, collisions, locks, and path safety"
+echo "PASS: nine-Skill transactions, v0.3/v1 compatibility, rollback, collisions, locks, and path safety"

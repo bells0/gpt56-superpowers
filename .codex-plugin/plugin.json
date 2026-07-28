@@ -1,7 +1,7 @@
 {
   "name": "gpt56-superpowers",
-  "version": "0.3.0",
-  "description": "A lean hub-and-spoke development Skill suite for GPT-5.6.",
+  "version": "0.4.0",
+  "description": "A dependency-aware development Skill suite for GPT-5.6 Sol.",
   "author": {
     "name": "Wonderbell",
     "url": "https://github.com/bells0"
@@ -19,13 +19,15 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "GPT-5.6 Superpowers",
-    "shortDescription": "Six lean development Skills for GPT-5.6",
-    "longDescription": "One compact cross-phase coordinator and five independently routable Skills for design, debugging, verification, delegation and review, and scoped Git delivery with default local completion commits.",
+    "shortDescription": "Nine focused development Skills for GPT-5.6 Sol",
+    "longDescription": "A Sol-first coordinator plus focused Skills for design, implementation planning, worktree isolation, bounded subagent execution, debugging, verification, delegation and review, and scoped Git delivery.",
     "developerName": "Wonderbell",
     "category": "Developer Tools",
     "capabilities": [
       "Workflow",
       "Planning",
+      "Worktrees",
+      "Subagents",
       "Debugging",
       "Validation",
       "Git"

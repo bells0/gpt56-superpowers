@@ -12,6 +12,9 @@ LOCK_DIR="$SKILLS_ROOT/.gpt56-superpowers.lock"
 MANAGED_SKILLS=(
   gpt56-superpowers
   gpt56-design-planning
+  gpt56-writing-plans
+  gpt56-using-git-worktrees
+  gpt56-subagent-driven-development
   gpt56-debugging
   gpt56-verification
   gpt56-delegation-review
@@ -202,7 +205,7 @@ if [[ "$all_installed" -eq 1 && "$legacy_found" -eq 0 ]]; then
   committed=1
   release_lock
   trap - EXIT
-  echo "Already installed: six GPT-5.6 Skills"
+  echo "Already installed: nine GPT-5.6 Skills"
   exit 0
 fi
 
@@ -267,6 +270,6 @@ committed=1
 release_lock
 trap - EXIT
 
-echo "Installed six GPT-5.6 Skills from: $SOURCE_ROOT"
+echo "Installed nine GPT-5.6 Skills from: $SOURCE_ROOT"
 echo "Backup: $BACKUP_DIR"
 echo "Restart Codex or start a new task to refresh Skill discovery."

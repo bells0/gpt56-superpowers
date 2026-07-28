@@ -2,7 +2,7 @@
 
 The checked-in scenario matrix tests routing intent and package invariants. It is not a claim that a live GPT-5.6 benchmark occurred.
 
-## Nine representative scenarios
+## Twelve representative scenarios
 
 | Scenario | Expected route | Decisive behavior |
 |---|---|---|
@@ -15,14 +15,18 @@ The checked-in scenario matrix tests routing intent and package invariants. It i
 | Authorized branch, commit, push, and pull request | Git & Delivery | Preserve unrelated state and verify delivery results |
 | Cross-module migration with architecture and evidence dependencies | Core + Design + Verification | Coordinate phases without loading the complete suite |
 | Explicit no-commit request | Git & Delivery | Verify the change while leaving it uncommitted |
+| Settled multi-module requirements | Writing Plans | Separate provided, observed, proposed, and unresolved facts in an implementation-ready plan |
+| Explicit dirty-checkout isolation | Worktree Isolation | Preserve source changes and report safe branch, path, revision, and baseline evidence |
+| Independently ownable implementation plan | Subagent Development + Git & Delivery | Bound ownership, preserve durable task state, integrate evidence, and create one coherent commit |
 
 `tests/scenarios.json` keeps these expectations machine-checkable and ensures every Skill has a distinct effect boundary.
 
 ## Current evidence
 
-- Deterministic validation checks the six structures, trigger-budget limits, forbidden ritual language, sibling independence, and scenario specification.
-- Transaction smoke tests exercise fresh and upgrade installs, exact restore semantics, conflicts, injected install and restore failures, version-1 compatibility, path aliases, locks, spaces, and broken links in about two seconds on the development machine.
+- Deterministic validation checks the nine structures, per-Skill trigger budgets, forbidden forced ritual language, declared SDD resources, dependency-aware routing, and the twelve-scenario specification.
+- Transaction smoke tests exercise fresh and upgrade installs, exact restore semantics, conflicts, injected install and restore failures, version-0.3 and version-1 compatibility, path aliases, locks, spaces, and broken links.
 - A three-case blind forward review on 2026-07-20 covered an implicit simple-change commit, an explicit no-commit request, and a multi-repository completion. All three followed the version-0.3 local-commit contract.
+- Three focused forward scenarios on 2026-07-27 covered evidence-grounded implementation plans, dirty-checkout worktree isolation, and Sol-controlled subagent execution. The first Writing Plans pass exposed invented repository details; the revised evidence classification passed the second blind scenario.
 
 The blind review tests semantic separation in the discovery descriptions. It does not exercise Codex's production implicit router and is not a live GPT-5.6 outcome, latency, token, or cost benchmark.
 

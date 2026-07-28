@@ -6,18 +6,21 @@ Give GPT-5.6 a small set of precise development lenses without re-teaching relia
 
 ## Hub and spokes
 
-The suite contains six sibling Skills:
+The suite contains nine focused Skills:
 
 ```text
-gpt56-superpowers              cross-phase coordination
-├── gpt56-design-planning      material ambiguity
-├── gpt56-debugging            non-obvious failures
-├── gpt56-verification         claim-matched evidence
-├── gpt56-delegation-review    independent work or judgment
-└── gpt56-git-delivery         repository delivery state
+gpt56-superpowers                       Sol-led cross-phase coordination
+├── gpt56-design-planning               material ambiguity
+├── gpt56-writing-plans                 implementation-ready plans
+├── gpt56-using-git-worktrees           justified repository isolation
+├── gpt56-subagent-driven-development   bounded plan execution
+├── gpt56-debugging                     non-obvious failures
+├── gpt56-verification                  claim-matched evidence
+├── gpt56-delegation-review             independent work or judgment
+└── gpt56-git-delivery                  repository delivery state
 ```
 
-The diagram describes ownership, not a required call chain. Every spoke is a direct entry point and contains all instructions needed for its domain. None links to or requires a sibling.
+The diagram describes ownership, not a required call chain. Every spoke is a direct entry point. Design may hand settled requirements to Writing Plans; a suitable plan may hand independently ownable outcomes to Subagent Development; Worktree Isolation is optional; Verification and Git Delivery close only the claims and repository actions that need them.
 
 ## Routing rules
 
@@ -35,9 +38,17 @@ All Skills allow implicit invocation, but their descriptions deliberately requir
 
 The core resolves goal, success, constraints, evidence, permission, and stop conditions, then sequences dependent work. It does not prescribe an implementation methodology.
 
-### Independent ownership
+### Focused ownership
 
-Each spoke owns one decision domain. Trigger overlap is minimized by separating design uncertainty, causal uncertainty, evidence selection, coordination value, and Git delivery state. Git & Delivery additionally owns the suite-wide local completion commit for repository changes.
+Each spoke owns one decision domain. Trigger overlap is minimized by separating design uncertainty, implementation planning, isolation, bounded execution, causal uncertainty, evidence selection, coordination value, and Git delivery state. Git & Delivery additionally owns the suite-wide local completion commit for repository changes.
+
+### Grounded implementation plans
+
+Writing Plans distinguishes user-provided facts, repository observations, proposed choices, and unresolved facts. Exact paths, symbols, commands, and current behavior must come from evidence rather than model completion.
+
+### Conditional isolation and subagents
+
+Worktree Isolation activates only for an explicit request or a concrete safety benefit. Subagent Development activates only for implementation-ready plans with independently ownable outcomes; Sol retains shared state, integration decisions, and final evidence.
 
 ### Scoped completion commits
 
@@ -65,20 +76,21 @@ Delegation is justified by independent deliverables, elapsed-time savings, or fr
 | Official guidance | Implementation |
 |---|---|
 | State outcomes and stop rules | Six-part core contract and completion conditions |
-| Remove repeated process instructions | Six small self-contained bodies; no mandatory chain |
+| Remove repeated process instructions | Nine focused bodies loaded only at matching boundaries; no mandatory chain |
 | Define autonomy and permissions | Completed local changes include a scoped commit; remote and destructive authority stay separate |
 | Route tools by dependency | Parallel independent work; sequential dependencies; synthesis before claims |
 | Validate what matters | Claim-to-evidence selection and explicit gaps |
 | Keep progress sparse | Outcome-first reporting and phase-level updates |
-| Evaluate representative work | Stable nine-scenario routing manifest |
+| Evaluate representative work | Stable twelve-scenario routing manifest |
 
 ## Prompt budget
 
-Repository validation enforces:
+Repository validation enforces per-Skill budgets based on each contract's complexity:
 
-- core: at most 350 words;
-- each spoke: at most 300 words;
-- complete package: at most 1,650 words;
-- no nested resource documents or required sibling calls.
+- coordinator: at most 600 words;
+- compact decision Skills: 300–450 words;
+- Writing Plans, Worktree Isolation, and Subagent Development: 600–850 words;
+- complete package: at most 4,300 words;
+- only declared SDD resources and no mandatory `$skill` call chain.
 
-Version 0.3 currently uses 349 core words and 1,647 words total. These are guardrails, not targets.
+Version 0.4 currently uses 587 coordinator words and 4,214 words total. These are guardrails, not targets; normal routing loads only the matching bodies and any explicitly needed resource.

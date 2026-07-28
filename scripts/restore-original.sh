@@ -12,6 +12,18 @@ LOCK_DIR="$SKILLS_ROOT/.gpt56-superpowers.lock"
 MANAGED_SKILLS=(
   gpt56-superpowers
   gpt56-design-planning
+  gpt56-writing-plans
+  gpt56-using-git-worktrees
+  gpt56-subagent-driven-development
+  gpt56-debugging
+  gpt56-verification
+  gpt56-delegation-review
+  gpt56-git-delivery
+)
+
+VERSION_03_MANAGED_SKILLS=(
+  gpt56-superpowers
+  gpt56-design-planning
   gpt56-debugging
   gpt56-verification
   gpt56-delegation-review
@@ -174,15 +186,18 @@ restore_v2() {
   while IFS= read -r name; do manifest_created+=("$name"); done < <(sed -n 's/^created=//p' "$BACKUP_DIR/INSTALL_INFO")
   while IFS= read -r name; do manifest_moved+=("$name"); done < <(sed -n 's/^moved=//p' "$BACKUP_DIR/INSTALL_INFO")
 
-  [[ "${manifest_managed[*]}" == "${MANAGED_SKILLS[*]}" ]] || die "managed Skill manifest is invalid"
+  if [[ "${manifest_managed[*]}" != "${MANAGED_SKILLS[*]}" ]] \
+    && [[ "${manifest_managed[*]}" != "${VERSION_03_MANAGED_SKILLS[*]}" ]]; then
+    die "managed Skill manifest is invalid"
+  fi
 
   seen="|"
   for name in "${manifest_preserved[@]}" "${manifest_created[@]}"; do
-    contains_name "$name" "${MANAGED_SKILLS[@]}" || die "unknown managed Skill in manifest: $name"
+    contains_name "$name" "${manifest_managed[@]}" || die "unknown managed Skill in manifest: $name"
     [[ "$seen" != *"|$name|"* ]] || die "duplicate or overlapping managed state: $name"
     seen="$seen$name|"
   done
-  for name in "${MANAGED_SKILLS[@]}"; do
+  for name in "${manifest_managed[@]}"; do
     [[ "$seen" == *"|$name|"* ]] || die "managed Skill lacks preserved or created state: $name"
   done
 
@@ -192,7 +207,7 @@ restore_v2() {
     [[ "$seen_moved" != *"|$name|"* ]] || die "duplicate moved Skill in manifest: $name"
     seen_moved="$seen_moved$name|"
     exists "$BACKUP_DIR/$name" || die "manifest item is absent from backup: $name"
-    if contains_name "$name" "${MANAGED_SKILLS[@]}"; then
+    if contains_name "$name" "${manifest_managed[@]}"; then
       contains_name "$name" "${manifest_created[@]}" || die "moved managed Skill was not recreated: $name"
     fi
   done
