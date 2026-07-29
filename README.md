@@ -16,7 +16,7 @@ This suite keeps the useful invariants—permission boundaries, project groundin
 |---|---|
 | `gpt56-superpowers` | Two or more dependent development phases that need end-to-end coordination |
 | `gpt56-design-planning` | Consequential ambiguity in product, UX, architecture, interfaces, migrations, or scope |
-| `gpt56-writing-plans` | Repository-grounded implementation plans after requirements and design settle |
+| `gpt56-writing-plans` | Approved Spec → ordered implementation Plans → execution handoff |
 | `gpt56-using-git-worktrees` | Explicit or justified worktree isolation that preserves existing user changes |
 | `gpt56-subagent-driven-development` | Implementation-ready plans with independently ownable outcomes under Sol control |
 | `gpt56-debugging` | Ambiguous, intermittent, environment-dependent, or multi-component failures |
@@ -86,7 +86,7 @@ Use $gpt56-debugging to diagnose this intermittent cross-service failure.
 
 Use $gpt56-verification to choose proportionate evidence for this release claim.
 
-Use $gpt56-writing-plans to turn these settled requirements into a repository-grounded implementation plan.
+Use $gpt56-writing-plans to turn this approved Spec into ordered, repository-grounded implementation Plans and define the Sol-controlled execution handoff.
 
 Use $gpt56-superpowers to coordinate this migration end to end.
 ```

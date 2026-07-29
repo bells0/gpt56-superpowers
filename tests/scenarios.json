@@ -91,12 +91,12 @@
   },
   {
     "id": "implementation-plan",
-    "prompt": "The product and architecture decisions are settled. Inspect the repository and write an implementation-ready plan for a multi-module change without inventing paths or interfaces.",
+    "prompt": "An approved Spec settles the product and architecture decisions. Inspect the repository, split independently shippable subsystems into ordered implementation-ready Plans, and define the Sol-controlled execution handoff without inventing paths or interfaces.",
     "expected": {
       "skills": ["gpt56-writing-plans"],
       "approval": false,
       "local_commit": false,
-      "evidence": ["provided, observed, proposed, and unresolved facts separated", "file and interface ownership", "task-level acceptance evidence"]
+      "evidence": ["approved Spec linked as the unique semantic authority", "provided, observed, proposed, and unresolved facts separated", "cross-Plan order and file/interface ownership", "task-level acceptance evidence and execution routing"]
     }
   },
   {
