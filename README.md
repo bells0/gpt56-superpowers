@@ -89,6 +89,8 @@ Use $gpt56-verification to choose proportionate evidence for this release claim.
 Use $gpt56-writing-plans to turn this approved Spec into ordered, repository-grounded implementation Plans and define the Sol-controlled execution handoff.
 
 Use $gpt56-superpowers to coordinate this migration end to end.
+
+Use `docs/implementation-closed-loop.md` as a reusable template for long-running Spec → Plan → Execution workflows (including Plan A/B/C style handoffs and model-split recommendations).
 ```
 
 Ordinary questions still use Codex directly. Completed repository changes implicitly add Git & Delivery for the scoped local completion commit; explicit `$skill-name` invocation remains available.
