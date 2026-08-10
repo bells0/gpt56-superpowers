@@ -156,6 +156,33 @@ for relative in (
 ):
     check((sdd_root / relative).is_file(), f"missing gpt56-subagent-driven-development/{relative}")
 
+writing_plan_path = SKILLS_ROOT / "gpt56-writing-plans" / "SKILL.md"
+writing_plan_text = writing_plan_path.read_text(encoding="utf-8") if writing_plan_path.is_file() else ""
+for heading in ("## Delivery Contract", "## Define the delivery contract"):
+    check(heading in writing_plan_text, f"gpt56-writing-plans is missing stable heading: {heading}")
+delivery_patterns = {
+    "cross-task closure outside numbered tasks": r"cross-task.{0,80}(?:closure|completion).{0,100}outside.{0,40}(?:numbered )?task",
+    "last numbered task is a product result": r"final numbered task.{0,80}(?:acceptance-ready|product result)",
+    "controller owns post-integration delivery": r"controller.{0,120}(?:after|following).{0,80}integration",
+    "child commit precedes parent pointer": r"child repositor(?:y|ies).{0,80}(?:precede|before).{0,80}parent.{0,40}(?:gitlink|pointer)",
+    "acceptance gate and explicit opt-out": r"acceptance gate.{0,180}explicit(?:ly)? opt(?:ed)?-out|explicit opt-out.{0,180}acceptance gate",
+    "completion record and local-only boundary": r"verification.{0,40}commit hashes.{0,80}dirty state.{0,120}local commits only",
+}
+for label, pattern in delivery_patterns.items():
+    check(
+        re.search(pattern, writing_plan_text, flags=re.IGNORECASE | re.DOTALL) is not None,
+        f"gpt56-writing-plans delivery contract is missing {label}",
+    )
+
+implementer_path = sdd_root / "references" / "implementer-prompt.md"
+implementer_prompt = implementer_path.read_text(encoding="utf-8") if implementer_path.is_file() else ""
+check(
+    re.search(r"worker rule.{0,80}not a global delivery\s+opt-out", implementer_prompt, re.DOTALL) is not None
+    and re.search(r"controller.{0,80}gpt56-git-delivery.{0,80}completion commit", implementer_prompt, re.DOTALL)
+    is not None,
+    "implementer prompt must preserve controller-owned completion delivery",
+)
+
 corpus = "\n".join(skill_corpus)
 obsolete_patterns = {
     "forced methodology acronym": r"(?:always|mandatory|must|required).{0,20}\btdd\b|\btdd\b.{0,20}(?:always|mandatory|required)",

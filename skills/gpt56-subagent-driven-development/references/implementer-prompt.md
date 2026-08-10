@@ -25,7 +25,9 @@ Required evidence:
 Do not broaden scope or make a consequential architecture, product, migration,
 or compatibility decision. Ask for the missing decision or return
 NEEDS_CONTEXT. Follow existing project patterns. Do not commit unless commit
-ownership is explicitly assigned.
+ownership is explicitly assigned. This worker rule is not a global delivery
+opt-out: after integration and completion, the controller uses
+gpt56-git-delivery for the scoped completion commit.
 
 Write the detailed report to [REPORT_FILE]:
 - status: DONE | DONE_WITH_CONCERNS | NEEDS_CONTEXT | BLOCKED
