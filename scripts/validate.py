@@ -91,6 +91,13 @@ if isinstance(manifest, dict):
         "plugin interface is missing required fields",
     )
 
+for required_runtime_file in (
+    ".codex/purpose-bound-rigor.md",
+    ".codex/agents/execution-efficiency-auditor.toml",
+    "scripts/manage-global-runtime.py",
+):
+    check((ROOT / required_runtime_file).is_file(), f"missing runtime artifact: {required_runtime_file}")
+
 actual_skill_dirs = {
     path.name for path in SKILLS_ROOT.iterdir() if path.is_dir() and not path.name.startswith(".")
 }

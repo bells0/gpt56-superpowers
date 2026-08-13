@@ -8,6 +8,7 @@ SKILLS_ROOT="${SKILLS_ROOT:-$CODEX_HOME/skills}"
 BACKUP_ROOT="${BACKUP_ROOT:-$CODEX_HOME/skill-backups/gpt56-superpowers}"
 SOURCE_ROOT="$REPO_ROOT/skills"
 LOCK_DIR="$SKILLS_ROOT/.gpt56-superpowers.lock"
+GLOBAL_RUNTIME_HELPER="$REPO_ROOT/scripts/manage-global-runtime.py"
 
 MANAGED_SKILLS=(
   gpt56-superpowers
@@ -216,7 +217,7 @@ restore_v2() {
   for entry in "$BACKUP_DIR"/*; do
     item="$(basename "$entry")"
     case "$item" in
-      INSTALL_INFO|READY|RESTORED|RESTORED.tmp.*) continue ;;
+      INSTALL_INFO|READY|GLOBAL_RUNTIME.json|RESTORED|RESTORED.tmp.*) continue ;;
     esac
     contains_name "$item" "${manifest_moved[@]}" || die "backup item is absent from manifest: $item"
   done
@@ -243,6 +244,10 @@ restore_v2() {
     mv "$BACKUP_DIR/$name" "$SKILLS_ROOT/$name"
     restored_names+=("$name")
   done
+
+  if [[ -f "$BACKUP_DIR/GLOBAL_RUNTIME.json" ]]; then
+    python3 "$GLOBAL_RUNTIME_HELPER" restore --receipt "$BACKUP_DIR/GLOBAL_RUNTIME.json"
+  fi
 
   echo "Restored ${#restored_names[@]} backed-up Skill directories; removed ${#removed_names[@]} transaction-created links."
 }

@@ -1,15 +1,18 @@
 PYTHON ?= python3
 CODEX_HOME ?= $(HOME)/.codex
 
-.PHONY: validate static install-smoke dev-deps local-codex-validate
+.PHONY: validate static install-smoke global-runtime-smoke dev-deps local-codex-validate
 
-validate: static install-smoke
+validate: static global-runtime-smoke install-smoke
 
 static:
 	$(PYTHON) scripts/validate.py
 
 install-smoke:
 	bash tests/test-install.sh
+
+global-runtime-smoke:
+	$(PYTHON) tests/test-global-runtime.py
 
 dev-deps:
 	$(PYTHON) -m pip install -r requirements-dev.txt

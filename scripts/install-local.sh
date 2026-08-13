@@ -8,6 +8,9 @@ SKILLS_ROOT="${SKILLS_ROOT:-$CODEX_HOME/skills}"
 BACKUP_ROOT="${BACKUP_ROOT:-$CODEX_HOME/skill-backups/gpt56-superpowers}"
 SOURCE_ROOT="$REPO_ROOT/skills"
 LOCK_DIR="$SKILLS_ROOT/.gpt56-superpowers.lock"
+GLOBAL_AGENT_SOURCE="$REPO_ROOT/.codex/agents/execution-efficiency-auditor.toml"
+GLOBAL_GUIDANCE_SOURCE="$REPO_ROOT/.codex/purpose-bound-rigor.md"
+GLOBAL_RUNTIME_HELPER="$REPO_ROOT/scripts/manage-global-runtime.py"
 
 MANAGED_SKILLS=(
   gpt56-superpowers
@@ -55,6 +58,9 @@ die() {
 for name in "${MANAGED_SKILLS[@]}"; do
   [[ -f "$SOURCE_ROOT/$name/SKILL.md" ]] || die "source Skill is missing: $SOURCE_ROOT/$name"
 done
+[[ -f "$GLOBAL_AGENT_SOURCE" ]] || die "source custom agent is missing: $GLOBAL_AGENT_SOURCE"
+[[ -f "$GLOBAL_GUIDANCE_SOURCE" ]] || die "source global guidance is missing: $GLOBAL_GUIDANCE_SOURCE"
+[[ -f "$GLOBAL_RUNTIME_HELPER" ]] || die "global runtime helper is missing: $GLOBAL_RUNTIME_HELPER"
 
 python3 - "$SOURCE_ROOT" "$SKILLS_ROOT" "$BACKUP_ROOT" "${MANAGED_SKILLS[@]}" -- "${LEGACY_SKILLS[@]}" <<'PY'
 import os
@@ -137,6 +143,11 @@ rollback() {
   set +e
   rollback_error=0
 
+  if [[ -n "$BACKUP_DIR" && -f "$BACKUP_DIR/GLOBAL_RUNTIME.json" ]]; then
+    python3 "$GLOBAL_RUNTIME_HELPER" restore \
+      --receipt "$BACKUP_DIR/GLOBAL_RUNTIME.json" || rollback_error=1
+  fi
+
   for ((index=${#created_names[@]} - 1; index >= 0; index--)); do
     name="${created_names[$index]}"
     if exact_link "$name"; then
@@ -159,7 +170,7 @@ rollback() {
 
   if [[ -n "$BACKUP_DIR" && "$rollback_error" -eq 0 ]]; then
     rm -f "$BACKUP_DIR/INSTALL_INFO" "$BACKUP_DIR/INSTALL_INFO.tmp" \
-      "$BACKUP_DIR/READY" "$BACKUP_DIR/READY.tmp"
+      "$BACKUP_DIR/READY" "$BACKUP_DIR/READY.tmp" "$BACKUP_DIR/GLOBAL_RUNTIME.json"
     rmdir "$BACKUP_DIR" 2>/dev/null || true
   fi
 
@@ -193,6 +204,13 @@ for name in "${MANAGED_SKILLS[@]}"; do
     break
   fi
 done
+
+if ! python3 "$GLOBAL_RUNTIME_HELPER" status \
+  --codex-home "$CODEX_HOME" \
+  --source-agent "$GLOBAL_AGENT_SOURCE" \
+  --fragment "$GLOBAL_GUIDANCE_SOURCE"; then
+  all_installed=0
+fi
 
 legacy_found=0
 for name in "${LEGACY_SKILLS[@]}"; do
@@ -246,6 +264,12 @@ for name in "${MANAGED_SKILLS[@]}"; do
   created_names+=("$name")
 done
 
+python3 "$GLOBAL_RUNTIME_HELPER" install \
+  --codex-home "$CODEX_HOME" \
+  --source-agent "$GLOBAL_AGENT_SOURCE" \
+  --fragment "$GLOBAL_GUIDANCE_SOURCE" \
+  --receipt "$BACKUP_DIR/GLOBAL_RUNTIME.json"
+
 for name in "${MANAGED_SKILLS[@]}"; do
   exact_link "$name" || die "post-install link verification failed: $SKILLS_ROOT/$name"
   [[ -f "$SKILLS_ROOT/$name/SKILL.md" ]] || die "post-install Skill verification failed: $name"
@@ -261,6 +285,7 @@ timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
   for name in "${preserved_names[@]}"; do printf 'preserved=%s\n' "$name"; done
   for name in "${created_names[@]}"; do printf 'created=%s\n' "$name"; done
   for name in "${moved_names[@]}"; do printf 'moved=%s\n' "$name"; done
+  printf 'global_runtime=managed\n'
   printf 'state=READY\n'
 } > "$BACKUP_DIR/INSTALL_INFO.tmp"
 mv "$BACKUP_DIR/INSTALL_INFO.tmp" "$BACKUP_DIR/INSTALL_INFO"
@@ -272,5 +297,6 @@ release_lock
 trap - EXIT
 
 echo "Installed ten GPT-5.6 Skills from: $SOURCE_ROOT"
+echo "Installed global purpose-bound guidance and execution-efficiency-auditor."
 echo "Backup: $BACKUP_DIR"
 echo "Restart Codex or start a new task to refresh Skill discovery."

@@ -1,3 +1,4 @@
+# managed-by: gpt56-superpowers
 name = "execution-efficiency-auditor"
 description = "Use only when the user asks to audit delivery-process bloat or repeated execution drift needs a focused, read-only correction. Do not invoke as a routine reviewer or universal implementation gate."
 sandbox_mode = "read-only"

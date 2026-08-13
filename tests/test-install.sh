@@ -4,6 +4,7 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TMP_BASE="$(mktemp -d)"
 TMP_ROOT="$TMP_BASE/path with spaces"
+export CODEX_HOME="$TMP_ROOT/codex home"
 
 MANAGED_SKILLS=(
   gpt56-superpowers
@@ -91,12 +92,18 @@ run_restore() {
 BASE_SKILLS="$TMP_ROOT/base skills"
 BASE_BACKUPS="$TMP_ROOT/base backups"
 make_legacy "$BASE_SKILLS"
+mkdir -p "$CODEX_HOME"
+printf '%s\n' '# Personal global guidance' > "$CODEX_HOME/AGENTS.md"
 rm -rf "$BASE_SKILLS/using-superpowers"
 BROKEN_DEST="$TMP_ROOT/missing original target"
 ln -s "$BROKEN_DEST" "$BASE_SKILLS/using-superpowers"
 
 run_install "$BASE_SKILLS" "$BASE_BACKUPS"
 assert_managed_links "$BASE_SKILLS"
+grep -Fq '<!-- gpt56-superpowers:purpose-bound-rigor:start -->' "$CODEX_HOME/AGENTS.md"
+grep -Fqx '# Personal global guidance' "$CODEX_HOME/AGENTS.md"
+cmp "$CODEX_HOME/agents/execution-efficiency-auditor.toml" \
+  "$REPO_ROOT/.codex/agents/execution-efficiency-auditor.toml"
 for name in "${LEGACY_SKILLS[@]}"; do
   [[ ! -e "$BASE_SKILLS/$name" && ! -L "$BASE_SKILLS/$name" ]]
 done
@@ -122,6 +129,8 @@ rm -rf "$BASE_SKILLS/brainstorming"
 
 run_restore "$BASE_SKILLS" "$BASE_BACKUPS" "$BASE_BACKUP"
 assert_no_managed "$BASE_SKILLS"
+grep -Fqx '# Personal global guidance' "$CODEX_HOME/AGENTS.md"
+[[ ! -e "$CODEX_HOME/agents/execution-efficiency-auditor.toml" ]]
 for name in "${LEGACY_SKILLS[@]}"; do
   [[ -e "$BASE_SKILLS/$name" || -L "$BASE_SKILLS/$name" ]]
 done
