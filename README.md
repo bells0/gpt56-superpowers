@@ -2,7 +2,7 @@
 
 A lean, effect-first replacement for the ceremony-heavy Superpowers workflow, designed for GPT-5.6 Sol and Codex.
 
-Version 0.5 uses a dependency-aware hub-and-spoke structure: one Sol-first coordinator and nine focused Skills. A clear task can use one focused Skill directly—or no Skill at all—while planning, isolation, bounded subagent execution, and extra workflow defenses remain optional unless they materially improve the outcome.
+Version 0.6 uses a dependency-aware hub-and-spoke structure: one Sol-first coordinator and nine focused Skills. A clear task can use one focused Skill directly—or no Skill at all—while planning, isolation, bounded subagent execution, and extra workflow defenses remain optional unless they materially improve the outcome. The full repository installer also adds a concise global purpose-bound-rigor rule and an on-demand read-only audit agent.
 
 ## Why this exists
 
@@ -41,9 +41,28 @@ A focused route loads one body of 233–842 words. The longest Skills carry conc
 
 ## Install
 
-### New installation
+### Full installation
 
-Install all ten Skills from GitHub:
+Clone the repository and run the installer once:
+
+```bash
+git clone git@github.com:bells0/gpt56-superpowers.git
+cd gpt56-superpowers
+./scripts/install-local.sh
+```
+
+The full installer:
+
+- installs all ten Skills;
+- adds a managed purpose-bound-rigor block to the effective global `~/.codex/AGENTS.md` or `AGENTS.override.md` without replacing existing guidance;
+- installs `execution-efficiency-auditor` under `~/.codex/agents/`;
+- removes only its managed guidance and Agent when `./scripts/restore-original.sh` restores the transaction.
+
+Start a new Codex task after installation. Global `AGENTS.md` guidance is then loaded for every repository; the full Purpose-Bound Rigor Skill expands only when relevant, and the audit Agent remains available on demand.
+
+### Skills-only installation
+
+To install only the ten Skills without global guidance or the custom Agent:
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
@@ -61,8 +80,6 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
     skills/gpt56-git-delivery
 ```
 
-Start a new Codex task after installation so Skill discovery refreshes.
-
 ### Replace an existing `obra/superpowers` installation
 
 ```bash
@@ -71,7 +88,7 @@ cd gpt56-superpowers
 ./scripts/install-local.sh
 ```
 
-The migration is transactional: it validates the package, locks the Skills directory, backs up legacy or conflicting entries outside discovery, installs nine exact symlinks, and records which links were preserved or created. Restore the newest READY transaction with:
+The same full installer replaces an existing `obra/superpowers` installation. It validates the package, preserves legacy or conflicting Skill entries in a restorable transaction, installs ten exact Skill links, and records the managed global runtime state. Restore the newest READY transaction with:
 
 ```bash
 ./scripts/restore-original.sh
@@ -99,15 +116,13 @@ Use `docs/implementation-closed-loop.md` as a reusable template for long-running
 
 Ordinary questions still use Codex directly. Completed repository changes implicitly add Git & Delivery for the scoped local completion commit; explicit `$skill-name` invocation remains available.
 
-### Optional process auditor
+### Process auditor
 
-The repository also includes a project-scoped, read-only custom agent at `.codex/agents/execution-efficiency-auditor.toml`. Use it only when a user asks to audit process bloat or repeated execution drift; it is not a routine reviewer or implementation gate.
-
-To make it personal across repositories, copy that TOML file to `~/.codex/agents/`. To use it in one project, copy it to that project's `.codex/agents/` directory. Start a new Codex task after copying so agent discovery refreshes.
+The full installer makes the read-only `execution-efficiency-auditor` Agent available across repositories. Invoke it only when a user asks to audit process bloat or repeated execution drift; it is not a routine reviewer or implementation gate.
 
 ## Validation
 
-The repository uses deterministic package checks, a twelve-case routing specification, and isolated install/restore transaction smoke tests. The scenarios constrain intended behavior; they are not a live model benchmark:
+The repository uses deterministic package checks, a thirteen-case routing specification, global-runtime tests, and install/restore transaction smoke tests. The scenarios constrain intended behavior; they are not a live model benchmark:
 
 ```bash
 make validate

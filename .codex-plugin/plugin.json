@@ -1,7 +1,7 @@
 {
   "name": "gpt56-superpowers",
-  "version": "0.5.0",
-  "description": "A dependency-aware development Skill suite for GPT-5.6 Sol.",
+  "version": "0.6.0",
+  "description": "A dependency-aware development suite with ten Skills, global purpose-bound rigor, and an on-demand audit agent.",
   "author": {
     "name": "Wonderbell",
     "url": "https://github.com/bells0"

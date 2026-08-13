@@ -23,7 +23,7 @@ gpt56-superpowers                       Sol-led cross-phase coordination
 
 The diagram describes ownership, not a required call chain. Every spoke is a direct entry point. Design may hand settled requirements to Writing Plans; a suitable plan may hand independently ownable outcomes to Subagent Development; Worktree Isolation is optional; Verification and Git Delivery close only the claims and repository actions that need them.
 
-The optional `.codex/agents/execution-efficiency-auditor.toml` is deliberately outside the normal chain. It provides a read-only, on-demand audit after a user requests it or repeated execution drift is already evident. It never acts as an automatic reviewer or release gate.
+The full repository installer adds the concise `.codex/purpose-bound-rigor.md` fragment to the user's effective global `AGENTS.md`, so every development run receives the invariant before work starts. It also installs `.codex/agents/execution-efficiency-auditor.toml` as a user-level custom Agent. The Agent remains deliberately outside the normal chain: it provides a read-only audit only after a user requests it or repeated execution drift is already evident, never as an automatic reviewer or release gate.
 
 ## Routing rules
 
