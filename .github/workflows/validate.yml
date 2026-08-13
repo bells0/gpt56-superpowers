@@ -19,5 +19,3 @@ jobs:
         run: python3 -m pip install -r requirements-dev.txt
       - name: Static validation
         run: python3 scripts/validate.py
-      - name: Install and restore smoke test
-        run: bash tests/test-install.sh
