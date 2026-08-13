@@ -23,6 +23,8 @@ gpt56-superpowers                       Sol-led cross-phase coordination
 
 The diagram describes ownership, not a required call chain. Every spoke is a direct entry point. Design may hand settled requirements to Writing Plans; a suitable plan may hand independently ownable outcomes to Subagent Development; Worktree Isolation is optional; Verification and Git Delivery close only the claims and repository actions that need them.
 
+The optional `.codex/agents/execution-efficiency-auditor.toml` is deliberately outside the normal chain. It provides a read-only, on-demand audit after a user requests it or repeated execution drift is already evident. It never acts as an automatic reviewer or release gate.
+
 ## Routing rules
 
 - Read-only and clear non-repository work: no suite Skill.

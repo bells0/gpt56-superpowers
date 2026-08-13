@@ -99,6 +99,12 @@ Use `docs/implementation-closed-loop.md` as a reusable template for long-running
 
 Ordinary questions still use Codex directly. Completed repository changes implicitly add Git & Delivery for the scoped local completion commit; explicit `$skill-name` invocation remains available.
 
+### Optional process auditor
+
+The repository also includes a project-scoped, read-only custom agent at `.codex/agents/execution-efficiency-auditor.toml`. Use it only when a user asks to audit process bloat or repeated execution drift; it is not a routine reviewer or implementation gate.
+
+To make it personal across repositories, copy that TOML file to `~/.codex/agents/`. To use it in one project, copy it to that project's `.codex/agents/` directory. Start a new Codex task after copying so agent discovery refreshes.
+
 ## Validation
 
 The repository uses deterministic package checks, a twelve-case routing specification, and isolated install/restore transaction smoke tests. The scenarios constrain intended behavior; they are not a live model benchmark:
