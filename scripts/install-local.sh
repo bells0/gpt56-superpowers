@@ -17,6 +17,7 @@ MANAGED_SKILLS=(
   gpt56-subagent-driven-development
   gpt56-debugging
   gpt56-verification
+  gpt56-purpose-bound-rigor
   gpt56-delegation-review
   gpt56-git-delivery
 )
@@ -205,7 +206,7 @@ if [[ "$all_installed" -eq 1 && "$legacy_found" -eq 0 ]]; then
   committed=1
   release_lock
   trap - EXIT
-  echo "Already installed: nine GPT-5.6 Skills"
+  echo "Already installed: ten GPT-5.6 Skills"
   exit 0
 fi
 
@@ -270,6 +271,6 @@ committed=1
 release_lock
 trap - EXIT
 
-echo "Installed nine GPT-5.6 Skills from: $SOURCE_ROOT"
+echo "Installed ten GPT-5.6 Skills from: $SOURCE_ROOT"
 echo "Backup: $BACKUP_DIR"
 echo "Restart Codex or start a new task to refresh Skill discovery."

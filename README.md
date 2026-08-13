@@ -2,7 +2,7 @@
 
 A lean, effect-first replacement for the ceremony-heavy Superpowers workflow, designed for GPT-5.6 Sol and Codex.
 
-Version 0.4 uses a dependency-aware hub-and-spoke structure: one Sol-first coordinator and eight focused Skills. A clear task can use one focused Skill directly—or no Skill at all—while planning, isolation, and bounded subagent execution form optional handoffs for work that benefits from them.
+Version 0.5 uses a dependency-aware hub-and-spoke structure: one Sol-first coordinator and nine focused Skills. A clear task can use one focused Skill directly—or no Skill at all—while planning, isolation, bounded subagent execution, and extra workflow defenses remain optional unless they materially improve the outcome.
 
 ## Why this exists
 
@@ -21,28 +21,29 @@ This suite keeps the useful invariants—permission boundaries, project groundin
 | `gpt56-subagent-driven-development` | Implementation-ready plans with independently ownable outcomes under Sol control |
 | `gpt56-debugging` | Ambiguous, intermittent, environment-dependent, or multi-component failures |
 | `gpt56-verification` | Choosing proportionate evidence for material completion claims |
+| `gpt56-purpose-bound-rigor` | Requiring a concrete necessity case before adding hashes, gates, isolation, mocks, freezes, or repeated reviews |
 | `gpt56-delegation-review` | Genuinely independent parallel work or a focused independent review |
 | `gpt56-git-delivery` | Default scoped completion commits plus authorized branches, worktrees, pushes, pull requests, merges, or cleanup |
 
-All nine are direct entry points. The three execution-structure Skills may hand work to another focused Skill only at a real dependency boundary; no fixed chain is required. Narrow trigger descriptions allow implicit routing without an always-on router, and explicit `$skill-name` invocation remains available.
+All ten are direct entry points. The execution-structure Skills may hand work to another focused Skill only at a real dependency boundary; no fixed chain is required. Narrow trigger descriptions allow implicit routing without an always-on router, and explicit `$skill-name` invocation remains available.
 
 ## Prompt footprint
 
 The comparison baseline is a local 14-Skill installation from `obra/superpowers` at commit `b55764852ac78870e65c6565fb585b6cd8b3c5c9`.
 
-| Measure | Baseline | Version 0.4 | Reduction |
+| Measure | Baseline | Version 0.5 | Reduction |
 |---|---:|---:|---:|
-| Workflow Skills | 14 | 9 | 35.7% |
-| Total `SKILL.md` words | 15,737 | 4,214 | 73.2% |
+| Workflow Skills | 14 | 10 | 28.6% |
+| Total `SKILL.md` words | 15,737 | 4,678 | 70.3% |
 | Always-trigger router | Yes | No | Removed |
 
-A focused route loads one body of 233–837 words. The longest Skills carry concrete planning, worktree, or subagent contracts and load only when those structures materially help. The full 4,214-word package is never a mandatory prompt chain. Word count is a structural proxy, not a model-quality or tokenization guarantee.
+A focused route loads one body of 233–842 words. The longest Skills carry concrete planning, worktree, or subagent contracts and load only when those structures materially help. The full 4,678-word package is never a mandatory prompt chain. Word count is a structural proxy, not a model-quality or tokenization guarantee.
 
 ## Install
 
 ### New installation
 
-Install all nine Skills from GitHub:
+Install all ten Skills from GitHub:
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
@@ -55,6 +56,7 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
     skills/gpt56-subagent-driven-development \
     skills/gpt56-debugging \
     skills/gpt56-verification \
+    skills/gpt56-purpose-bound-rigor \
     skills/gpt56-delegation-review \
     skills/gpt56-git-delivery
 ```
@@ -86,6 +88,8 @@ Use $gpt56-debugging to diagnose this intermittent cross-service failure.
 
 Use $gpt56-verification to choose proportionate evidence for this release claim.
 
+Use $gpt56-purpose-bound-rigor to decide whether these proposed gates and isolation steps are actually necessary.
+
 Use $gpt56-writing-plans to turn this approved Spec into ordered, repository-grounded implementation Plans and define the Sol-controlled execution handoff.
 
 Use $gpt56-superpowers to coordinate this migration end to end.
@@ -114,7 +118,7 @@ See [architecture](docs/architecture.md), [migration mapping](docs/migration-fro
 
 ## 中文说明
 
-这是为 GPT-5.6 Sol 重写的轻量 Superpowers：`1 个 Sol 主控核心 + 8 个聚焦 Skill`。普通任务不加载，单领域任务只加载一个；实施计划、工作树隔离和子代理执行只在确实能改善结果时形成可选衔接。
+这是为 GPT-5.6 Sol 重写的轻量 Superpowers：`1 个 Sol 主控核心 + 9 个聚焦 Skill`。普通任务不加载，单领域任务只加载一个；实施计划、工作树隔离、子代理执行和额外防御措施只在确实能改善结果时形成可选衔接。
 
 本版本彻底移除了开发方法论强制，不要求先写失败测试、不要求 RED/GREEN/REFACTOR、不要求重复跑全量测试。保留的是更薄的“声明—证据”验证：文档看 diff/schema/link，Bug 复查原始症状，行为跑最相关检查，视觉实际渲染，发布遵守项目门禁；无法验证就明确缺口。
 

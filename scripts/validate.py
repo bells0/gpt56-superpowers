@@ -24,6 +24,7 @@ SKILL_NAMES = (
     "gpt56-subagent-driven-development",
     "gpt56-debugging",
     "gpt56-verification",
+    "gpt56-purpose-bound-rigor",
     "gpt56-delegation-review",
     "gpt56-git-delivery",
 )
@@ -35,10 +36,11 @@ SKILL_WORD_LIMITS = {
     "gpt56-subagent-driven-development": 750,
     "gpt56-debugging": 300,
     "gpt56-verification": 300,
+    "gpt56-purpose-bound-rigor": 500,
     "gpt56-delegation-review": 450,
     "gpt56-git-delivery": 300,
 }
-PACKAGE_WORD_LIMIT = 4300
+PACKAGE_WORD_LIMIT = 4800
 ALLOWED_RESOURCE_DIRS = {
     "gpt56-subagent-driven-development": {"references", "scripts"},
 }
@@ -92,7 +94,7 @@ if isinstance(manifest, dict):
 actual_skill_dirs = {
     path.name for path in SKILLS_ROOT.iterdir() if path.is_dir() and not path.name.startswith(".")
 }
-check(actual_skill_dirs == set(SKILL_NAMES), "skills/ must contain exactly the nine supported Skills")
+check(actual_skill_dirs == set(SKILL_NAMES), "skills/ must contain exactly the ten supported Skills")
 
 word_counts: dict[str, int] = {}
 skill_corpus: list[str] = []
@@ -214,6 +216,7 @@ expected_ids = {
     "material-design",
     "ambiguous-failure",
     "claim-evidence",
+    "purpose-bound-rigor",
     "parallel-review",
     "git-delivery",
     "multi-phase",
@@ -224,7 +227,7 @@ expected_ids = {
 }
 if isinstance(scenarios, list):
     ids = {item.get("id") for item in scenarios if isinstance(item, dict)}
-    check(ids == expected_ids, "scenario manifest must contain the twelve canonical cases")
+    check(ids == expected_ids, "scenario manifest must contain the thirteen canonical cases")
     routed = set()
     for item in scenarios:
         if not isinstance(item, dict):
@@ -257,10 +260,10 @@ if failures:
         print(f"FAIL: {failure}", file=sys.stderr)
     raise SystemExit(1)
 
-print("PASS: plugin and nine-Skill structure")
+print("PASS: plugin and ten-Skill structure")
 print(
     "PASS: skill budgets "
     + ", ".join(f"{name}={word_counts[name]}/{SKILL_WORD_LIMITS[name]}" for name in SKILL_NAMES)
 )
 print(f"PASS: package budget {package_words}/{PACKAGE_WORD_LIMIT} words")
-print("PASS: dependency-aware routing, lean workflow rules, links, resources, and 12 scenarios")
+print("PASS: dependency-aware routing, lean workflow rules, links, resources, and 13 scenarios")

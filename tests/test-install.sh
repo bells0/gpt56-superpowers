@@ -13,6 +13,7 @@ MANAGED_SKILLS=(
   gpt56-subagent-driven-development
   gpt56-debugging
   gpt56-verification
+  gpt56-purpose-bound-rigor
   gpt56-delegation-review
   gpt56-git-delivery
 )
@@ -101,7 +102,7 @@ for name in "${LEGACY_SKILLS[@]}"; do
 done
 BASE_BACKUP="$(find "$BASE_BACKUPS" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
 grep -Fqx 'format_version=2' "$BASE_BACKUP/INSTALL_INFO"
-[[ "$(grep -c '^created=' "$BASE_BACKUP/INSTALL_INFO")" -eq 9 ]]
+[[ "$(grep -c '^created=' "$BASE_BACKUP/INSTALL_INFO")" -eq 10 ]]
 [[ "$(grep -c '^moved=' "$BASE_BACKUP/INSTALL_INFO")" -eq 14 ]]
 
 backup_count_before="$(find "$BASE_BACKUPS" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')"
@@ -343,4 +344,4 @@ if env CODEX_HOME="$NESTED_CODEX" bash "$NESTED_REPO/scripts/install-local.sh" >
 fi
 [[ -d "$NESTED_REPO" && ! -L "$NESTED_REPO" ]]
 
-echo "PASS: nine-Skill transactions, v0.3/v1 compatibility, rollback, collisions, locks, and path safety"
+echo "PASS: ten-Skill transactions, v0.3/v1 compatibility, rollback, collisions, locks, and path safety"

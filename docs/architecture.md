@@ -6,7 +6,7 @@ Give GPT-5.6 a small set of precise development lenses without re-teaching relia
 
 ## Hub and spokes
 
-The suite contains nine focused Skills:
+The suite contains ten focused Skills:
 
 ```text
 gpt56-superpowers                       Sol-led cross-phase coordination
@@ -16,6 +16,7 @@ gpt56-superpowers                       Sol-led cross-phase coordination
 ├── gpt56-subagent-driven-development   bounded plan execution
 ├── gpt56-debugging                     non-obvious failures
 ├── gpt56-verification                  claim-matched evidence
+├── gpt56-purpose-bound-rigor           necessity for workflow defenses
 ├── gpt56-delegation-review             independent work or judgment
 └── gpt56-git-delivery                  repository delivery state
 ```
@@ -28,6 +29,7 @@ The diagram describes ownership, not a required call chain. Every spoke is a dir
 - Completed repository-changing work: Git & Delivery supplies the default scoped local commit.
 - One consequential decision domain: one narrow Skill.
 - Two or more dependent phases whose ordering and synthesis affect success: core plus only the one or two narrow Skills that change a decision.
+- Proposed hashes, gates, isolation, mocks, freezes, repeated reviews, or broad reruns: Purpose-Bound Rigor requires a concrete protected outcome, observed risk, existing gap, and minimal intervention.
 - External or destructive action: a permission boundary independent of task complexity.
 
 All Skills allow implicit invocation, but their descriptions deliberately require a material match. This replaces both the old always-trigger router and version 0.1's single explicit bottleneck.
@@ -67,6 +69,10 @@ Verification starts with the statement being made:
 
 The scope broadens only when the claim, observed failures, uncertain dependency boundary, release risk, or project rules require it.
 
+### Purpose-bound rigor
+
+The direct path is the default for local, reversible work. A non-default defense must name the exact outcome it protects, evidence that the risk exists now, why existing controls are insufficient, and why the proposal is the cheapest effective response. Missing answers reject the defense rather than creating another approval ritual.
+
 ### Bounded coordination
 
 Delegation is justified by independent deliverables, elapsed-time savings, or fresh judgment that can change a material decision. Review is focused on named risks rather than added as a universal stage.
@@ -90,7 +96,8 @@ Repository validation enforces per-Skill budgets based on each contract's comple
 - coordinator: at most 600 words;
 - compact decision Skills: 300–450 words;
 - Writing Plans, Worktree Isolation, and Subagent Development: 600–850 words;
-- complete package: at most 4,300 words;
+- Purpose-Bound Rigor: at most 500 words;
+- complete package: at most 4,800 words;
 - only declared SDD resources and no mandatory `$skill` call chain.
 
-Version 0.4 currently uses 587 coordinator words and 4,214 words total. These are guardrails, not targets; normal routing loads only the matching bodies and any explicitly needed resource.
+Version 0.5 currently uses 587 coordinator words and 4,678 words total. These are guardrails, not targets; normal routing loads only the matching bodies and any explicitly needed resource.

@@ -17,6 +17,7 @@ MANAGED_SKILLS=(
   gpt56-subagent-driven-development
   gpt56-debugging
   gpt56-verification
+  gpt56-purpose-bound-rigor
   gpt56-delegation-review
   gpt56-git-delivery
 )

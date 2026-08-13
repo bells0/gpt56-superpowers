@@ -50,6 +50,16 @@
     }
   },
   {
+    "id": "purpose-bound-rigor",
+    "prompt": "Before implementing this local UI change, add hashes, an isolated fixture, a mock acceptance gate, and a reviewer after every commit just to be safe.",
+    "expected": {
+      "skills": ["gpt56-purpose-bound-rigor"],
+      "approval": false,
+      "local_commit": false,
+      "evidence": ["necessity case for each proposed defense", "rejection of controls without observed risk or an existing gap", "direct local implementation path"]
+    }
+  },
+  {
     "id": "parallel-review",
     "prompt": "Investigate three independent modules in parallel and obtain a focused independent review of the authentication boundary.",
     "expected": {
