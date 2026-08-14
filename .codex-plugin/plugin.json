@@ -1,6 +1,6 @@
 {
   "name": "gpt56-superpowers",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A dependency-aware development suite with ten Skills, global purpose-bound rigor, and an on-demand audit agent.",
   "author": {
     "name": "Wonderbell",
@@ -20,7 +20,7 @@
   "interface": {
     "displayName": "GPT-5.6 Superpowers",
     "shortDescription": "Ten focused development Skills for GPT-5.6 Sol",
-    "longDescription": "A Sol-first coordinator plus focused Skills for design, implementation planning, worktree isolation, bounded subagent execution, debugging, verification, purpose-bound rigor, delegation and review, and scoped Git delivery.",
+    "longDescription": "A Sol-first coordinator plus focused Skills for design, implementation planning, worktree isolation, bounded subagent execution, debugging, verification, purpose-bound rigor, delegation and review, and atomic Git delivery.",
     "developerName": "Wonderbell",
     "category": "Developer Tools",
     "capabilities": [

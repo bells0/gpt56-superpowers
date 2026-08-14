@@ -176,6 +176,9 @@ delivery_patterns = {
     "child commit precedes parent pointer": r"child repositor(?:y|ies).{0,80}(?:precede|before).{0,80}parent.{0,40}(?:gitlink|pointer)",
     "acceptance gate and explicit opt-out": r"acceptance gate.{0,180}explicit(?:ly)? opt(?:ed)?-out|explicit opt-out.{0,180}acceptance gate",
     "completion record and local-only boundary": r"verification.{0,40}commit hashes.{0,80}dirty state.{0,120}local commits only",
+    "approved Plan baseline": r"Plan baseline.{0,100}approved durable Plan.{0,80}before implementation",
+    "atomic commit map": r"Commit map.{0,100}Task N.{0,80}evidence.{0,80}message",
+    "commit before dependent work": r"verify and commit.{0,100}before.{0,60}dependent work",
 }
 for label, pattern in delivery_patterns.items():
     check(

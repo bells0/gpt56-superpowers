@@ -39,7 +39,7 @@ Use [references/implementer-prompt.md](references/implementer-prompt.md) when as
 - Use fresh or task-local context. Do not paste the whole session or accumulated task transcripts.
 - Tell every writing agent that it is not alone in the codebase, must not revert others, and must stay within assigned ownership.
 - Prefer Terra for bounded, well-specified routine implementation when routing is available. Keep ambiguous, multi-component, high-impact, or integration-heavy work on Sol. Respect user-pinned models and available tool schemas.
-- Do not require a worker commit unless commit ownership is explicitly assigned. The controller or `gpt56-git-delivery` normally owns the coherent completion commit.
+- Do not require a worker commit unless commit ownership is explicitly assigned. The controller or `gpt56-git-delivery` normally owns the atomic commit after each accepted task boundary.
 
 Require one status:
 
@@ -52,7 +52,7 @@ If a worker is blocked, change the missing context, task boundary, model capabil
 
 ## Integrate and review proportionately
 
-After every writing task, inspect the actual diff and reported evidence before accepting the result. Resolve shared-interface mismatches before starting dependent tasks.
+After every writing task, inspect the diff and evidence before acceptance. When the approved Plan defines a commit boundary, commit it before dependent tasks. Resolve shared-interface mismatches first.
 
 Do not force an independent reviewer after every task. Use `gpt56-delegation-review` when the user requests review or a specific unresolved high-impact judgment can realistically change the result. For a review, generate a diff package and use [references/reviewer-prompt.md](references/reviewer-prompt.md).
 
@@ -70,6 +70,6 @@ For review findings, resume the original implementer when its context remains us
 2. Run focused checks during tasks and the integration-level checks required by the final claim.
 3. Use `gpt56-verification` when the evidence strategy remains materially uncertain.
 4. Resolve or explicitly report every concern, blocked item, and deferred finding.
-5. Use `gpt56-git-delivery` for the scoped completion commit and any authorized delivery or cleanup.
+5. Use `gpt56-git-delivery` for each approved atomic completion commit and any authorized delivery or cleanup.
 
 Report the integrated result, decisive evidence, material findings changed by review, and remaining gaps. Do not return a transcript of agent activity.

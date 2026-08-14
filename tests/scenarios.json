@@ -121,12 +121,12 @@
   },
   {
     "id": "subagent-plan-execution",
-    "prompt": "Execute this implementation-ready plan whose three outcomes have disjoint file ownership. Use bounded subagents, integrate their changes, verify the result, and commit the completed outcome.",
+    "prompt": "Execute this implementation-ready plan whose three outcomes have disjoint file ownership. Use bounded subagents, integrate their changes, verify each accepted outcome, and commit it before dependent work.",
     "expected": {
       "skills": ["gpt56-subagent-driven-development", "gpt56-git-delivery"],
       "approval": false,
       "local_commit": true,
-      "evidence": ["bounded ownership", "durable task state", "integrated diff and evidence", "scoped local commit"]
+      "evidence": ["bounded ownership", "durable task state", "integrated diff and evidence", "atomic commits at accepted task boundaries"]
     }
   }
 ]

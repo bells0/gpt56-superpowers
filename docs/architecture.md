@@ -28,7 +28,7 @@ The full repository installer adds the concise `.codex/purpose-bound-rigor.md` f
 ## Routing rules
 
 - Read-only and clear non-repository work: no suite Skill.
-- Completed repository-changing work: Git & Delivery supplies the default scoped local commit.
+- Completed repository-changing outcomes: Git & Delivery supplies atomic local commits at verified boundaries.
 - One consequential decision domain: one narrow Skill.
 - Two or more dependent phases whose ordering and synthesis affect success: core plus only the one or two narrow Skills that change a decision.
 - Proposed hashes, gates, isolation, mocks, freezes, repeated reviews, or broad reruns: Purpose-Bound Rigor requires a concrete protected outcome, observed risk, existing gap, and minimal intervention.
@@ -44,7 +44,7 @@ The core resolves goal, success, constraints, evidence, permission, and stop con
 
 ### Focused ownership
 
-Each spoke owns one decision domain. Trigger overlap is minimized by separating design uncertainty, implementation planning, isolation, bounded execution, causal uncertainty, evidence selection, coordination value, and Git delivery state. Git & Delivery additionally owns the suite-wide local completion commit for repository changes.
+Each spoke owns one decision domain. Trigger overlap is minimized by separating design uncertainty, implementation planning, isolation, bounded execution, causal uncertainty, evidence selection, coordination value, and Git delivery state. Git & Delivery additionally owns suite-wide atomic commit boundaries for repository changes.
 
 ### Grounded implementation plans
 
@@ -54,9 +54,9 @@ Writing Plans distinguishes user-provided facts, repository observations, propos
 
 Worktree Isolation activates only for an explicit request or a concrete safety benefit. Subagent Development activates only for implementation-ready plans with independently ownable outcomes; Sol retains shared state, integration decisions, and final evidence.
 
-### Scoped completion commits
+### Atomic completion commits
 
-One completed user-visible outcome maps to one local commit per affected repository. Task-owned paths or hunks are staged explicitly, unrelated user changes remain untouched, and explicit opt-outs or unsafe, incomplete, failed, blocked, or empty work remains uncommitted. Push and other remote authority stay separate.
+Each independently acceptable outcome maps to one local commit per affected repository after focused evidence passes. The outcome must have one purpose and be independently revertible without leaving dependent history broken; every edit or partial test phase is not a boundary. An approved Plan supplies the commit map, and dependent work starts only after the current boundary is verified and committed. Task-owned paths or hunks are staged explicitly, unrelated user changes remain untouched, and proposed, opted-out, unsafe, incomplete, failed, blocked, or empty work remains uncommitted. Push and other remote authority stay separate.
 
 ### Claim-based verification
 
@@ -85,7 +85,7 @@ Delegation is justified by independent deliverables, elapsed-time savings, or fr
 |---|---|
 | State outcomes and stop rules | Six-part core contract and completion conditions |
 | Remove repeated process instructions | Nine focused bodies loaded only at matching boundaries; no mandatory chain |
-| Define autonomy and permissions | Completed local changes include a scoped commit; remote and destructive authority stay separate |
+| Define autonomy and permissions | Verified local outcomes receive atomic commits; remote and destructive authority stay separate |
 | Route tools by dependency | Parallel independent work; sequential dependencies; synthesis before claims |
 | Validate what matters | Claim-to-evidence selection and explicit gaps |
 | Keep progress sparse | Outcome-first reporting and phase-level updates |
@@ -102,4 +102,4 @@ Repository validation enforces per-Skill budgets based on each contract's comple
 - complete package: at most 4,800 words;
 - only declared SDD resources and no mandatory `$skill` call chain.
 
-Version 0.5 currently uses 587 coordinator words and 4,678 words total. These are guardrails, not targets; normal routing loads only the matching bodies and any explicitly needed resource.
+Version 0.6 currently uses 598 coordinator words and 4,731 words total. These are guardrails, not targets; normal routing loads only the matching bodies and any explicitly needed resource.

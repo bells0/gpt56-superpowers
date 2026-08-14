@@ -16,7 +16,7 @@ This project is an original GPT-5.6 rewrite, not a compatibility layer. It delib
 | `subagent-driven-development` | `gpt56-subagent-driven-development` with Sol-owned contracts, disjoint write ownership, durable state, and proportional review |
 | `requesting-code-review`, `receiving-code-review` | Focused evidence-backed review in `gpt56-delegation-review` |
 | `using-git-worktrees` | `gpt56-using-git-worktrees` only for explicit or materially justified isolation |
-| `finishing-a-development-branch` | `gpt56-git-delivery` for explicit Git state and the default scoped local commit after completed repository changes |
+| `finishing-a-development-branch` | `gpt56-git-delivery` for explicit Git state and atomic local commits after verified repository outcomes |
 | `test-driven-development` | Removed as a Skill and methodology requirement; project or user rules still govern when specified |
 | `writing-skills` | Base model plus repository-specific creators and validators |
 

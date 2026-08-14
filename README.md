@@ -8,7 +8,7 @@ Version 0.6 uses a dependency-aware hub-and-spoke structure: one Sol-first coord
 
 [OpenAI's GPT-5.6 prompting guidance](https://developers.openai.com/api/docs/guides/prompt-guidance-gpt-5p6) recommends defining outcomes, constraints, evidence, autonomy, validation, and stop rules while removing repeated process instructions the model already performs reliably.
 
-This suite keeps the useful invariants—permission boundaries, project grounding, root-cause diagnosis, evidence before claims, preservation of user changes—and removes methodology ritual. It does not impose fail-first development, repeated broad suites, automatic worktrees, or per-task review chains. Completed repository-changing requests do receive one scoped local commit per affected repository by default; explicit opt-outs and unsafe or incomplete work remain uncommitted, and commit authority never implies push authority.
+This suite keeps the useful invariants—permission boundaries, project grounding, root-cause diagnosis, evidence before claims, preservation of user changes—and removes methodology ritual. It does not impose fail-first development, repeated broad suites, automatic worktrees, or per-task review chains. Each independently acceptable repository outcome receives an atomic local commit after focused evidence passes; approved Plans define those boundaries, while explicit opt-outs and unsafe or incomplete work remain uncommitted. Commit authority never implies push authority.
 
 ## Structure
 
@@ -23,7 +23,7 @@ This suite keeps the useful invariants—permission boundaries, project groundin
 | `gpt56-verification` | Choosing proportionate evidence for material completion claims |
 | `gpt56-purpose-bound-rigor` | Requiring a concrete necessity case before adding hashes, gates, isolation, mocks, freezes, or repeated reviews |
 | `gpt56-delegation-review` | Genuinely independent parallel work or a focused independent review |
-| `gpt56-git-delivery` | Default scoped completion commits plus authorized branches, worktrees, pushes, pull requests, merges, or cleanup |
+| `gpt56-git-delivery` | Atomic completion commits plus authorized branches, worktrees, pushes, pull requests, merges, or cleanup |
 
 All ten are direct entry points. The execution-structure Skills may hand work to another focused Skill only at a real dependency boundary; no fixed chain is required. Narrow trigger descriptions allow implicit routing without an always-on router, and explicit `$skill-name` invocation remains available.
 
@@ -31,13 +31,13 @@ All ten are direct entry points. The execution-structure Skills may hand work to
 
 The comparison baseline is a local 14-Skill installation from `obra/superpowers` at commit `b55764852ac78870e65c6565fb585b6cd8b3c5c9`.
 
-| Measure | Baseline | Version 0.5 | Reduction |
+| Measure | Baseline | Version 0.6 | Reduction |
 |---|---:|---:|---:|
 | Workflow Skills | 14 | 10 | 28.6% |
-| Total `SKILL.md` words | 15,737 | 4,678 | 70.3% |
+| Total `SKILL.md` words | 15,737 | 4,731 | 69.9% |
 | Always-trigger router | Yes | No | Removed |
 
-A focused route loads one body of 233–842 words. The longest Skills carry concrete planning, worktree, or subagent contracts and load only when those structures materially help. The full 4,678-word package is never a mandatory prompt chain. Word count is a structural proxy, not a model-quality or tokenization guarantee.
+A focused route loads one body of 233–850 words. The longest Skills carry concrete planning, worktree, or subagent contracts and load only when those structures materially help. The full 4,731-word package is never a mandatory prompt chain. Word count is a structural proxy, not a model-quality or tokenization guarantee.
 
 ## Install
 
@@ -114,7 +114,7 @@ Use $gpt56-superpowers to coordinate this migration end to end.
 Use `docs/implementation-closed-loop.md` as a reusable template for long-running Spec → Plan → Execution workflows (including Plan A/B/C style handoffs and model-split recommendations).
 ```
 
-Ordinary questions still use Codex directly. Completed repository changes implicitly add Git & Delivery for the scoped local completion commit; explicit `$skill-name` invocation remains available.
+Ordinary questions still use Codex directly. Completed repository outcomes implicitly add Git & Delivery for atomic local commits at verified boundaries; explicit `$skill-name` invocation remains available.
 
 ### Process auditor
 
@@ -143,7 +143,7 @@ See [architecture](docs/architecture.md), [migration mapping](docs/migration-fro
 
 本版本彻底移除了开发方法论强制，不要求先写失败测试、不要求 RED/GREEN/REFACTOR、不要求重复跑全量测试。保留的是更薄的“声明—证据”验证：文档看 diff/schema/link，Bug 复查原始症状，行为跑最相关检查，视觉实际渲染，发布遵守项目门禁；无法验证就明确缺口。
 
-完成并验证的仓库修改默认会按需求生成一个只包含本次改动的本地 commit；只读、计划、未完成、验证失败、无法安全隔离或明确要求不提交的工作不会自动提交。默认 commit 不代表允许自动 push。
+每个独立可验收、可独立回滚且验证通过的仓库结果，默认形成一个原子本地 commit；已批准的 Plan 定义提交边界，依赖任务必须在当前边界提交后再继续。拟议中的 Plan、只读、未完成、验证失败、无法安全隔离或明确要求不提交的工作不会自动提交。默认 commit 不代表允许自动 push。
 
 ## License and attribution
 

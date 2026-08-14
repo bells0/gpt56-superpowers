@@ -27,7 +27,8 @@ or compatibility decision. Ask for the missing decision or return
 NEEDS_CONTEXT. Follow existing project patterns. Do not commit unless commit
 ownership is explicitly assigned. This worker rule is not a global delivery
 opt-out: after integration and completion, the controller uses
-gpt56-git-delivery for the scoped completion commit.
+gpt56-git-delivery for the approved atomic completion commit at each accepted
+task boundary.
 
 Write the detailed report to [REPORT_FILE]:
 - status: DONE | DONE_WITH_CONCERNS | NEEDS_CONTEXT | BLOCKED

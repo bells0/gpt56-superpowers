@@ -17,7 +17,7 @@ The checked-in scenario matrix tests routing intent and package invariants. It i
 | Explicit no-commit request | Git & Delivery | Verify the change while leaving it uncommitted |
 | Settled multi-module requirements | Writing Plans | Separate provided, observed, proposed, and unresolved facts in an implementation-ready plan |
 | Explicit dirty-checkout isolation | Worktree Isolation | Preserve source changes and report safe branch, path, revision, and baseline evidence |
-| Independently ownable implementation plan | Subagent Development + Git & Delivery | Bound ownership, preserve durable task state, integrate evidence, and create one coherent commit |
+| Independently ownable implementation plan | Subagent Development + Git & Delivery | Bound ownership, preserve durable task state, and commit each accepted atomic outcome before dependent work |
 
 `tests/scenarios.json` keeps these expectations machine-checkable and ensures every Skill has a distinct effect boundary.
 

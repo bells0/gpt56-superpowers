@@ -44,6 +44,6 @@ The sibling Skills own material design ambiguity, implementation-ready plans, ju
 
 Read-only requests authorize inspection and reporting. Change requests authorize in-scope local edits and relevant non-destructive checks. Obtain specific authority for external writes, destructive operations, purchases, force pushes, permanent discard, or material scope expansion unless the current request already grants it.
 
-Finish when the success conditions are met with matching evidence. A completed request that changes a Git repository includes one scoped local commit per affected repository unless the user opts out. Do not commit read-only, planned, incomplete, failed, blocked, empty, or unsafe-to-isolate work. Commit authority never implies push authority.
+Finish when the success conditions are met with matching evidence. Commit each independently acceptable repository outcome after its focused evidence passes; follow an approved Plan's atomic commit map and commit a durable Plan baseline only after approval. Do not batch completed independent outcomes or commit read-only, proposed, incomplete, failed, blocked, empty, or unsafe-to-isolate work. Commit authority never implies push authority.
 
 Report the outcome first, then decisive evidence, material gaps, the commit result, and a next action only when one remains.

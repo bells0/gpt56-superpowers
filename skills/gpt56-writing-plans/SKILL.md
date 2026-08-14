@@ -5,35 +5,33 @@ description: Establish a reusable Spec → Plan → Implementation workflow and 
 
 # GPT-5.6 Writing Plans
 
-Create a durable authority chain executable without rediscovering requirements. Plan outcomes and interfaces, not internal reasoning.
+Create an executable authority chain without rediscovering requirements. Plan outcomes and interfaces, not reasoning.
 
 ## Apply the lifecycle
-
-Use only as much process as the change needs:
 
 ```text
 Approved Spec → Implementation Plan(s) → Implementation → Integration evidence
 ```
 
-1. **Scope:** Skip the full workflow for one clear, local, reversible edit.
-2. **Spec:** When product, UX, architecture, ownership, compatibility, migration, or failure semantics remain materially open, use `gpt56-design-planning` first. Save substantial accepted direction at the project’s Spec location or `docs/specs/YYYY-MM-DD-<feature>.md`.
+1. **Scope:** Skip this workflow for one clear, local, reversible edit.
+2. **Spec:** When material product, architecture, interface, migration, or failure semantics remain open, use `gpt56-design-planning` first. Save accepted direction at the project’s Spec location or `docs/specs/YYYY-MM-DD-<feature>.md`.
 3. **Authority:** The approved Spec owns goals, non-goals, behavior, domain boundaries, state/data rules, failure/compatibility behavior, and acceptance semantics. Plans link its sections instead of duplicating them.
 4. **Plan:** Start only after Spec approval or otherwise settled requirements. Split independently shippable/testable subsystems, then state dependency order and shared-file ownership.
-5. **Execution:** Sol owns contracts, shared interfaces, integration, and final evidence. Delegate only bounded routine tasks with stable inputs and disjoint ownership. Run dependent Plans sequentially; parallelize after interfaces stabilize.
-6. **Feedback:** Correct repository facts or task defects in the Plan. For semantic changes, stop affected work, re-approve the Spec, then revise dependent Plans.
+5. **Execution:** Sol owns contracts, shared interfaces, integration, and final evidence. Delegate bounded tasks with stable inputs and disjoint ownership. Each independently acceptable task is a default atomic commit boundary: verify and commit it before dependent work. Parallelize only after interfaces stabilize.
+6. **Feedback:** Correct Plan facts and task defects. Semantic changes require Spec re-approval before dependent work.
 
 ## Ground and classify
 
-Inspect repository instructions, relevant code, tests, docs, and patterns. Identify the approved source and a coherent testable scope. Follow the project’s Plan location; otherwise use `docs/plans/YYYY-MM-DD-<subsystem>-implementation.md` for durable handoff or an inline Plan when persistence adds no value.
+Inspect repository instructions, code, tests, docs, and patterns. Identify the approved source and scope. Use the project’s Plan location, `docs/plans/YYYY-MM-DD-<subsystem>-implementation.md`, or an inline Plan when persistence adds no value.
 
 Classify every exact detail:
 
-- **Provided:** value from the user or approved Spec.
-- **Observed:** repository-verified name, path, command, schema, or behavior.
-- **Proposed:** adopted implementation choice with reason or tradeoff; never current behavior.
-- **Unresolved:** required inspection or decision; never convert it into fact.
+- **Provided:** user or approved-Spec value.
+- **Observed:** repository-verified fact.
+- **Proposed:** implementation choice with rationale; never current behavior.
+- **Unresolved:** required inspection or decision; never a fact.
 
-When access is incomplete, use `Confirm from repository:` instead of inventing identifiers, commands, content, or behavior.
+When access is incomplete, use `Confirm from repository:` instead of inventing details.
 
 ## Build the Plan
 
@@ -58,15 +56,18 @@ Start with:
 ## Delivery Contract
 - Completion trigger: [objective condition; user acceptance when required]
 - Commit ownership: [controller or explicitly assigned worker]
-- Placement: [cross-task closure outside numbered tasks; controller after integration]
+- Plan baseline: [commit an approved durable Plan before implementation; never commit it while proposed]
+- Commit map: [Task N → owned paths, evidence, message; group only inseparable tasks]
+- Sequence: [verify and commit each boundary before dependent work]
+- Placement: [cross-task closure outside numbered tasks; controller after integration of each accepted boundary]
 - Repositories: [child repository commits precede parent gitlink/pointer updates]
 - Record: [verification, commit hashes, preserved unrelated dirty state; local commits only]
-- No-commit states: [incomplete, failed, blocked, unsafe, acceptance gate pending, or explicit opt-out]
+- No-commit states: [current boundary incomplete, failed, blocked, unsafe, acceptance gate pending, or explicit opt-out]
 ```
 
-When no durable Spec was warranted, name the exact approved source. Map files/modules to single responsibilities.
+Without a durable Spec, name the approved source. Map modules to single responsibilities.
 
-Each task must be the smallest independently acceptable outcome with useful validation and stable interfaces. Fold setup, config, docs, and migration into the outcome needing them. The final numbered task must be an acceptance-ready product result. Never make a commit or Delivery Contract a numbered task.
+Each task is the smallest independently acceptable outcome with useful validation and stable interfaces. It is the default atomic commit boundary: one purpose, relevant evidence, and revertible without breaking dependent history. Do not commit every edit, test phase, or partial state. Fold setup, config, docs, and migration into their owning outcome. The final numbered task must be an acceptance-ready product result. Keep commits and the Delivery Contract outside numbered tasks.
 
 ```markdown
 ### Task N: [verifiable outcome]
@@ -89,17 +90,17 @@ Each task must be the smallest independently acceptable outcome with useful vali
 - Observe: [specific behavior or artifact]
 ```
 
-Prefer responsibilities over brittle line ranges. Include snippets only when an approved contract or algorithm remains ambiguous. Use test-first steps for reproducible behavior when useful; do not force them onto docs, generated artifacts, config, or exploration.
+Avoid brittle line ranges and mandatory test rituals. Include snippets only for ambiguous approved contracts or algorithms.
 
 ## Define the delivery contract
 
-For every repository-changing Plan, define completion and commit ownership. A required acceptance gate delays completion; an explicit opt-out also prevents commit. The controller normally owns coherent completion after integration; workers commit only when assigned.
+For every repository-changing Plan, define completion, atomic boundaries, and ownership. An acceptance gate delays its boundary; an explicit opt-out prevents commit. Keep a durable Plan uncommitted while proposed; after approval, commit its baseline before implementation. The controller normally owns each task commit after integration; workers commit only when assigned.
 
-Derive repository order from dependency topology. Child repository commits precede parent gitlink or pointer updates. Report verification, commit hashes, and preserved unrelated dirty state. Default to local commits only; never push without explicit authorization.
+Derive task and repository order from dependencies. Verify and commit each boundary before dependent work. Child repository commits precede parent gitlink or pointer updates. Report verification, all hashes, and preserved dirty state. Default to local commits; never push without authorization.
 
 ## Remove Plan failures
 
-Remove placeholders, duplicated Spec rules, missing decisions, vague evidence, undefined interfaces, contradictions, speculation, unrelated work, and mandatory subagents, worktrees, reviews, or delivery rituals without task-specific reason.
+Remove placeholders, duplicated Spec rules, missing decisions, vague evidence, undefined interfaces, contradictions, speculation, unrelated work, and unjustified workflow rituals.
 
 ## Review and route execution
 
@@ -109,7 +110,7 @@ Before finishing:
 2. Verify dependencies, ownership, interfaces, schemas, and exact values.
 3. Ensure implementers need no consequential design choice.
 4. Trace facts to Provided, Observed, or Proposed evidence.
-5. Confirm the Delivery Contract remains outside numbered tasks and covers trigger, ownership, topology, evidence, remote boundary, and no-commit states.
+5. Confirm the Delivery Contract remains outside numbered tasks and covers trigger, Plan baseline, commit map, ownership, topology, evidence, remote boundary, and per-boundary no-commit states.
 6. Record sequential Plan order and safe parallel boundaries.
 
-Recommend Sol for coupled work, bounded subagents only when ownership or parallelism materially helps, and worktrees only when requested or justified. Report Spec and Plan locations, execution shape, and genuine blockers.
+Keep coupled work with Sol. Use subagents for bounded ownership or useful parallelism and worktrees only when justified. Report Plan locations, execution shape, and blockers.

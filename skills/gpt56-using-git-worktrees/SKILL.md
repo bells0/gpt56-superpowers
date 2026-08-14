@@ -61,4 +61,4 @@ Report:
 - setup and baseline evidence;
 - any limitation affecting later cleanup.
 
-Let `gpt56-git-delivery` own the completion commit and any safe cleanup. Worktree creation never authorizes push, merge, branch deletion, or removal of another worktree.
+Let `gpt56-git-delivery` own atomic completion commits and any safe cleanup. Worktree creation never authorizes push, merge, branch deletion, or removal of another worktree.
