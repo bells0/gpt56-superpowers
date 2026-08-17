@@ -6,10 +6,11 @@ Give GPT-5.6 a small set of precise development lenses without re-teaching relia
 
 ## Hub and spokes
 
-The suite contains ten focused Skills:
+The suite contains eleven focused Skills:
 
 ```text
 gpt56-superpowers                       Sol-led cross-phase coordination
+├── gpt56-orchestrate-delivery          opt-in standardized delivery lifecycle
 ├── gpt56-design-planning               material ambiguity
 ├── gpt56-writing-plans                 implementation-ready plans
 ├── gpt56-using-git-worktrees           justified repository isolation
@@ -21,13 +22,14 @@ gpt56-superpowers                       Sol-led cross-phase coordination
 └── gpt56-git-delivery                  repository delivery state
 ```
 
-The diagram describes ownership, not a required call chain. Every spoke is a direct entry point. Design may hand settled requirements to Writing Plans; a suitable plan may hand independently ownable outcomes to Subagent Development; Worktree Isolation is optional; Verification and Git Delivery close only the claims and repository actions that need them.
+The diagram describes ownership, not a required call chain. Every spoke is a direct entry point. Orchestrated Delivery is the explicit exception for users who want a standardized current-truth → Spec → Plan → Execution → Review → Verification → Acceptance → Closure lifecycle; its narrow trigger prevents that workflow from becoming a tax on ordinary tasks. Design may hand settled requirements to Writing Plans; a suitable plan may hand independently ownable outcomes to Subagent Development; Worktree Isolation is optional; Verification and Git Delivery close only the claims and repository actions that need them.
 
 The full repository installer adds the concise `.codex/purpose-bound-rigor.md` fragment to the user's effective global `AGENTS.md`, so every development run receives the invariant before work starts. It also installs `.codex/agents/execution-efficiency-auditor.toml` as a user-level custom Agent. The Agent remains deliberately outside the normal chain: it provides a read-only audit only after a user requests it or repeated execution drift is already evident, never as an automatic reviewer or release gate.
 
 ## Routing rules
 
 - Read-only and clear non-repository work: no suite Skill.
+- Explicit standardized delivery or long-running multi-module work that needs durable cross-phase control: Orchestrated Delivery.
 - Completed repository-changing outcomes: Git & Delivery supplies atomic local commits at verified boundaries.
 - One consequential decision domain: one narrow Skill.
 - Two or more dependent phases whose ordering and synthesis affect success: core plus only the one or two narrow Skills that change a decision.
@@ -41,6 +43,10 @@ All Skills allow implicit invocation, but their descriptions deliberately requir
 ### Outcome over ritual
 
 The core resolves goal, success, constraints, evidence, permission, and stop conditions, then sequences dependent work. It does not prescribe an implementation methodology.
+
+### Explicit standardized delivery
+
+Orchestrated Delivery codifies the controller-led method only when the user selects it or the task strongly matches its long-running, multi-module trigger. The controller retains requirements, decisions, shared interfaces, integration, acceptance, and Git closure; explorers, implementers, reviewers, debuggers, and verifiers receive bounded role contracts. Engineering verification and user acceptance remain separate gates.
 
 ### Focused ownership
 
@@ -89,7 +95,7 @@ Delegation is justified by independent deliverables, elapsed-time savings, or fr
 | Route tools by dependency | Parallel independent work; sequential dependencies; synthesis before claims |
 | Validate what matters | Claim-to-evidence selection and explicit gaps |
 | Keep progress sparse | Outcome-first reporting and phase-level updates |
-| Evaluate representative work | Stable twelve-scenario routing manifest |
+| Evaluate representative work | Stable fourteen-scenario routing manifest |
 
 ## Prompt budget
 
@@ -99,7 +105,8 @@ Repository validation enforces per-Skill budgets based on each contract's comple
 - compact decision Skills: 300–450 words;
 - Writing Plans, Worktree Isolation, and Subagent Development: 600–850 words;
 - Purpose-Bound Rigor: at most 500 words;
-- complete package: at most 4,800 words;
+- Orchestrated Delivery: at most 900 words, with detailed references and copyable templates loaded only when needed;
+- complete package: at most 5,800 words;
 - only declared SDD resources and no mandatory `$skill` call chain.
 
-Version 0.6 currently uses 598 coordinator words and 4,731 words total. These are guardrails, not targets; normal routing loads only the matching bodies and any explicitly needed resource.
+Version 0.7 keeps the coordinator under 600 words and the complete package under 5,800 words. These are guardrails, not targets; normal routing loads only the matching bodies and any explicitly needed resource.

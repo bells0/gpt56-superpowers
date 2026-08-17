@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILLS_ROOT = ROOT / "skills"
 SKILL_NAMES = (
     "gpt56-superpowers",
+    "gpt56-orchestrate-delivery",
     "gpt56-design-planning",
     "gpt56-writing-plans",
     "gpt56-using-git-worktrees",
@@ -30,6 +31,7 @@ SKILL_NAMES = (
 )
 SKILL_WORD_LIMITS = {
     "gpt56-superpowers": 600,
+    "gpt56-orchestrate-delivery": 900,
     "gpt56-design-planning": 300,
     "gpt56-writing-plans": 850,
     "gpt56-using-git-worktrees": 600,
@@ -40,8 +42,9 @@ SKILL_WORD_LIMITS = {
     "gpt56-delegation-review": 450,
     "gpt56-git-delivery": 300,
 }
-PACKAGE_WORD_LIMIT = 4800
+PACKAGE_WORD_LIMIT = 5800
 ALLOWED_RESOURCE_DIRS = {
+    "gpt56-orchestrate-delivery": {"references", "assets"},
     "gpt56-subagent-driven-development": {"references", "scripts"},
 }
 failures: list[str] = []
@@ -101,7 +104,7 @@ for required_runtime_file in (
 actual_skill_dirs = {
     path.name for path in SKILLS_ROOT.iterdir() if path.is_dir() and not path.name.startswith(".")
 }
-check(actual_skill_dirs == set(SKILL_NAMES), "skills/ must contain exactly the ten supported Skills")
+check(actual_skill_dirs == set(SKILL_NAMES), "skills/ must contain exactly the eleven supported Skills")
 
 word_counts: dict[str, int] = {}
 skill_corpus: list[str] = []
@@ -164,6 +167,19 @@ for relative in (
     "scripts/sdd-tools.cjs",
 ):
     check((sdd_root / relative).is_file(), f"missing gpt56-subagent-driven-development/{relative}")
+
+orchestration_root = SKILLS_ROOT / "gpt56-orchestrate-delivery"
+for relative in (
+    "references/lifecycle.md",
+    "references/decision-and-escalation.md",
+    "references/role-contracts.md",
+    "references/evidence-and-closure.md",
+    "assets/delivery-workbook.md",
+    "assets/task-brief.md",
+    "assets/worker-report.md",
+    "assets/review-report.md",
+):
+    check((orchestration_root / relative).is_file(), f"missing gpt56-orchestrate-delivery/{relative}")
 
 writing_plan_path = SKILLS_ROOT / "gpt56-writing-plans" / "SKILL.md"
 writing_plan_text = writing_plan_path.read_text(encoding="utf-8") if writing_plan_path.is_file() else ""
@@ -234,10 +250,11 @@ expected_ids = {
     "implementation-plan",
     "worktree-isolation",
     "subagent-plan-execution",
+    "orchestrated-delivery",
 }
 if isinstance(scenarios, list):
     ids = {item.get("id") for item in scenarios if isinstance(item, dict)}
-    check(ids == expected_ids, "scenario manifest must contain the thirteen canonical cases")
+    check(ids == expected_ids, "scenario manifest must contain the fourteen canonical cases")
     routed = set()
     for item in scenarios:
         if not isinstance(item, dict):
@@ -270,10 +287,10 @@ if failures:
         print(f"FAIL: {failure}", file=sys.stderr)
     raise SystemExit(1)
 
-print("PASS: plugin and ten-Skill structure")
+print("PASS: plugin and eleven-Skill structure")
 print(
     "PASS: skill budgets "
     + ", ".join(f"{name}={word_counts[name]}/{SKILL_WORD_LIMITS[name]}" for name in SKILL_NAMES)
 )
 print(f"PASS: package budget {package_words}/{PACKAGE_WORD_LIMIT} words")
-print("PASS: dependency-aware routing, lean workflow rules, links, resources, and 13 scenarios")
+print("PASS: dependency-aware routing, lean workflow rules, links, resources, and 14 scenarios")

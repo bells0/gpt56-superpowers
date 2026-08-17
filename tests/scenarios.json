@@ -128,5 +128,15 @@
       "local_commit": true,
       "evidence": ["bounded ownership", "durable task state", "integrated diff and evidence", "atomic commits at accepted task boundaries"]
     }
+  },
+  {
+    "id": "orchestrated-delivery",
+    "prompt": "Use the standardized controller-led workflow for this long-running multi-module feature. Keep requirements and integration in the main thread, delegate bounded implementation, obtain independent review, verify the real user path, record user acceptance separately, update documentation, and close child and parent Git boundaries.",
+    "expected": {
+      "skills": ["gpt56-orchestrate-delivery"],
+      "approval": false,
+      "local_commit": true,
+      "evidence": ["current truth and classified decisions", "bounded role ownership", "independent review disposition", "engineering verification and separate user acceptance", "documentation and child-before-parent Git closure"]
+    }
   }
 ]

@@ -12,6 +12,20 @@ GLOBAL_RUNTIME_HELPER="$REPO_ROOT/scripts/manage-global-runtime.py"
 
 MANAGED_SKILLS=(
   gpt56-superpowers
+  gpt56-orchestrate-delivery
+  gpt56-design-planning
+  gpt56-writing-plans
+  gpt56-using-git-worktrees
+  gpt56-subagent-driven-development
+  gpt56-debugging
+  gpt56-verification
+  gpt56-purpose-bound-rigor
+  gpt56-delegation-review
+  gpt56-git-delivery
+)
+
+VERSION_06_MANAGED_SKILLS=(
+  gpt56-superpowers
   gpt56-design-planning
   gpt56-writing-plans
   gpt56-using-git-worktrees
@@ -189,6 +203,7 @@ restore_v2() {
   while IFS= read -r name; do manifest_moved+=("$name"); done < <(sed -n 's/^moved=//p' "$BACKUP_DIR/INSTALL_INFO")
 
   if [[ "${manifest_managed[*]}" != "${MANAGED_SKILLS[*]}" ]] \
+    && [[ "${manifest_managed[*]}" != "${VERSION_06_MANAGED_SKILLS[*]}" ]] \
     && [[ "${manifest_managed[*]}" != "${VERSION_03_MANAGED_SKILLS[*]}" ]]; then
     die "managed Skill manifest is invalid"
   fi

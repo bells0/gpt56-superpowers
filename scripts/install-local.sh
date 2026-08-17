@@ -14,6 +14,7 @@ GLOBAL_RUNTIME_HELPER="$REPO_ROOT/scripts/manage-global-runtime.py"
 
 MANAGED_SKILLS=(
   gpt56-superpowers
+  gpt56-orchestrate-delivery
   gpt56-design-planning
   gpt56-writing-plans
   gpt56-using-git-worktrees
@@ -224,7 +225,7 @@ if [[ "$all_installed" -eq 1 && "$legacy_found" -eq 0 ]]; then
   committed=1
   release_lock
   trap - EXIT
-  echo "Already installed: ten GPT-5.6 Skills"
+  echo "Already installed: eleven GPT-5.6 Skills"
   exit 0
 fi
 
@@ -296,7 +297,7 @@ committed=1
 release_lock
 trap - EXIT
 
-echo "Installed ten GPT-5.6 Skills from: $SOURCE_ROOT"
+echo "Installed eleven GPT-5.6 Skills from: $SOURCE_ROOT"
 echo "Installed global purpose-bound guidance and execution-efficiency-auditor."
 echo "Backup: $BACKUP_DIR"
 echo "Restart Codex or start a new task to refresh Skill discovery."

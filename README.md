@@ -2,7 +2,7 @@
 
 A lean, effect-first replacement for the ceremony-heavy Superpowers workflow, designed for GPT-5.6 Sol and Codex.
 
-Version 0.6 uses a dependency-aware hub-and-spoke structure: one Sol-first coordinator and nine focused Skills. A clear task can use one focused Skill directly—or no Skill at all—while planning, isolation, bounded subagent execution, and extra workflow defenses remain optional unless they materially improve the outcome. The full repository installer also adds a concise global purpose-bound-rigor rule and an on-demand read-only audit agent.
+Version 0.7 uses a dependency-aware hub-and-spoke structure: one Sol-first coordinator, one explicit controller-led delivery workflow, and nine focused Skills. A clear task can use one focused Skill directly—or no Skill at all—while long-running work can opt into a durable current-truth → Spec → Plan → Execution → Review → Verification → Acceptance → Closure lifecycle. The full repository installer also adds a concise global purpose-bound-rigor rule and an on-demand read-only audit agent.
 
 ## Why this exists
 
@@ -15,6 +15,7 @@ This suite keeps the useful invariants—permission boundaries, project groundin
 | Skill | Use it for |
 |---|---|
 | `gpt56-superpowers` | Two or more dependent development phases that need end-to-end coordination |
+| `gpt56-orchestrate-delivery` | Explicit standardized delivery from current-state discovery through acceptance and Git closure |
 | `gpt56-design-planning` | Consequential ambiguity in product, UX, architecture, interfaces, migrations, or scope |
 | `gpt56-writing-plans` | Approved Spec → ordered implementation Plans → execution handoff |
 | `gpt56-using-git-worktrees` | Explicit or justified worktree isolation that preserves existing user changes |
@@ -25,19 +26,19 @@ This suite keeps the useful invariants—permission boundaries, project groundin
 | `gpt56-delegation-review` | Genuinely independent parallel work or a focused independent review |
 | `gpt56-git-delivery` | Atomic completion commits plus authorized branches, worktrees, pushes, pull requests, merges, or cleanup |
 
-All ten are direct entry points. The execution-structure Skills may hand work to another focused Skill only at a real dependency boundary; no fixed chain is required. Narrow trigger descriptions allow implicit routing without an always-on router, and explicit `$skill-name` invocation remains available.
+All eleven are direct entry points. The orchestrated workflow is opt-in for explicit standardized delivery or long-running multi-module work; it does not force ordinary tasks through a fixed chain. The remaining execution-structure Skills may hand work to another focused Skill only at a real dependency boundary. Narrow trigger descriptions allow implicit routing without an always-on router, and explicit `$skill-name` invocation remains available.
 
 ## Prompt footprint
 
 The comparison baseline is a local 14-Skill installation from `obra/superpowers` at commit `b55764852ac78870e65c6565fb585b6cd8b3c5c9`.
 
-| Measure | Baseline | Version 0.6 | Reduction |
+| Measure | Baseline | Version 0.7 | Reduction |
 |---|---:|---:|---:|
-| Workflow Skills | 14 | 10 | 28.6% |
-| Total `SKILL.md` words | 15,737 | 4,731 | 69.9% |
+| Workflow Skills | 14 | 11 | 21.4% |
+| Total `SKILL.md` words | 15,737 | 5,403 | 65.7% |
 | Always-trigger router | Yes | No | Removed |
 
-A focused route loads one body of 233–850 words. The longest Skills carry concrete planning, worktree, or subagent contracts and load only when those structures materially help. The full 4,731-word package is never a mandatory prompt chain. Word count is a structural proxy, not a model-quality or tokenization guarantee.
+A focused route loads one body of 233–850 words. The longest Skills carry concrete planning, orchestrated-delivery, worktree, or subagent contracts and load only when those structures materially help. The full 5,403-word package is never a mandatory prompt chain. Word count is a structural proxy, not a model-quality or tokenization guarantee.
 
 ## Install
 
@@ -53,7 +54,7 @@ cd gpt56-superpowers
 
 The full installer:
 
-- installs all ten Skills;
+- installs all eleven Skills;
 - adds a managed purpose-bound-rigor block to the effective global `~/.codex/AGENTS.md` or `AGENTS.override.md` without replacing existing guidance;
 - installs `execution-efficiency-auditor` under `~/.codex/agents/`;
 - removes only its managed guidance and Agent when `./scripts/restore-original.sh` restores the transaction.
@@ -62,13 +63,14 @@ Start a new Codex task after installation. Global `AGENTS.md` guidance is then l
 
 ### Skills-only installation
 
-To install only the ten Skills without global guidance or the custom Agent:
+To install only the eleven Skills without global guidance or the custom Agent:
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
   --repo bells0/gpt56-superpowers \
   --path \
     skills/gpt56-superpowers \
+    skills/gpt56-orchestrate-delivery \
     skills/gpt56-design-planning \
     skills/gpt56-writing-plans \
     skills/gpt56-using-git-worktrees \
@@ -88,13 +90,13 @@ cd gpt56-superpowers
 ./scripts/install-local.sh
 ```
 
-The same full installer replaces an existing `obra/superpowers` installation. It validates the package, preserves legacy or conflicting Skill entries in a restorable transaction, installs ten exact Skill links, and records the managed global runtime state. Restore the newest READY transaction with:
+The same full installer replaces an existing `obra/superpowers` installation. It validates the package, preserves legacy or conflicting Skill entries in a restorable transaction, installs eleven exact Skill links, and records the managed global runtime state. Restore the newest READY transaction with:
 
 ```bash
 ./scripts/restore-original.sh
 ```
 
-You can also pass a specific backup directory. Existing version-0.3 six-Skill and version-0.1 backups remain restorable.
+You can also pass a specific backup directory. Existing version-0.6 ten-Skill, version-0.3 six-Skill, and version-0.1 backups remain restorable.
 
 ## Use
 
@@ -102,6 +104,8 @@ Implicit routing handles strong matches. Invoke a Skill explicitly when you want
 
 ```text
 Use $gpt56-debugging to diagnose this intermittent cross-service failure.
+
+Use $gpt56-orchestrate-delivery to run this long-running feature through controller-led discovery, planning, bounded execution, review, verification, acceptance, and closure.
 
 Use $gpt56-verification to choose proportionate evidence for this release claim.
 
@@ -122,7 +126,7 @@ The full installer makes the read-only `execution-efficiency-auditor` Agent avai
 
 ## Validation
 
-The repository uses deterministic package checks, a thirteen-case routing specification, global-runtime tests, and install/restore transaction smoke tests. The scenarios constrain intended behavior; they are not a live model benchmark:
+The repository uses deterministic package checks, a fourteen-case routing specification, global-runtime tests, and install/restore transaction smoke tests. The scenarios constrain intended behavior; they are not a live model benchmark:
 
 ```bash
 make validate
@@ -139,7 +143,7 @@ See [architecture](docs/architecture.md), [migration mapping](docs/migration-fro
 
 ## 中文说明
 
-这是为 GPT-5.6 Sol 重写的轻量 Superpowers：`1 个 Sol 主控核心 + 9 个聚焦 Skill`。普通任务不加载，单领域任务只加载一个；实施计划、工作树隔离、子代理执行和额外防御措施只在确实能改善结果时形成可选衔接。
+这是为 GPT-5.6 Sol 重写的轻量 Superpowers：`1 个 Sol 主控核心 + 1 个显式标准交付流程 + 9 个聚焦 Skill`。普通任务不加载，单领域任务只加载一个；长期多模块任务可以显式选择主控编排、独立审查、真实路径验证、用户验收和 Git 收口的完整闭环。
 
 本版本彻底移除了开发方法论强制，不要求先写失败测试、不要求 RED/GREEN/REFACTOR、不要求重复跑全量测试。保留的是更薄的“声明—证据”验证：文档看 diff/schema/link，Bug 复查原始症状，行为跑最相关检查，视觉实际渲染，发布遵守项目门禁；无法验证就明确缺口。
 
