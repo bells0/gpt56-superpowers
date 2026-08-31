@@ -30,7 +30,7 @@ The full repository installer adds the concise `.codex/purpose-bound-rigor.md` f
 
 - Read-only and clear non-repository work: no suite Skill.
 - Explicit standardized delivery or long-running multi-module work that needs durable cross-phase control: Orchestrated Delivery.
-- Repository-changing outcomes: Git & Delivery owns the task feature branch, atomic commits, branch push, evidence-bearing PR, independent approval, required checks, and controlled merge.
+- Repository-changing outcomes: Git & Delivery makes the Agent own the task branch, atomic commits, branch push, and evidence-bearing PR; independent approval and required checks gate explicitly authorized merge.
 - One consequential decision domain: one narrow Skill.
 - Two or more dependent phases whose ordering and synthesis affect success: core plus only the one or two narrow Skills that change a decision.
 - Proposed hashes, gates, isolation, mocks, freezes, repeated reviews, or broad reruns: Purpose-Bound Rigor requires a concrete protected outcome, observed risk, existing gap, and minimal intervention.
@@ -66,9 +66,9 @@ Worktree Isolation activates only for an explicit request or a concrete safety b
 
 ### Feature-branch, review-gated delivery
 
-Development starts on a task-specific feature branch, never directly on `main` or another default branch. Each independently acceptable outcome maps to one atomic commit per affected repository after focused evidence passes. The outcome must have one purpose and be independently revertible without leaving dependent history broken; every edit or partial test phase is not a boundary. An approved Plan supplies the commit map, and dependent work starts only after the current boundary is verified and committed. Task-owned paths or hunks are staged explicitly, unrelated user changes remain untouched, and proposed, opted-out, unsafe, incomplete, failed, blocked, or empty work remains uncommitted.
+Before implementation, the Agent automatically creates or selects a task-specific feature branch from a verified baseline, never asks the user to create it, and never works directly on `main` or another default branch. If the default branch has uncommitted user work, the Agent protects and safely migrates it; only unsafe separation requires a question. Each independently acceptable outcome maps to one atomic commit per affected repository after focused evidence passes. The outcome must have one purpose and be independently revertible without leaving dependent history broken. Task-owned paths or hunks are staged explicitly, unrelated user changes remain untouched, and proposed, opted-out, unsafe, incomplete, failed, blocked, or empty work remains uncommitted.
 
-After completion, the feature branch is pushed and represented by a PR containing scope, implementation, verification evidence, risks, unresolved items, and dependencies. The implementer cannot approve its own work. Merge requires approval from an independent authorized reviewer or the user plus every required check. Explicit local-only instructions stop before push. Direct default-branch development or push is an emergency exception requiring prior user authorization and a recorded reason.
+After focused verification, the Agent automatically commits, pushes, and opens or updates a PR containing scope, implementation, evidence, risks, unresolved items, and dependencies. The change request preauthorizes these mechanical actions, so the Agent does not seek stepwise confirmation. PR creation is not approval, and the implementer cannot approve its own work. Merge requires independent authorized-reviewer or user approval, every required check, and explicit merge authority. Explicit local-only instructions stop before push. Direct default-branch work requires prior user authorization and a recorded reason. After confirmed merge, automatic local and remote cleanup is allowed only with a clean worktree and no unmerged commits or open dependencies.
 
 ### Claim-based verification
 
@@ -97,7 +97,7 @@ Delegation is justified by independent deliverables, elapsed-time savings, or fr
 |---|---|
 | State outcomes and stop rules | Six-part core contract and completion conditions |
 | Remove repeated process instructions | Nine focused bodies loaded only at matching boundaries; no mandatory chain |
-| Define autonomy and permissions | Feature-branch delivery, explicit local-only stops, independent approval, required checks, and controlled merge |
+| Define autonomy and permissions | Agent-owned branch, commit, push, and PR mechanics; independent approval, explicit merge authority, and safe cleanup |
 | Route tools by dependency | Parallel independent work; sequential dependencies; synthesis before claims |
 | Validate what matters | Claim-to-evidence selection and explicit gaps |
 | Keep progress sparse | Outcome-first reporting and phase-level updates |

@@ -1,7 +1,7 @@
 {
   "name": "agentic-superpowers",
   "version": "0.8.0",
-  "description": "A dependency-aware development suite with eleven Skills, an optional controller-led workflow, review-gated feature-branch delivery, global purpose-bound rigor, and an on-demand audit agent.",
+  "description": "A dependency-aware development suite with eleven Skills, an optional controller-led workflow, agent-owned PR delivery, review-gated merge, global purpose-bound rigor, and an on-demand audit agent.",
   "author": {
     "name": "Wonderbell",
     "url": "https://github.com/bells0"
@@ -21,7 +21,7 @@
   "interface": {
     "displayName": "Agentic Superpowers",
     "shortDescription": "Eleven model-evolving development Skills",
-    "longDescription": "A model-neutral accountable coordinator, an explicit controller-led delivery workflow, and focused Skills for design, implementation planning, worktree isolation, bounded subagent execution, debugging, verification, purpose-bound rigor, delegation and review, and review-gated feature-branch Git delivery.",
+    "longDescription": "A model-neutral accountable coordinator, an explicit controller-led delivery workflow, and focused Skills for design, implementation planning, worktree isolation, bounded subagent execution, debugging, verification, purpose-bound rigor, delegation and review, agent-owned feature-branch and PR delivery, and review-gated merge.",
     "developerName": "Wonderbell",
     "category": "Developer Tools",
     "capabilities": [

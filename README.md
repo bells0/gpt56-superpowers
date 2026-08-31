@@ -8,7 +8,7 @@ Version 0.8 introduces the model-neutral `agentic-*` namespace while retaining t
 
 The suite evolves through versioned model profiles instead of embedding a model generation in repository, plugin, or Skill identifiers. The current profile was shaped by [OpenAI's GPT-5.6 prompting guidance](https://developers.openai.com/api/docs/guides/prompt-guidance-gpt-5p6), while the stable contracts remain outcomes, constraints, evidence, autonomy, validation, permissions, and stop rules. See [model profiles](docs/model-profiles.md) for the distinction between design inputs, deterministic package checks, and live-model evidence.
 
-This suite keeps the useful invariants—permission boundaries, project grounding, root-cause diagnosis, evidence before claims, preservation of user changes—and removes methodology ritual. It does not impose fail-first development, repeated broad suites, automatic worktrees, or per-task review chains. Repository development occurs on task-specific feature branches. Verified outcomes receive atomic commits, the completed branch is pushed into a reviewable pull request, and merge waits for independent authorized or user approval plus all required checks. The implementer cannot approve its own work. Explicit local-only requests stop before push; direct default-branch work requires a recorded user-authorized emergency exception.
+This suite keeps the useful invariants—permission boundaries, project grounding, root-cause diagnosis, evidence before claims, preservation of user changes—and removes methodology ritual. It does not impose fail-first development, repeated broad suites, automatic worktrees, or per-task review chains. For repository changes, the Agent automatically owns task-branch selection, atomic commits, branch push, and PR creation or update without stepwise approval requests. The user reviews the PR and decides whether it may merge; the implementer cannot approve its own work. Explicit local-only requests stop before push, while merge, force push, history rewrite, unmerged-branch deletion, visibility changes, and comparable high-impact actions still require explicit authority.
 
 ## Structure
 
@@ -30,7 +30,7 @@ All eleven are direct entry points. The orchestrated workflow is opt-in for expl
 
 ## Delivery contract
 
-For repository-changing work, use a feature branch from the start. After focused evidence passes, create atomic commits, push the branch, and open or update a PR that records scope, implementation, verification evidence, risks, unresolved items, and dependencies. An independent authorized reviewer or the user must approve; required checks must pass before merge. Development, commits, or pushes directly on `main` or another default branch are prohibited unless the user explicitly authorizes an emergency exception and its reason is recorded.
+For repository-changing work, the Agent automatically creates or selects an isolated feature branch from a verified baseline; it never asks the user to create the branch. It protects and safely migrates uncommitted default-branch work, asking only when separation is unsafe. After focused evidence passes, the Agent commits, pushes, and opens or updates a PR recording scope, implementation, evidence, risks, dependencies, and unresolved items. These mechanical steps are preauthorized by the change request. An independent authorized reviewer or the user must approve and required checks must pass before merge. Direct default-branch work requires prior user authorization and a recorded reason. After confirmed merge, cleanup is automatic only when the worktree is clean and no unmerged commits or open dependencies remain.
 
 ## Prompt footprint
 
@@ -39,10 +39,10 @@ The comparison baseline is a local 14-Skill installation from `obra/superpowers`
 | Measure | Baseline | Version 0.8 | Reduction |
 |---|---:|---:|---:|
 | Workflow Skills | 14 | 11 | 21.4% |
-| Total `SKILL.md` words | 15,737 | 5,417 | 65.6% |
+| Total `SKILL.md` words | 15,737 | 5,474 | 65.2% |
 | Always-trigger router | Yes | No | Removed |
 
-A focused route loads one body of 233–850 words. The longest Skills carry concrete planning, orchestrated-delivery, worktree, or subagent contracts and load only when those structures materially help. The full 5,417-word package is never a mandatory prompt chain. Word count is a structural proxy, not a model-quality or tokenization guarantee.
+A focused route loads one body of 233–850 words. The longest Skills carry concrete planning, orchestrated-delivery, worktree, or subagent contracts and load only when those structures materially help. The full 5,474-word package is never a mandatory prompt chain. Word count is a structural proxy, not a model-quality or tokenization guarantee.
 
 ## Install
 
@@ -124,7 +124,7 @@ Use $agentic-superpowers to coordinate this migration end to end.
 Use `docs/implementation-closed-loop.md` as a reusable template for long-running Spec → Plan → Execution workflows (including Plan A/B/C style handoffs and model-split recommendations).
 ```
 
-Ordinary questions still use Codex directly. Repository-changing outcomes implicitly add Git & Delivery for the feature-branch, commit, PR, approval, check, and merge contract; explicit `$skill-name` invocation remains available.
+Ordinary questions still use Codex directly. Repository-changing outcomes implicitly add Git & Delivery: the Agent handles branch, commit, push, and PR mechanics; the user or an independent reviewer controls approval, and merge remains explicitly authorized. Explicit `$skill-name` invocation remains available.
 
 ### Process auditor
 

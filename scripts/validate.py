@@ -214,14 +214,19 @@ check(
 git_delivery_path = SKILLS_ROOT / "agentic-git-delivery" / "SKILL.md"
 git_delivery_text = git_delivery_path.read_text(encoding="utf-8") if git_delivery_path.is_file() else ""
 git_delivery_patterns = {
-    "feature branch before development": r"before development.{0,80}feature branch",
-    "default branch prohibition": r"do not develop, commit, or push directly.{0,80}default branch",
-    "branch push and pull request": r"push the feature branch.{0,80}pull request",
-    "pull request evidence fields": r"PR scope.{0,120}verification evidence.{0,120}risks.{0,80}dependencies",
+    "agent and user responsibility split": r"agent owns delivery mechanics.{0,80}user reviews the PR and decides merge",
+    "automatic isolated branch": r"before implementation.{0,80}automatically create or select.{0,80}isolated task branch",
+    "no user branch mechanics": r"never ask the user to do it",
+    "dirty default branch protection": r"protect and migrate uncommitted default-branch work.{0,80}safe separation is impossible",
+    "preauthorized commit push and PR": r"automatically commit, push, and open or update the PR.{0,100}preauthorized defaults.{0,80}stepwise confirmation",
+    "pull request evidence fields": r"record scope.{0,80}implementation.{0,80}evidence.{0,80}risks.{0,80}dependencies.{0,80}unresolved items",
     "implementer cannot approve": r"implementer.{0,40}cannot approve",
-    "independent or user approval": r"independent authorized reviewer or the user",
+    "pull request is not approval": r"PR creation.{0,40}not approval",
+    "independent or user approval": r"independent authorized-reviewer or user approval",
     "required checks before merge": r"merge only after.{0,80}required check",
-    "recorded emergency exception": r"emergency exception.{0,100}explicit user authorization.{0,80}record the reason",
+    "high-impact authorization": r"explicit authorization.{0,120}merge.{0,80}force push.{0,80}history rewrite.{0,100}deleting an unmerged branch.{0,80}visibility changes",
+    "recorded default branch exception": r"direct default-branch work.{0,80}prior user authorization.{0,80}recorded reason",
+    "safe automatic cleanup": r"after confirmed merge.{0,100}automatically clean.{0,100}worktree is clean.{0,100}no unmerged commits or open dependencies",
 }
 for label, pattern in git_delivery_patterns.items():
     check(

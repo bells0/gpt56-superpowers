@@ -34,13 +34,15 @@ The suite deliberately does not install live aliases for old Skill names. Keepin
 
 `agentic-git-delivery` also establishes a review-gated default for repository changes:
 
-- development, commits, and pushes occur on a task-specific feature branch, not the default branch;
-- verified outcomes receive atomic commits, then the completed branch is pushed into a PR;
+- the Agent automatically creates or selects the isolated task branch before implementation and never asks the user to create it;
+- dirty default-branch work is protected and safely migrated, with user input needed only when separation is unsafe;
+- after verification, atomic commits, feature-branch push, and PR creation or update happen automatically without stepwise confirmation;
 - the PR records scope, implementation, verification evidence, risks, unresolved items, and dependencies;
-- an independent authorized reviewer or the user must approve, and every required check must pass before merge;
+- PR creation is not approval; an independent authorized reviewer or the user must approve, every required check must pass, and merge requires explicit authority;
 - the implementer cannot approve its own work;
 - an explicit local-only request stops before push;
-- direct default-branch work requires prior user authorization and a recorded emergency reason.
+- direct default-branch work, force push, history rewrite, unmerged-branch deletion, visibility changes, and comparable high-impact actions require prior authorization;
+- after confirmed merge, cleanup is automatic only when the worktree is clean and no unmerged commits or open dependencies remain.
 
 ## Repository and catalog contract
 

@@ -28,7 +28,7 @@ If already isolated, keep the existing worktree. Do not nest another one. Record
 
 ## Create isolation safely
 
-1. Prefer a Codex or harness-native worktree action when the current task can use it. Native controls own placement, branch state, handoff, and cleanup; do not create invisible parallel state behind them.
+1. Prefer a Codex or harness-native worktree action when the current task can use it. The Agent creates or selects the branch; never ask the user to perform this mechanic. Native controls own placement, branch state, handoff, and cleanup; do not create invisible parallel state behind them.
 2. If no native path is available, use `git worktree` directly.
 3. Honor explicit branch and directory choices. Otherwise use the repository's existing `.worktrees/` or `worktrees/` convention; `.worktrees/` wins when both exist.
 4. Before using a project-local directory, verify it is ignored with `git check-ignore`. Do not silently edit `.gitignore` or create a commit solely to make worktree setup succeed. Use an approved external location or ask when no safe location exists.
@@ -61,4 +61,4 @@ Report:
 - setup and baseline evidence;
 - any limitation affecting later cleanup.
 
-Let `agentic-git-delivery` own atomic completion commits and any safe cleanup. Worktree creation never authorizes push, merge, branch deletion, or removal of another worktree.
+Let `agentic-git-delivery` own atomic completion commits, feature-branch push, PR delivery, and safe post-merge cleanup. Worktree creation alone never authorizes merge, branch deletion, or removal of another worktree.

@@ -71,12 +71,12 @@
   },
   {
     "id": "git-delivery",
-    "prompt": "Create a feature branch, commit the scoped changes, push it, and open a pull request recording scope, implementation, evidence, risks, and dependencies. Do not merge until an independent approver or the user approves and required checks pass. Do not rewrite remote history.",
+    "prompt": "Implement this repository change. Own the mechanical Git delivery without asking me to create a branch, commit, push, or open the pull request. Protect any dirty default-branch work, record scope, implementation, evidence, risks, dependencies, and unresolved items in the PR, and leave merge for my explicit decision after independent approval and required checks.",
     "expected": {
       "skills": ["agentic-git-delivery"],
       "approval": false,
       "local_commit": true,
-      "evidence": ["default branch unchanged", "staged diff", "atomic commit", "pushed feature branch", "PR evidence fields", "independent approval and required-check merge gate"]
+      "evidence": ["agent-owned branch, commit, push, and PR mechanics", "protected or safely migrated default-branch work", "staged diff", "atomic commit", "PR evidence fields", "PR creation is not approval", "independent approval, required-check, and explicit-authority merge gate", "conditional safe post-merge cleanup"]
     }
   },
   {

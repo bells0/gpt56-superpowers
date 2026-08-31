@@ -42,8 +42,8 @@ The sibling Skills own material design ambiguity, implementation-ready plans, ju
 
 ## Permission and completion
 
-Read-only requests authorize inspection and reporting. Change requests authorize in-scope local edits and relevant non-destructive checks. Obtain specific authority for external writes, destructive operations, purchases, force pushes, permanent discard, or material scope expansion unless the current request already grants it.
+Read-only requests authorize inspection. Repository changes authorize edits, checks, isolated task branches, atomic commits, feature-branch push, and PR creation or update. The Agent performs these mechanics without repeated confirmation. Obtain authority for merge, force push, history rewrite, unmerged-branch deletion, visibility changes, destructive operations, purchases, permanent discard, or material scope expansion.
 
-Finish when success conditions have matching evidence. Commit each acceptable repository outcome at its approved atomic boundary; exclude read-only, proposed, incomplete, failed, blocked, empty, or unsafe work. Use `agentic-git-delivery` for feature-branch push, PR evidence, independent approval, required checks, and merge. The implementer cannot approve; explicit local-only instructions stop before remote delivery.
+Finish when success conditions have matching evidence. Commit each acceptable repository outcome at its approved atomic boundary; exclude read-only, proposed, incomplete, failed, blocked, empty, or unsafe work. Use `agentic-git-delivery` for agent-owned delivery mechanics, PR evidence, independent approval, required checks, explicitly authorized merge, and safe post-merge cleanup. The implementer cannot approve; explicit local-only instructions stop before remote delivery.
 
 Report the outcome first, then decisive evidence, material gaps, the commit result, and a next action only when one remains.

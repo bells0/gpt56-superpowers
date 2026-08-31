@@ -31,16 +31,18 @@ Record the two independently. Tests passing does not imply user acceptance, and 
 
 ## Close Git boundaries
 
-- Develop on a task-specific feature branch; never use the default branch without an explicit recorded emergency authorization.
+- Automatically create or select a task-specific feature branch before implementation; never ask the user to create it or use the default branch without explicit recorded authorization.
+- Protect and safely migrate uncommitted default-branch work; ask only when it cannot be separated safely.
 - Map each independently acceptable and revertible outcome to one atomic commit.
 - Verify and commit an accepted boundary before dependent work consumes it.
 - Stage only owned paths or hunks and inspect the staged diff.
 - Commit child repositories before updating and committing parent gitlinks or pointers.
 - Preserve unrelated dirty state and report it.
 - Leave proposed, incomplete, failed, blocked, rejected, explicitly opted-out, or unsafe-to-isolate work uncommitted.
-- Push the completed feature branch and create or update a PR unless delivery is explicitly local-only.
+- After verification, automatically commit, push the completed feature branch, and create or update a PR without stepwise confirmation unless delivery is explicitly local-only.
 - Record PR scope, implementation, evidence, risks, unresolved items, and dependencies.
-- Require independent authorized or user approval and all required checks before merge; the implementer cannot approve its own work.
+- Require independent authorized or user approval, all required checks, and explicit merge authority; PR creation is not approval and the implementer cannot approve its own work.
+- After confirmed merge, clean local and remote branches automatically only when the worktree is clean and no unmerged commits or open dependencies remain.
 
 ## Completion record
 

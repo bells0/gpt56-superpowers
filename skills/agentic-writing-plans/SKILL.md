@@ -55,7 +55,7 @@ Start with:
 
 ## Delivery Contract
 - Completion trigger: [objective condition; user acceptance when required]
-- Commit ownership: [controller or explicitly assigned worker]
+- Delivery ownership: [Agent owns branch, commit, push, PR; user owns merge]
 - Plan baseline: [commit an approved durable Plan before implementation; never commit it while proposed]
 - Commit map: [Task N → owned paths, evidence, message; group only inseparable tasks]
 - Sequence: [verify and commit each boundary before dependent work]
@@ -94,9 +94,9 @@ Avoid brittle line ranges and mandatory test rituals. Include snippets only for 
 
 ## Define the delivery contract
 
-For every repository-changing Plan, define completion, atomic boundaries, and ownership. An acceptance gate delays its boundary; an explicit opt-out prevents commit. Keep a durable Plan uncommitted while proposed; after approval, commit its baseline before implementation. The controller normally owns each task commit after integration; workers commit only when assigned.
+For every repository-changing Plan, define completion and atomic boundaries. Acceptance gates delay their boundary; explicit opt-outs prevent commit. Keep a durable Plan uncommitted while proposed; commit its baseline before implementation. The Agent owns delivery mechanics; workers commit only when assigned.
 
-Derive task and repository order from dependencies. Verify and commit each boundary before dependent work. Child repository commits precede parent gitlink or pointer updates. Record branch, evidence, hashes, PR/check/approval/merge state, and preserved dirty state. Use `agentic-git-delivery`; explicit local-only instructions stop before push.
+Derive task and repository order from dependencies. Verify and commit each boundary before dependent work. Child repository commits precede parent gitlink or pointer updates. Record branch, evidence, hashes, PR/check/approval/merge state, and preserved dirty state. Use `agentic-git-delivery`; the user controls merge, and explicit local-only instructions stop before push.
 
 ## Remove Plan failures
 

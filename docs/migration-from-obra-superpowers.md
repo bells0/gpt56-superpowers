@@ -33,10 +33,11 @@ This project is an original model-evolving rewrite, not a compatibility layer. I
 
 - Ground decisions in the project and preserve unrelated user changes.
 - Respect explicit scope, values, and authorization.
-- Obtain specific authority for unapproved external or destructive actions.
+- Treat agent-owned task-branch, commit, feature-branch push, and PR mechanics as preauthorized by a repository change request; obtain specific authority for merge or other high-impact actions.
 - Diagnose non-obvious failures from evidence and revisit the original symptom.
 - Match material completion claims to proportionate evidence and disclose gaps.
-- Develop on a task feature branch, commit verified atomic outcomes, push the completed branch, and use an evidence-bearing PR with independent approval and required checks before merge.
+- Have the Agent automatically create or select the task branch, protect dirty default-branch work, commit verified atomic outcomes, push the completed branch, and open or update the evidence-bearing PR without stepwise confirmation.
+- Treat PR creation as delivery, not approval; merge only with independent or user approval, required checks, and explicit merge authority.
 - Preserve explicit local-only delivery requests and require a recorded user-authorized emergency exception for direct default-branch work.
 - Evaluate review findings technically rather than applying them blindly.
 
