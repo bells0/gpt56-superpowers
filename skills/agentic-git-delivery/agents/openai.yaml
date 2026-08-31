@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agentic Git & Delivery"
+  short_description: "Own branch, commit, push, and PR mechanics"
+  default_prompt: "Use $agentic-git-delivery to perform authorized branch, commit, push, and PR mechanics; leave approval and merge decisions to an independent reviewer or the user."
+policy:
+  allow_implicit_invocation: true

@@ -1,6 +1,0 @@
-interface:
-  display_name: "GPT-5.6 Worktree Isolation"
-  short_description: "Create safe local Git worktree isolation"
-  default_prompt: "Use $gpt56-using-git-worktrees to prepare safe isolation for this repository task."
-policy:
-  allow_implicit_invocation: true

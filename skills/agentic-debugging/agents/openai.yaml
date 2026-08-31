@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agentic Debugging"
+  short_description: "Investigate ambiguous or persistent failures"
+  default_prompt: "Use $agentic-debugging to diagnose this failure from evidence."
+policy:
+  allow_implicit_invocation: true

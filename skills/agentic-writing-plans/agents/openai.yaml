@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agentic Writing Plans"
+  short_description: "Turn approved specs into executable plans"
+  default_prompt: "Use $agentic-writing-plans to turn this approved Spec into ordered, implementation-ready Plans with atomic commit boundaries and a controller-owned execution handoff."
+policy:
+  allow_implicit_invocation: true

@@ -1,19 +1,19 @@
 # Evaluation
 
-The checked-in scenario matrix tests routing intent and package invariants. It is not a claim that a live GPT-5.6 benchmark occurred.
+The checked-in scenario matrix tests routing intent and package invariants. It is not a claim that a live benchmark occurred for the current or any future [model profile](model-profiles.md).
 
 ## Fourteen representative scenarios
 
 | Scenario | Expected route | Decisive behavior |
 |---|---|---|
 | Read-only code explanation | None | Answer from inspected evidence without workflow overhead |
-| Clear static edit | Git & Delivery | Direct change, obvious artifact checks, and a scoped local commit |
+| Clear static edit | Git & Delivery | Feature-branch change, obvious artifact checks, atomic commit, and review-gated delivery |
 | Public API or migration ambiguity | Design & Planning | Choose a tradeoff and define boundaries and acceptance |
 | Intermittent cross-component failure and fix | Debugging + Git & Delivery | Find the first divergence, recheck the symptom, and commit the completed fix |
 | Material visual or release claim | Verification | Match claim breadth to reliable evidence |
 | Unjustified workflow defenses | Purpose-Bound Rigor | Require a concrete protected outcome, observed risk, existing gap, and minimal effective measure |
 | Independent investigations or focused security review | Delegation & Review | Parallelize true independence and synthesize findings |
-| Authorized branch, commit, push, and pull request | Git & Delivery | Preserve unrelated state and verify delivery results |
+| Repository change with remote delivery | Git & Delivery | Agent owns branch, commit, push, and PR mechanics without stepwise approval; independent review, checks, and explicit authority gate merge |
 | Cross-module migration with architecture and evidence dependencies | Core + Design + Verification | Coordinate phases without loading the complete suite |
 | Explicit no-commit request | Git & Delivery | Verify the change while leaving it uncommitted |
 | Settled multi-module requirements | Writing Plans | Separate provided, observed, proposed, and unresolved facts in an implementation-ready plan |
@@ -25,12 +25,12 @@ The checked-in scenario matrix tests routing intent and package invariants. It i
 
 ## Current evidence
 
-- Deterministic validation checks all eleven Skill structures, per-Skill trigger budgets, forbidden forced ritual language, declared workflow resources, dependency-aware routing, and the fourteen-scenario specification.
-- Transaction smoke tests exercise fresh and upgrade installs, exact restore semantics, conflicts, injected install and restore failures, version-0.3, version-0.6, and version-1 compatibility, path aliases, locks, spaces, and broken links.
+- Deterministic validation checks all eleven Skill structures, per-Skill trigger budgets, forbidden forced ritual language, declared workflow resources, dependency-aware routing, the agent-owned mechanical Git delivery contract, review-gated merge, and the fourteen-scenario specification.
+- Transaction smoke tests exercise fresh and upgrade installs, exact restore semantics, conflicts, injected install and restore failures, legacy `gpt56-*` migration, version-0.3, version-0.6, version-0.7, and version-1 compatibility, path aliases, locks, spaces, and broken links.
 - A three-case blind forward review on 2026-07-20 covered an implicit simple-change commit, an explicit no-commit request, and a multi-repository completion. All three followed the version-0.3 local-commit contract.
-- Three focused forward scenarios on 2026-07-27 covered evidence-grounded implementation plans, dirty-checkout worktree isolation, and Sol-controlled subagent execution. The first Writing Plans pass exposed invented repository details; the revised evidence classification passed the second blind scenario.
+- Three focused GPT-5.6 Sol scenarios on 2026-07-27 covered evidence-grounded implementation plans, dirty-checkout worktree isolation, and controller-owned subagent execution. The first Writing Plans pass exposed invented repository details; the revised evidence classification passed the second blind scenario.
 
-The blind review tests semantic separation in the discovery descriptions. It does not exercise Codex's production implicit router and is not a live GPT-5.6 outcome, latency, token, or cost benchmark.
+The blind review tests semantic separation in the discovery descriptions. It does not exercise Codex's production implicit router and is not a repository-wide live outcome, latency, token, or cost benchmark.
 
 ## Compare effectiveness
 

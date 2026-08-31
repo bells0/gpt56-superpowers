@@ -1,6 +1,6 @@
 # Third-party notices
 
-GPT-5.6 Superpowers is an original rewrite informed by the workflow concepts and lessons of [obra/superpowers](https://github.com/obra/superpowers). It does not bundle the upstream Skill files.
+Agentic Superpowers is an original rewrite informed by the workflow concepts and lessons of [obra/superpowers](https://github.com/obra/superpowers). It does not bundle the upstream Skill files.
 
 The upstream project is licensed under the MIT License:
 

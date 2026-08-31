@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agentic Design & Planning"
+  short_description: "Resolve material design and scope ambiguity"
+  default_prompt: "Use $agentic-design-planning to resolve the material design choices in this task."
+policy:
+  allow_implicit_invocation: true

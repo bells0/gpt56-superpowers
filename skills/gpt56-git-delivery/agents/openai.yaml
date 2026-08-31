@@ -1,6 +1,0 @@
-interface:
-  display_name: "GPT-5.6 Git & Delivery"
-  short_description: "Create atomic commits and handle Git delivery"
-  default_prompt: "Use $gpt56-git-delivery to safely deliver verified repository outcomes at atomic commit boundaries and perform only authorized remote actions."
-policy:
-  allow_implicit_invocation: true

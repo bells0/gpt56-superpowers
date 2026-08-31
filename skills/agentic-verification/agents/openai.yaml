@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agentic Verification"
+  short_description: "Choose evidence for unclear validation"
+  default_prompt: "Use $agentic-verification to select proportionate evidence for this change."
+policy:
+  allow_implicit_invocation: true

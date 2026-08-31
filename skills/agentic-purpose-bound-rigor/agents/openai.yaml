@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agentic Purpose-Bound Rigor"
+  short_description: "Require evidence before adding workflow defenses"
+  default_prompt: "Use $agentic-purpose-bound-rigor to keep this implementation proportionate and evidence-driven."
+policy:
+  allow_implicit_invocation: true

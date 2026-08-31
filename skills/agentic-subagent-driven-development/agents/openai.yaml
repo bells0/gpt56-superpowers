@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agentic Subagent Development"
+  short_description: "Execute suitable plans under controller ownership"
+  default_prompt: "Use $agentic-subagent-driven-development to execute this suitable plan with bounded subagents under accountable controller ownership."
+policy:
+  allow_implicit_invocation: true

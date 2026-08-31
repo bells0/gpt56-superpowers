@@ -2,24 +2,24 @@
 
 ## Goal
 
-Give GPT-5.6 a small set of precise development lenses without re-teaching reliable base-model behavior or forcing every task through one workflow.
+Give evolving coding agents a small set of precise development lenses without re-teaching reliable base-model behavior or forcing every task through one workflow.
 
 ## Hub and spokes
 
 The suite contains eleven focused Skills:
 
 ```text
-gpt56-superpowers                       Sol-led cross-phase coordination
-├── gpt56-orchestrate-delivery          opt-in standardized delivery lifecycle
-├── gpt56-design-planning               material ambiguity
-├── gpt56-writing-plans                 implementation-ready plans
-├── gpt56-using-git-worktrees           justified repository isolation
-├── gpt56-subagent-driven-development   bounded plan execution
-├── gpt56-debugging                     non-obvious failures
-├── gpt56-verification                  claim-matched evidence
-├── gpt56-purpose-bound-rigor           necessity for workflow defenses
-├── gpt56-delegation-review             independent work or judgment
-└── gpt56-git-delivery                  repository delivery state
+agentic-superpowers                       controller-led cross-phase coordination
+├── agentic-orchestrate-delivery          opt-in standardized delivery lifecycle
+├── agentic-design-planning               material ambiguity
+├── agentic-writing-plans                 implementation-ready plans
+├── agentic-using-git-worktrees           justified repository isolation
+├── agentic-subagent-driven-development   bounded plan execution
+├── agentic-debugging                     non-obvious failures
+├── agentic-verification                  claim-matched evidence
+├── agentic-purpose-bound-rigor           necessity for workflow defenses
+├── agentic-delegation-review             independent work or judgment
+└── agentic-git-delivery                  repository delivery state
 ```
 
 The diagram describes ownership, not a required call chain. Every spoke is a direct entry point. Orchestrated Delivery is the explicit exception for users who want a standardized current-truth → Spec → Plan → Execution → Review → Verification → Acceptance → Closure lifecycle; its narrow trigger prevents that workflow from becoming a tax on ordinary tasks. Design may hand settled requirements to Writing Plans; a suitable plan may hand independently ownable outcomes to Subagent Development; Worktree Isolation is optional; Verification and Git Delivery close only the claims and repository actions that need them.
@@ -30,7 +30,7 @@ The full repository installer adds the concise `.codex/purpose-bound-rigor.md` f
 
 - Read-only and clear non-repository work: no suite Skill.
 - Explicit standardized delivery or long-running multi-module work that needs durable cross-phase control: Orchestrated Delivery.
-- Completed repository-changing outcomes: Git & Delivery supplies atomic local commits at verified boundaries.
+- Repository-changing outcomes: Git & Delivery makes the Agent own the task branch, atomic commits, branch push, and evidence-bearing PR; independent approval and required checks gate explicitly authorized merge.
 - One consequential decision domain: one narrow Skill.
 - Two or more dependent phases whose ordering and synthesis affect success: core plus only the one or two narrow Skills that change a decision.
 - Proposed hashes, gates, isolation, mocks, freezes, repeated reviews, or broad reruns: Purpose-Bound Rigor requires a concrete protected outcome, observed risk, existing gap, and minimal intervention.
@@ -50,7 +50,11 @@ Orchestrated Delivery codifies the controller-led method only when the user sele
 
 ### Focused ownership
 
-Each spoke owns one decision domain. Trigger overlap is minimized by separating design uncertainty, implementation planning, isolation, bounded execution, causal uncertainty, evidence selection, coordination value, and Git delivery state. Git & Delivery additionally owns suite-wide atomic commit boundaries for repository changes.
+Each spoke owns one decision domain. Trigger overlap is minimized by separating design uncertainty, implementation planning, isolation, bounded execution, causal uncertainty, evidence selection, coordination value, and Git delivery state. Git & Delivery additionally owns suite-wide feature-branch and review-gated delivery boundaries for repository changes.
+
+### Stable identity, versioned model profiles
+
+Repository, plugin, and Skill identifiers describe durable agentic-engineering responsibilities rather than a model generation. Model-specific prompting inputs, assumptions, and evaluation status live in [model profiles](model-profiles.md). A future model update changes a profile and the affected contracts, not every public identifier.
 
 ### Grounded implementation plans
 
@@ -58,11 +62,13 @@ Writing Plans distinguishes user-provided facts, repository observations, propos
 
 ### Conditional isolation and subagents
 
-Worktree Isolation activates only for an explicit request or a concrete safety benefit. Subagent Development activates only for implementation-ready plans with independently ownable outcomes; Sol retains shared state, integration decisions, and final evidence.
+Worktree Isolation activates only for an explicit request or a concrete safety benefit. Subagent Development activates only for implementation-ready plans with independently ownable outcomes; the controller retains shared state, integration decisions, and final evidence.
 
-### Atomic completion commits
+### Feature-branch, review-gated delivery
 
-Each independently acceptable outcome maps to one local commit per affected repository after focused evidence passes. The outcome must have one purpose and be independently revertible without leaving dependent history broken; every edit or partial test phase is not a boundary. An approved Plan supplies the commit map, and dependent work starts only after the current boundary is verified and committed. Task-owned paths or hunks are staged explicitly, unrelated user changes remain untouched, and proposed, opted-out, unsafe, incomplete, failed, blocked, or empty work remains uncommitted. Push and other remote authority stay separate.
+Before implementation, the Agent automatically creates or selects a task-specific feature branch from a verified baseline, never asks the user to create it, and never works directly on `main` or another default branch. If the default branch has uncommitted user work, the Agent protects and safely migrates it; only unsafe separation requires a question. Each independently acceptable outcome maps to one atomic commit per affected repository after focused evidence passes. The outcome must have one purpose and be independently revertible without leaving dependent history broken. Task-owned paths or hunks are staged explicitly, unrelated user changes remain untouched, and proposed, opted-out, unsafe, incomplete, failed, blocked, or empty work remains uncommitted.
+
+After focused verification, the Agent automatically commits, pushes, and opens or updates a PR containing scope, implementation, evidence, risks, unresolved items, and dependencies. The change request preauthorizes these mechanical actions, so the Agent does not seek stepwise confirmation. PR creation is not approval, and the implementer cannot approve its own work. Merge requires independent authorized-reviewer or user approval, every required check, and explicit merge authority. Explicit local-only instructions stop before push. Direct default-branch work requires prior user authorization and a recorded reason. After confirmed merge, automatic local and remote cleanup is allowed only with a clean worktree and no unmerged commits or open dependencies.
 
 ### Claim-based verification
 
@@ -85,13 +91,13 @@ The direct path is the default for local, reversible work. A non-default defense
 
 Delegation is justified by independent deliverables, elapsed-time savings, or fresh judgment that can change a material decision. Review is focused on named risks rather than added as a universal stage.
 
-## Mapping to GPT-5.6 guidance
+## Current guidance mapping
 
-| Official guidance | Implementation |
+| Current model-profile guidance | Stable implementation |
 |---|---|
 | State outcomes and stop rules | Six-part core contract and completion conditions |
 | Remove repeated process instructions | Nine focused bodies loaded only at matching boundaries; no mandatory chain |
-| Define autonomy and permissions | Verified local outcomes receive atomic commits; remote and destructive authority stay separate |
+| Define autonomy and permissions | Agent-owned branch, commit, push, and PR mechanics; independent approval, explicit merge authority, and safe cleanup |
 | Route tools by dependency | Parallel independent work; sequential dependencies; synthesis before claims |
 | Validate what matters | Claim-to-evidence selection and explicit gaps |
 | Keep progress sparse | Outcome-first reporting and phase-level updates |
@@ -109,4 +115,4 @@ Repository validation enforces per-Skill budgets based on each contract's comple
 - complete package: at most 5,800 words;
 - only declared SDD resources and no mandatory `$skill` call chain.
 
-Version 0.7 keeps the coordinator under 600 words and the complete package under 5,800 words. These are guardrails, not targets; normal routing loads only the matching bodies and any explicitly needed resource.
+Version 0.8 keeps the coordinator under 600 words and the complete package under 5,800 words. These are guardrails, not targets; normal routing loads only the matching bodies and any explicitly needed resource.

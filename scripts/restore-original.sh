@@ -5,12 +5,32 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 SKILLS_ROOT="${SKILLS_ROOT:-$CODEX_HOME/skills}"
-BACKUP_ROOT="${BACKUP_ROOT:-$CODEX_HOME/skill-backups/gpt56-superpowers}"
+BACKUP_ROOT_IS_EXPLICIT=0
+if [[ "${BACKUP_ROOT+x}" == "x" ]]; then
+  BACKUP_ROOT_IS_EXPLICIT=1
+fi
+BACKUP_ROOT="${BACKUP_ROOT:-$CODEX_HOME/skill-backups/agentic-superpowers}"
+LEGACY_BACKUP_ROOT="$CODEX_HOME/skill-backups/gpt56-superpowers"
 SOURCE_ROOT="$REPO_ROOT/skills"
-LOCK_DIR="$SKILLS_ROOT/.gpt56-superpowers.lock"
+LOCK_DIR="$SKILLS_ROOT/.agentic-superpowers.lock"
+LEGACY_LOCK_DIR="$SKILLS_ROOT/.gpt56-superpowers.lock"
 GLOBAL_RUNTIME_HELPER="$REPO_ROOT/scripts/manage-global-runtime.py"
 
 MANAGED_SKILLS=(
+  agentic-superpowers
+  agentic-orchestrate-delivery
+  agentic-design-planning
+  agentic-writing-plans
+  agentic-using-git-worktrees
+  agentic-subagent-driven-development
+  agentic-debugging
+  agentic-verification
+  agentic-purpose-bound-rigor
+  agentic-delegation-review
+  agentic-git-delivery
+)
+
+VERSION_07_MANAGED_SKILLS=(
   gpt56-superpowers
   gpt56-orchestrate-delivery
   gpt56-design-planning
@@ -46,7 +66,7 @@ VERSION_03_MANAGED_SKILLS=(
   gpt56-git-delivery
 )
 
-LEGACY_SKILLS=(
+LEGACY_OBRA_SKILLS=(
   brainstorming
   dispatching-parallel-agents
   executing-plans
@@ -63,12 +83,14 @@ LEGACY_SKILLS=(
   writing-skills
 )
 
+LEGACY_SKILLS=("${VERSION_07_MANAGED_SKILLS[@]}" "${LEGACY_OBRA_SKILLS[@]}")
+
 exists() {
   [[ -e "$1" || -L "$1" ]]
 }
 
-exact_link() {
-  [[ -L "$SKILLS_ROOT/$1" ]] && [[ "$(readlink "$SKILLS_ROOT/$1")" == "$SOURCE_ROOT/$1" ]]
+link_points_to() {
+  [[ -L "$SKILLS_ROOT/$1" ]] && [[ "$(readlink "$SKILLS_ROOT/$1")" == "$2" ]]
 }
 
 contains_name() {
@@ -95,6 +117,7 @@ mkdir -p "$SKILLS_ROOT" "$BACKUP_ROOT"
 BACKUP_DIR=""
 restored_names=()
 removed_names=()
+removed_targets=()
 committed=0
 lock_held=0
 restored_marker=""
@@ -129,7 +152,7 @@ rollback() {
   for ((index=${#removed_names[@]} - 1; index >= 0; index--)); do
     name="${removed_names[$index]}"
     if ! exists "$SKILLS_ROOT/$name"; then
-      ln -s "$SOURCE_ROOT/$name" "$SKILLS_ROOT/$name" || rollback_error=1
+      ln -s "${removed_targets[$index]}" "$SKILLS_ROOT/$name" || rollback_error=1
     else
       echo "WARNING: rollback could not recreate $name because its path is occupied" >&2
       rollback_error=1
@@ -152,6 +175,9 @@ on_exit() {
   exit "$status"
 }
 
+if exists "$LEGACY_LOCK_DIR"; then
+  die "a legacy install or restore is active; inspect lock $LEGACY_LOCK_DIR"
+fi
 if ! mkdir "$LOCK_DIR" 2>/dev/null; then
   die "another install or restore is active; inspect lock $LOCK_DIR"
 fi
@@ -161,12 +187,20 @@ printf '%s\n' "$$" > "$LOCK_DIR/owner"
 
 BACKUP_DIR="${1:-}"
 if [[ -z "$BACKUP_DIR" ]]; then
-  while IFS= read -r candidate; do
-    if [[ -f "$candidate/READY" && ! -f "$candidate/RESTORED" ]]; then
-      BACKUP_DIR="$candidate"
-      break
-    fi
-  done < <(find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d | sort -r)
+  backup_roots=("$BACKUP_ROOT")
+  if [[ "$BACKUP_ROOT_IS_EXPLICIT" -eq 0 && "$LEGACY_BACKUP_ROOT" != "$BACKUP_ROOT" ]]; then
+    backup_roots+=("$LEGACY_BACKUP_ROOT")
+  fi
+  for backup_root in "${backup_roots[@]}"; do
+    [[ -d "$backup_root" ]] || continue
+    while IFS= read -r candidate; do
+      if [[ -f "$candidate/READY" && ! -f "$candidate/RESTORED" ]]; then
+        BACKUP_DIR="$candidate"
+        break
+      fi
+    done < <(find "$backup_root" -mindepth 1 -maxdepth 1 -type d | sort -r)
+    [[ -z "$BACKUP_DIR" ]] || break
+  done
 fi
 
 [[ -n "$BACKUP_DIR" && -d "$BACKUP_DIR" ]] || die "no unrestored READY backup directory found"
@@ -190,7 +224,8 @@ state="$(sed -n 's/^state=//p' "$BACKUP_DIR/INSTALL_INFO" | tail -n 1)"
 restore_v2() {
   recorded_source_root="$(sed -n 's/^source_root=//p' "$BACKUP_DIR/INSTALL_INFO" | tail -n 1)"
   recorded_skills_root="$(sed -n 's/^skills_root=//p' "$BACKUP_DIR/INSTALL_INFO" | tail -n 1)"
-  [[ "$recorded_source_root" == "$SOURCE_ROOT" ]] || die "backup source does not match this repository"
+  [[ "$recorded_source_root" == /* && "$(basename "$recorded_source_root")" == "skills" ]] \
+    || die "backup source root is invalid"
   [[ "$recorded_skills_root" == "$SKILLS_ROOT" ]] || die "backup target does not match this Skills root"
 
   manifest_managed=()
@@ -203,6 +238,7 @@ restore_v2() {
   while IFS= read -r name; do manifest_moved+=("$name"); done < <(sed -n 's/^moved=//p' "$BACKUP_DIR/INSTALL_INFO")
 
   if [[ "${manifest_managed[*]}" != "${MANAGED_SKILLS[*]}" ]] \
+    && [[ "${manifest_managed[*]}" != "${VERSION_07_MANAGED_SKILLS[*]}" ]] \
     && [[ "${manifest_managed[*]}" != "${VERSION_06_MANAGED_SKILLS[*]}" ]] \
     && [[ "${manifest_managed[*]}" != "${VERSION_03_MANAGED_SKILLS[*]}" ]]; then
     die "managed Skill manifest is invalid"
@@ -239,7 +275,8 @@ restore_v2() {
 
   for name in "${manifest_moved[@]}"; do
     if exists "$SKILLS_ROOT/$name"; then
-      if contains_name "$name" "${manifest_created[@]}" && exact_link "$name"; then
+      if contains_name "$name" "${manifest_created[@]}" \
+        && link_points_to "$name" "$recorded_source_root/$name"; then
         continue
       fi
       die "restore collision at $SKILLS_ROOT/$name"
@@ -247,7 +284,8 @@ restore_v2() {
   done
 
   for name in "${manifest_created[@]}"; do
-    if exact_link "$name"; then
+    if link_points_to "$name" "$recorded_source_root/$name"; then
+      removed_targets+=("$(readlink "$SKILLS_ROOT/$name")")
       rm "$SKILLS_ROOT/$name"
       removed_names+=("$name")
     elif exists "$SKILLS_ROOT/$name" && contains_name "$name" "${manifest_moved[@]}"; then
@@ -271,7 +309,10 @@ restore_v1() {
   recorded_source="$(sed -n 's/^source=//p' "$BACKUP_DIR/INSTALL_INFO" | tail -n 1)"
   recorded_target="$(sed -n 's/^target=//p' "$BACKUP_DIR/INSTALL_INFO" | tail -n 1)"
   preserve_target="$(sed -n 's/^preserve_target=//p' "$BACKUP_DIR/INSTALL_INFO" | tail -n 1)"
-  [[ "$recorded_source" == "$SOURCE_ROOT/gpt56-superpowers" ]] || die "version-1 backup source does not match this repository"
+  [[ "$recorded_source" == /* \
+    && "$(basename "$recorded_source")" == "gpt56-superpowers" \
+    && "$(basename "$(dirname "$recorded_source")")" == "skills" ]] \
+    || die "version-1 backup source is invalid"
   [[ "$recorded_target" == "$SKILLS_ROOT/gpt56-superpowers" ]] || die "version-1 backup target does not match this Skills root"
   [[ "$preserve_target" == "0" || "$preserve_target" == "1" ]] || die "invalid version-1 preserve_target value"
 
@@ -289,7 +330,8 @@ restore_v1() {
   for name in "${manifest_moved[@]}"; do
     exists "$BACKUP_DIR/$name" || die "version-1 manifest item is absent from backup: $name"
     if exists "$SKILLS_ROOT/$name"; then
-      if [[ "$name" == "gpt56-superpowers" && "$preserve_target" == "0" ]] && exact_link "$name"; then
+      if [[ "$name" == "gpt56-superpowers" && "$preserve_target" == "0" ]] \
+        && link_points_to "$name" "$recorded_source"; then
         continue
       fi
       die "restore collision at $SKILLS_ROOT/$name"
@@ -305,8 +347,10 @@ restore_v1() {
   done
 
   if [[ "$preserve_target" == "1" ]]; then
-    exact_link gpt56-superpowers || die "version-1 backup expects the core link to remain present"
-  elif exact_link gpt56-superpowers; then
+    link_points_to gpt56-superpowers "$recorded_source" \
+      || die "version-1 backup expects the core link to remain present"
+  elif link_points_to gpt56-superpowers "$recorded_source"; then
+    removed_targets+=("$(readlink "$SKILLS_ROOT/gpt56-superpowers")")
     rm "$SKILLS_ROOT/gpt56-superpowers"
     removed_names+=("gpt56-superpowers")
   elif exists "$SKILLS_ROOT/gpt56-superpowers"; then
