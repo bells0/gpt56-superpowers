@@ -58,6 +58,6 @@ Treat engineering verification and user acceptance as separate gates:
 
 ## Close the delivery
 
-Update affected documentation to current truth. Commit each verified, independently acceptable repository outcome at its approved boundary. Child-repository commits precede parent gitlink or pointer updates. Stage only task-owned paths, preserve dirty state, and never infer push or other remote authority from commit authority.
+Update affected documentation to current truth. On a task-specific feature branch, commit each verified, independently acceptable repository outcome at its approved boundary. Child-repository commits precede parent gitlink or pointer updates. Stage only task-owned paths and preserve dirty state. Use `agentic-git-delivery` to push the branch, create the evidence-bearing PR, obtain independent approval, pass required checks, and control merge; explicit local-only instructions stop before push.
 
-Finish with the integrated outcome, decisive evidence, review disposition, acceptance state, documentation state, local commits, preserved user changes, and remaining gaps. Do not return a transcript of agent activity.
+Finish with the integrated outcome, decisive evidence, review disposition, acceptance state, documentation state, branch and PR state, commits, checks, approval, merge state, preserved user changes, and remaining gaps. Do not return a transcript of agent activity.

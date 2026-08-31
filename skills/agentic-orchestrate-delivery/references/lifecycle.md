@@ -50,9 +50,9 @@ Exit when the user or authorized acceptance owner has decided, or when pending a
 
 ## 8. Documentation and Git closure
 
-Update current-truth documentation, reconcile child and parent repositories, create scoped local commits, and perform only authorized remote actions.
+Update current-truth documentation, reconcile child and parent repositories, create scoped commits on the feature branch, push it, and create or update the evidence-bearing PR unless delivery is explicitly local-only. Merge only after independent approval and required checks pass.
 
-Exit when repository state, evidence, commits, preserved changes, acceptance state, and remaining gaps are accurately reported.
+Exit when repository state, evidence, commits, PR, checks, approval, merge state, preserved changes, acceptance state, and remaining gaps are accurately reported.
 
 ## Backward transitions
 

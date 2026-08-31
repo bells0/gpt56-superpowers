@@ -61,7 +61,7 @@ Start with:
 - Sequence: [verify and commit each boundary before dependent work]
 - Placement: [cross-task closure outside numbered tasks; controller after integration of each accepted boundary]
 - Repositories: [child repository commits precede parent gitlink/pointer updates]
-- Record: [verification, commit hashes, preserved unrelated dirty state; local commits only]
+- Record: [branch, verification, hashes, PR/check/approval/merge state, preserved dirty state]
 - No-commit states: [current boundary incomplete, failed, blocked, unsafe, acceptance gate pending, or explicit opt-out]
 ```
 
@@ -96,7 +96,7 @@ Avoid brittle line ranges and mandatory test rituals. Include snippets only for 
 
 For every repository-changing Plan, define completion, atomic boundaries, and ownership. An acceptance gate delays its boundary; an explicit opt-out prevents commit. Keep a durable Plan uncommitted while proposed; after approval, commit its baseline before implementation. The controller normally owns each task commit after integration; workers commit only when assigned.
 
-Derive task and repository order from dependencies. Verify and commit each boundary before dependent work. Child repository commits precede parent gitlink or pointer updates. Report verification, all hashes, and preserved dirty state. Default to local commits; never push without authorization.
+Derive task and repository order from dependencies. Verify and commit each boundary before dependent work. Child repository commits precede parent gitlink or pointer updates. Record branch, evidence, hashes, PR/check/approval/merge state, and preserved dirty state. Use `agentic-git-delivery`; explicit local-only instructions stop before push.
 
 ## Remove Plan failures
 

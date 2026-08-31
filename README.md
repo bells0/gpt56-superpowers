@@ -8,7 +8,7 @@ Version 0.8 introduces the model-neutral `agentic-*` namespace while retaining t
 
 The suite evolves through versioned model profiles instead of embedding a model generation in repository, plugin, or Skill identifiers. The current profile was shaped by [OpenAI's GPT-5.6 prompting guidance](https://developers.openai.com/api/docs/guides/prompt-guidance-gpt-5p6), while the stable contracts remain outcomes, constraints, evidence, autonomy, validation, permissions, and stop rules. See [model profiles](docs/model-profiles.md) for the distinction between design inputs, deterministic package checks, and live-model evidence.
 
-This suite keeps the useful invariants—permission boundaries, project grounding, root-cause diagnosis, evidence before claims, preservation of user changes—and removes methodology ritual. It does not impose fail-first development, repeated broad suites, automatic worktrees, or per-task review chains. Each independently acceptable repository outcome receives an atomic local commit after focused evidence passes; approved Plans define those boundaries, while explicit opt-outs and unsafe or incomplete work remain uncommitted. Commit authority never implies push authority.
+This suite keeps the useful invariants—permission boundaries, project grounding, root-cause diagnosis, evidence before claims, preservation of user changes—and removes methodology ritual. It does not impose fail-first development, repeated broad suites, automatic worktrees, or per-task review chains. Repository development occurs on task-specific feature branches. Verified outcomes receive atomic commits, the completed branch is pushed into a reviewable pull request, and merge waits for independent authorized or user approval plus all required checks. The implementer cannot approve its own work. Explicit local-only requests stop before push; direct default-branch work requires a recorded user-authorized emergency exception.
 
 ## Structure
 
@@ -24,9 +24,13 @@ This suite keeps the useful invariants—permission boundaries, project groundin
 | `agentic-verification` | Choosing proportionate evidence for material completion claims |
 | `agentic-purpose-bound-rigor` | Requiring a concrete necessity case before adding hashes, gates, isolation, mocks, freezes, or repeated reviews |
 | `agentic-delegation-review` | Genuinely independent parallel work or a focused independent review |
-| `agentic-git-delivery` | Atomic completion commits plus authorized branches, worktrees, pushes, pull requests, merges, or cleanup |
+| `agentic-git-delivery` | Feature-branch commits, pushed PR evidence, independent approval, required checks, controlled merge, or cleanup |
 
 All eleven are direct entry points. The orchestrated workflow is opt-in for explicit standardized delivery or long-running multi-module work; it does not force ordinary tasks through a fixed chain. The remaining execution-structure Skills may hand work to another focused Skill only at a real dependency boundary. Narrow trigger descriptions allow implicit routing without an always-on router, and explicit `$skill-name` invocation remains available.
+
+## Delivery contract
+
+For repository-changing work, use a feature branch from the start. After focused evidence passes, create atomic commits, push the branch, and open or update a PR that records scope, implementation, verification evidence, risks, unresolved items, and dependencies. An independent authorized reviewer or the user must approve; required checks must pass before merge. Development, commits, or pushes directly on `main` or another default branch are prohibited unless the user explicitly authorizes an emergency exception and its reason is recorded.
 
 ## Prompt footprint
 
@@ -35,10 +39,10 @@ The comparison baseline is a local 14-Skill installation from `obra/superpowers`
 | Measure | Baseline | Version 0.8 | Reduction |
 |---|---:|---:|---:|
 | Workflow Skills | 14 | 11 | 21.4% |
-| Total `SKILL.md` words | 15,737 | 5,404 | 65.7% |
+| Total `SKILL.md` words | 15,737 | 5,417 | 65.6% |
 | Always-trigger router | Yes | No | Removed |
 
-A focused route loads one body of 233–850 words. The longest Skills carry concrete planning, orchestrated-delivery, worktree, or subagent contracts and load only when those structures materially help. The full 5,404-word package is never a mandatory prompt chain. Word count is a structural proxy, not a model-quality or tokenization guarantee.
+A focused route loads one body of 233–850 words. The longest Skills carry concrete planning, orchestrated-delivery, worktree, or subagent contracts and load only when those structures materially help. The full 5,417-word package is never a mandatory prompt chain. Word count is a structural proxy, not a model-quality or tokenization guarantee.
 
 ## Install
 
@@ -120,7 +124,7 @@ Use $agentic-superpowers to coordinate this migration end to end.
 Use `docs/implementation-closed-loop.md` as a reusable template for long-running Spec → Plan → Execution workflows (including Plan A/B/C style handoffs and model-split recommendations).
 ```
 
-Ordinary questions still use Codex directly. Completed repository outcomes implicitly add Git & Delivery for atomic local commits at verified boundaries; explicit `$skill-name` invocation remains available.
+Ordinary questions still use Codex directly. Repository-changing outcomes implicitly add Git & Delivery for the feature-branch, commit, PR, approval, check, and merge contract; explicit `$skill-name` invocation remains available.
 
 ### Process auditor
 
@@ -151,7 +155,7 @@ Agentic Superpowers 是一套不绑定具体模型版本的轻量开发 Skill：
 
 本版本彻底移除了开发方法论强制，不要求先写失败测试、不要求 RED/GREEN/REFACTOR、不要求重复跑全量测试。保留的是更薄的“声明—证据”验证：文档看 diff/schema/link，Bug 复查原始症状，行为跑最相关检查，视觉实际渲染，发布遵守项目门禁；无法验证就明确缺口。
 
-每个独立可验收、可独立回滚且验证通过的仓库结果，默认形成一个原子本地 commit；已批准的 Plan 定义提交边界，依赖任务必须在当前边界提交后再继续。拟议中的 Plan、只读、未完成、验证失败、无法安全隔离或明确要求不提交的工作不会自动提交。默认 commit 不代表允许自动 push。
+仓库开发默认从功能分支开始。每个独立可验收、可独立回滚且验证通过的结果形成原子 commit；完成后推送功能分支，并通过 PR 记录范围、实现、验证证据、风险与依赖。开发者不能审批自己的实现，只有独立审批者或用户批准且必需检查通过后才能合并。禁止直接在 `main` 或默认分支开发、提交或推送；紧急例外必须由用户明确授权并记录原因。明确要求仅保留本地时，在 push 前停止。
 
 ## License and attribution
 

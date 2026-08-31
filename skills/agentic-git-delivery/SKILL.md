@@ -1,37 +1,27 @@
 ---
 name: agentic-git-delivery
-description: Handle atomic scoped commits and authorized Git delivery. Use for explicit Git operations and automatically after verified repository outcomes that should receive local commits.
+description: Deliver verified repository changes through feature branches, atomic commits, pushed branch state, reviewable pull requests, independent approval, required checks, and controlled merge.
 ---
 
 # Agentic Git & Delivery
 
-Deliver repository changes without losing user work or exceeding authority.
+Deliver repository changes without losing user work, bypassing review, or treating implementation as approval.
 
-## Default atomic commits
+## Feature-branch contract
 
-Completed repository work authorizes commits at verified boundaries without another prompt. Follow an approved Plan's commit map; otherwise map each independently acceptable outcome to one commit. A boundary has one purpose, relevant evidence, and can be reverted without breaking dependent history. Never batch independent outcomes or split edits and partial states.
+1. Inspect status, default branch, upstreams, remotes, and repository rules. Preserve unrelated user changes.
+2. Before development, create or switch to a task-specific feature branch. Do not develop, commit, or push directly on `main` or another default branch.
+3. Stage only task-owned paths or hunks. Map each independently acceptable, verified, revertible outcome to one atomic commit; never commit proposed, incomplete, failed, empty, or opted-out work.
+4. After the development outcome passes its focused evidence, push the feature branch and open or update its pull request unless the user explicitly limits delivery to local state or remote authority is unavailable.
+5. Record PR scope, implementation, verification evidence, risks, unresolved items, and dependencies. Keep required checks visible and current.
 
-Keep proposed Plans uncommitted; after approval, commit the baseline before implementation. Commit verified boundaries before dependent work. Never commit read-only, incomplete, failed, blocked, empty, opted-out, or unsafe boundaries. Commit never authorizes push.
+## Approval and merge gate
 
-## Prepare
+- The implementer owns the change but cannot approve it. Self-review and green checks are evidence, not approval.
+- Require approval from an independent authorized reviewer or the user.
+- Merge only after that approval and every required check passes. Never bypass failed hooks, checks, branch protection, or required review.
+- If review requests changes, update the same feature branch, add focused evidence, and request approval again when required.
 
-1. Inspect status, branch, upstreams, remotes, and rules.
-2. Separate task changes from unrelated user work; preserve the latter.
-3. Keep the suitable branch. Isolate only for parallel writes, overlap, long-lived risk, or an explicit request.
-4. Before a repository-local worktree, confirm its path is ignored.
+Direct default-branch work is an emergency exception only. Obtain explicit user authorization first and record the reason in the commit or PR. Force pushes, history rewrites, destructive cleanup, merge, tags, and releases require matching authority.
 
-## Deliver
-
-- Stage only task-owned paths or hunks; never broadly stage unrelated work.
-- Inspect the staged diff for the current boundary, follow message conventions, and create its atomic commit.
-- Record each hash and exclude later boundaries from the current commit.
-- Never bypass failed hooks or commit inseparable unrelated work.
-- Push, create pull requests, merge, tag, or change remote state only when authorized.
-- Confirm force, history rewrite, discard, or destructive cleanup unless authorized.
-- Prefer non-interactive commands.
-
-If remote state moved, inspect divergence first. “Sync” never implies destructive authority.
-
-## Completion
-
-Verify status and branch or remote relationships. Report commits, checks, preserved changes, and authorized remote results. Clean temporary isolation only when safe and in scope.
+Report branch, commits, push and PR state, checks, approval, merge result, preserved changes, and remaining blockers.

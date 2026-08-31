@@ -30,7 +30,7 @@ The full repository installer adds the concise `.codex/purpose-bound-rigor.md` f
 
 - Read-only and clear non-repository work: no suite Skill.
 - Explicit standardized delivery or long-running multi-module work that needs durable cross-phase control: Orchestrated Delivery.
-- Completed repository-changing outcomes: Git & Delivery supplies atomic local commits at verified boundaries.
+- Repository-changing outcomes: Git & Delivery owns the task feature branch, atomic commits, branch push, evidence-bearing PR, independent approval, required checks, and controlled merge.
 - One consequential decision domain: one narrow Skill.
 - Two or more dependent phases whose ordering and synthesis affect success: core plus only the one or two narrow Skills that change a decision.
 - Proposed hashes, gates, isolation, mocks, freezes, repeated reviews, or broad reruns: Purpose-Bound Rigor requires a concrete protected outcome, observed risk, existing gap, and minimal intervention.
@@ -50,7 +50,7 @@ Orchestrated Delivery codifies the controller-led method only when the user sele
 
 ### Focused ownership
 
-Each spoke owns one decision domain. Trigger overlap is minimized by separating design uncertainty, implementation planning, isolation, bounded execution, causal uncertainty, evidence selection, coordination value, and Git delivery state. Git & Delivery additionally owns suite-wide atomic commit boundaries for repository changes.
+Each spoke owns one decision domain. Trigger overlap is minimized by separating design uncertainty, implementation planning, isolation, bounded execution, causal uncertainty, evidence selection, coordination value, and Git delivery state. Git & Delivery additionally owns suite-wide feature-branch and review-gated delivery boundaries for repository changes.
 
 ### Stable identity, versioned model profiles
 
@@ -64,9 +64,11 @@ Writing Plans distinguishes user-provided facts, repository observations, propos
 
 Worktree Isolation activates only for an explicit request or a concrete safety benefit. Subagent Development activates only for implementation-ready plans with independently ownable outcomes; the controller retains shared state, integration decisions, and final evidence.
 
-### Atomic completion commits
+### Feature-branch, review-gated delivery
 
-Each independently acceptable outcome maps to one local commit per affected repository after focused evidence passes. The outcome must have one purpose and be independently revertible without leaving dependent history broken; every edit or partial test phase is not a boundary. An approved Plan supplies the commit map, and dependent work starts only after the current boundary is verified and committed. Task-owned paths or hunks are staged explicitly, unrelated user changes remain untouched, and proposed, opted-out, unsafe, incomplete, failed, blocked, or empty work remains uncommitted. Push and other remote authority stay separate.
+Development starts on a task-specific feature branch, never directly on `main` or another default branch. Each independently acceptable outcome maps to one atomic commit per affected repository after focused evidence passes. The outcome must have one purpose and be independently revertible without leaving dependent history broken; every edit or partial test phase is not a boundary. An approved Plan supplies the commit map, and dependent work starts only after the current boundary is verified and committed. Task-owned paths or hunks are staged explicitly, unrelated user changes remain untouched, and proposed, opted-out, unsafe, incomplete, failed, blocked, or empty work remains uncommitted.
+
+After completion, the feature branch is pushed and represented by a PR containing scope, implementation, verification evidence, risks, unresolved items, and dependencies. The implementer cannot approve its own work. Merge requires approval from an independent authorized reviewer or the user plus every required check. Explicit local-only instructions stop before push. Direct default-branch development or push is an emergency exception requiring prior user authorization and a recorded reason.
 
 ### Claim-based verification
 
@@ -95,7 +97,7 @@ Delegation is justified by independent deliverables, elapsed-time savings, or fr
 |---|---|
 | State outcomes and stop rules | Six-part core contract and completion conditions |
 | Remove repeated process instructions | Nine focused bodies loaded only at matching boundaries; no mandatory chain |
-| Define autonomy and permissions | Verified local outcomes receive atomic commits; remote and destructive authority stay separate |
+| Define autonomy and permissions | Feature-branch delivery, explicit local-only stops, independent approval, required checks, and controlled merge |
 | Route tools by dependency | Parallel independent work; sequential dependencies; synthesis before claims |
 | Validate what matters | Claim-to-evidence selection and explicit gaps |
 | Keep progress sparse | Outcome-first reporting and phase-level updates |

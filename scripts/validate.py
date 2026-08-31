@@ -191,7 +191,7 @@ delivery_patterns = {
     "controller owns post-integration delivery": r"controller.{0,120}(?:after|following).{0,80}integration",
     "child commit precedes parent pointer": r"child repositor(?:y|ies).{0,80}(?:precede|before).{0,80}parent.{0,40}(?:gitlink|pointer)",
     "acceptance gate and explicit opt-out": r"acceptance gate.{0,180}explicit(?:ly)? opt(?:ed)?-out|explicit opt-out.{0,180}acceptance gate",
-    "completion record and local-only boundary": r"verification.{0,40}commit hashes.{0,80}dirty state.{0,120}local commits only",
+    "completion record and review-gated state": r"verification.{0,40}hashes.{0,80}PR/check/approval/merge state.{0,100}dirty state",
     "approved Plan baseline": r"Plan baseline.{0,100}approved durable Plan.{0,80}before implementation",
     "atomic commit map": r"Commit map.{0,100}Task N.{0,80}evidence.{0,80}message",
     "commit before dependent work": r"verify and commit.{0,100}before.{0,60}dependent work",
@@ -210,6 +210,24 @@ check(
     is not None,
     "implementer prompt must preserve controller-owned completion delivery",
 )
+
+git_delivery_path = SKILLS_ROOT / "agentic-git-delivery" / "SKILL.md"
+git_delivery_text = git_delivery_path.read_text(encoding="utf-8") if git_delivery_path.is_file() else ""
+git_delivery_patterns = {
+    "feature branch before development": r"before development.{0,80}feature branch",
+    "default branch prohibition": r"do not develop, commit, or push directly.{0,80}default branch",
+    "branch push and pull request": r"push the feature branch.{0,80}pull request",
+    "pull request evidence fields": r"PR scope.{0,120}verification evidence.{0,120}risks.{0,80}dependencies",
+    "implementer cannot approve": r"implementer.{0,40}cannot approve",
+    "independent or user approval": r"independent authorized reviewer or the user",
+    "required checks before merge": r"merge only after.{0,80}required check",
+    "recorded emergency exception": r"emergency exception.{0,100}explicit user authorization.{0,80}record the reason",
+}
+for label, pattern in git_delivery_patterns.items():
+    check(
+        re.search(pattern, git_delivery_text, flags=re.IGNORECASE | re.DOTALL) is not None,
+        f"agentic-git-delivery is missing {label}",
+    )
 
 corpus = "\n".join(skill_corpus)
 obsolete_patterns = {

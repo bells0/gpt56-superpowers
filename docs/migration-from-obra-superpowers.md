@@ -16,7 +16,7 @@ This project is an original model-evolving rewrite, not a compatibility layer. I
 | `subagent-driven-development` | `agentic-subagent-driven-development` with the controller-owned contracts, disjoint write ownership, durable state, and proportional review |
 | `requesting-code-review`, `receiving-code-review` | Focused evidence-backed review in `agentic-delegation-review` |
 | `using-git-worktrees` | `agentic-using-git-worktrees` only for explicit or materially justified isolation |
-| `finishing-a-development-branch` | `agentic-git-delivery` for explicit Git state and atomic local commits after verified repository outcomes |
+| `finishing-a-development-branch` | `agentic-git-delivery` for feature-branch commits, pushed PR evidence, independent approval, required checks, and controlled merge |
 | `test-driven-development` | Removed as a Skill and methodology requirement; project or user rules still govern when specified |
 | `writing-skills` | Base model plus repository-specific creators and validators |
 
@@ -36,7 +36,8 @@ This project is an original model-evolving rewrite, not a compatibility layer. I
 - Obtain specific authority for unapproved external or destructive actions.
 - Diagnose non-obvious failures from evidence and revisit the original symptom.
 - Match material completion claims to proportionate evidence and disclose gaps.
-- Commit each completed repository-changing outcome locally by default while preserving explicit opt-outs and separate push authority.
+- Develop on a task feature branch, commit verified atomic outcomes, push the completed branch, and use an evidence-bearing PR with independent approval and required checks before merge.
+- Preserve explicit local-only delivery requests and require a recorded user-authorized emergency exception for direct default-branch work.
 - Evaluate review findings technically rather than applying them blindly.
 
 ## Transactional local migration

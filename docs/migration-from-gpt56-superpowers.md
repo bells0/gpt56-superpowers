@@ -30,6 +30,18 @@ Version 0.8 renames the suite to Agentic Superpowers so future model upgrades do
 
 The suite deliberately does not install live aliases for old Skill names. Keeping both namespaces would duplicate discovery metadata and make implicit routing ambiguous. Update explicit `$gpt56-*` prompts and project instructions to the mapped `$agentic-*` names.
 
+## Delivery contract in version 0.8
+
+`agentic-git-delivery` also establishes a review-gated default for repository changes:
+
+- development, commits, and pushes occur on a task-specific feature branch, not the default branch;
+- verified outcomes receive atomic commits, then the completed branch is pushed into a PR;
+- the PR records scope, implementation, verification evidence, risks, unresolved items, and dependencies;
+- an independent authorized reviewer or the user must approve, and every required check must pass before merge;
+- the implementer cannot approve its own work;
+- an explicit local-only request stops before push;
+- direct default-branch work requires prior user authorization and a recorded emergency reason.
+
 ## Repository and catalog contract
 
 After the authorized GitHub repository rename and publication, external catalogs and installers should use:

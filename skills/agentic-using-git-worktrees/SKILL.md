@@ -48,7 +48,7 @@ Establish a proportionate baseline:
 - distinguish pre-existing failures from failures introduced later;
 - report a blocking baseline problem instead of claiming the workspace is clean.
 
-Do not start implementation on `main` or `master` unless the user explicitly chose that state or the task is already managed by a safe native workflow.
+Do not start implementation on `main`, `master`, or another default branch. A direct-default-branch emergency requires explicit user authorization and a recorded reason; native workflow management alone is not an exception.
 
 ## Hand off and finish
 

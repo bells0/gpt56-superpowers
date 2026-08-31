@@ -16,7 +16,7 @@
       "skills": ["agentic-git-delivery"],
       "approval": false,
       "local_commit": true,
-      "evidence": ["diff inspection", "relevant format and link checks", "scoped local commit"]
+      "evidence": ["task-specific feature branch", "diff inspection", "relevant format and link checks", "atomic commit", "review-gated PR delivery"]
     }
   },
   {
@@ -36,7 +36,7 @@
       "skills": ["agentic-debugging", "agentic-git-delivery"],
       "approval": false,
       "local_commit": true,
-      "evidence": ["first divergent boundary", "original symptom rechecked", "scoped local commit"]
+      "evidence": ["task-specific feature branch", "first divergent boundary", "original symptom rechecked", "atomic commit", "review-gated PR delivery"]
     }
   },
   {
@@ -71,12 +71,12 @@
   },
   {
     "id": "git-delivery",
-    "prompt": "Create a branch, commit the scoped changes, push them, and open a pull request. Do not rewrite remote history.",
+    "prompt": "Create a feature branch, commit the scoped changes, push it, and open a pull request recording scope, implementation, evidence, risks, and dependencies. Do not merge until an independent approver or the user approves and required checks pass. Do not rewrite remote history.",
     "expected": {
       "skills": ["agentic-git-delivery"],
       "approval": false,
       "local_commit": true,
-      "evidence": ["staged diff", "commit and remote pull-request state"]
+      "evidence": ["default branch unchanged", "staged diff", "atomic commit", "pushed feature branch", "PR evidence fields", "independent approval and required-check merge gate"]
     }
   },
   {
@@ -86,7 +86,7 @@
       "skills": ["agentic-superpowers", "agentic-design-planning", "agentic-verification"],
       "approval": false,
       "local_commit": true,
-      "evidence": ["dependency-aware synthesis", "accepted architecture", "claim-matched checks", "scoped local commit"]
+      "evidence": ["task-specific feature branch", "dependency-aware synthesis", "accepted architecture", "claim-matched checks", "atomic commits and review-gated PR delivery"]
     }
   },
   {
@@ -96,7 +96,7 @@
       "skills": ["agentic-git-delivery"],
       "approval": false,
       "local_commit": false,
-      "evidence": ["verified diff", "working tree remains uncommitted"]
+      "evidence": ["task-specific feature branch", "verified diff", "working tree remains uncommitted", "no push or PR"]
     }
   },
   {
@@ -126,7 +126,7 @@
       "skills": ["agentic-subagent-driven-development", "agentic-git-delivery"],
       "approval": false,
       "local_commit": true,
-      "evidence": ["bounded ownership", "durable task state", "integrated diff and evidence", "atomic commits at accepted task boundaries"]
+      "evidence": ["task-specific feature branch", "bounded ownership", "durable task state", "integrated diff and evidence", "atomic commits and review-gated PR delivery"]
     }
   },
   {
@@ -136,7 +136,7 @@
       "skills": ["agentic-orchestrate-delivery"],
       "approval": false,
       "local_commit": true,
-      "evidence": ["current truth and classified decisions", "bounded role ownership", "independent review disposition", "engineering verification and separate user acceptance", "documentation and child-before-parent Git closure"]
+      "evidence": ["task-specific feature branch", "current truth and classified decisions", "bounded role ownership", "independent review disposition", "engineering verification and separate user acceptance", "documentation, PR approval, required checks, and child-before-parent Git closure"]
     }
   }
 ]

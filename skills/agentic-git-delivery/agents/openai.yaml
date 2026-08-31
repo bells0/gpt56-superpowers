@@ -1,6 +1,6 @@
 interface:
   display_name: "Agentic Git & Delivery"
-  short_description: "Create atomic commits and handle Git delivery"
-  default_prompt: "Use $agentic-git-delivery to safely deliver verified repository outcomes at atomic commit boundaries and perform only authorized remote actions."
+  short_description: "Deliver changes through reviewed feature branches"
+  default_prompt: "Use $agentic-git-delivery to deliver verified outcomes through a feature branch, atomic commits, PR evidence, independent approval, required checks, and controlled merge."
 policy:
   allow_implicit_invocation: true
