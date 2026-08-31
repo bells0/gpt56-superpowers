@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agentic Superpowers"
+  short_description: "Adaptive orchestration for complex agent tasks"
+  default_prompt: "Use $agentic-superpowers to coordinate this complex outcome with accountable controller-led execution and only the process that materially improves it."
+policy:
+  allow_implicit_invocation: true

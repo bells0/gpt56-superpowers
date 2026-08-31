@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agentic Orchestrated Delivery"
+  short_description: "Run a controller-led evidence-gated delivery workflow"
+  default_prompt: "Use $agentic-orchestrate-delivery to run this development request through a controller-led delivery workflow."
+policy:
+  allow_implicit_invocation: true

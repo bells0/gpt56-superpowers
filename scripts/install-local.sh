@@ -5,14 +5,29 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 SKILLS_ROOT="${SKILLS_ROOT:-$CODEX_HOME/skills}"
-BACKUP_ROOT="${BACKUP_ROOT:-$CODEX_HOME/skill-backups/gpt56-superpowers}"
+BACKUP_ROOT="${BACKUP_ROOT:-$CODEX_HOME/skill-backups/agentic-superpowers}"
 SOURCE_ROOT="$REPO_ROOT/skills"
-LOCK_DIR="$SKILLS_ROOT/.gpt56-superpowers.lock"
+LOCK_DIR="$SKILLS_ROOT/.agentic-superpowers.lock"
+LEGACY_LOCK_DIR="$SKILLS_ROOT/.gpt56-superpowers.lock"
 GLOBAL_AGENT_SOURCE="$REPO_ROOT/.codex/agents/execution-efficiency-auditor.toml"
 GLOBAL_GUIDANCE_SOURCE="$REPO_ROOT/.codex/purpose-bound-rigor.md"
 GLOBAL_RUNTIME_HELPER="$REPO_ROOT/scripts/manage-global-runtime.py"
 
 MANAGED_SKILLS=(
+  agentic-superpowers
+  agentic-orchestrate-delivery
+  agentic-design-planning
+  agentic-writing-plans
+  agentic-using-git-worktrees
+  agentic-subagent-driven-development
+  agentic-debugging
+  agentic-verification
+  agentic-purpose-bound-rigor
+  agentic-delegation-review
+  agentic-git-delivery
+)
+
+LEGACY_GPT56_SKILLS=(
   gpt56-superpowers
   gpt56-orchestrate-delivery
   gpt56-design-planning
@@ -26,7 +41,7 @@ MANAGED_SKILLS=(
   gpt56-git-delivery
 )
 
-LEGACY_SKILLS=(
+LEGACY_OBRA_SKILLS=(
   brainstorming
   dispatching-parallel-agents
   executing-plans
@@ -42,6 +57,8 @@ LEGACY_SKILLS=(
   writing-plans
   writing-skills
 )
+
+LEGACY_SKILLS=("${LEGACY_GPT56_SKILLS[@]}" "${LEGACY_OBRA_SKILLS[@]}")
 
 exists() {
   [[ -e "$1" || -L "$1" ]]
@@ -191,6 +208,9 @@ on_exit() {
   exit "$status"
 }
 
+if exists "$LEGACY_LOCK_DIR"; then
+  die "a legacy install or restore is active; inspect lock $LEGACY_LOCK_DIR"
+fi
 if ! mkdir "$LOCK_DIR" 2>/dev/null; then
   die "another install or restore is active; inspect lock $LOCK_DIR"
 fi
@@ -225,7 +245,7 @@ if [[ "$all_installed" -eq 1 && "$legacy_found" -eq 0 ]]; then
   committed=1
   release_lock
   trap - EXIT
-  echo "Already installed: eleven GPT-5.6 Skills"
+  echo "Already installed: eleven Agentic Superpowers Skills"
   exit 0
 fi
 
@@ -297,7 +317,7 @@ committed=1
 release_lock
 trap - EXIT
 
-echo "Installed eleven GPT-5.6 Skills from: $SOURCE_ROOT"
+echo "Installed eleven Agentic Superpowers Skills from: $SOURCE_ROOT"
 echo "Installed global purpose-bound guidance and execution-efficiency-auditor."
 echo "Backup: $BACKUP_DIR"
 echo "Restart Codex or start a new task to refresh Skill discovery."

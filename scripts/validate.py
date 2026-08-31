@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic package checks for the GPT-5.6 Superpowers suite."""
+"""Deterministic package checks for the Agentic Superpowers suite."""
 
 from __future__ import annotations
 
@@ -17,35 +17,35 @@ except ModuleNotFoundError:
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS_ROOT = ROOT / "skills"
 SKILL_NAMES = (
-    "gpt56-superpowers",
-    "gpt56-orchestrate-delivery",
-    "gpt56-design-planning",
-    "gpt56-writing-plans",
-    "gpt56-using-git-worktrees",
-    "gpt56-subagent-driven-development",
-    "gpt56-debugging",
-    "gpt56-verification",
-    "gpt56-purpose-bound-rigor",
-    "gpt56-delegation-review",
-    "gpt56-git-delivery",
+    "agentic-superpowers",
+    "agentic-orchestrate-delivery",
+    "agentic-design-planning",
+    "agentic-writing-plans",
+    "agentic-using-git-worktrees",
+    "agentic-subagent-driven-development",
+    "agentic-debugging",
+    "agentic-verification",
+    "agentic-purpose-bound-rigor",
+    "agentic-delegation-review",
+    "agentic-git-delivery",
 )
 SKILL_WORD_LIMITS = {
-    "gpt56-superpowers": 600,
-    "gpt56-orchestrate-delivery": 900,
-    "gpt56-design-planning": 300,
-    "gpt56-writing-plans": 850,
-    "gpt56-using-git-worktrees": 600,
-    "gpt56-subagent-driven-development": 750,
-    "gpt56-debugging": 300,
-    "gpt56-verification": 300,
-    "gpt56-purpose-bound-rigor": 500,
-    "gpt56-delegation-review": 450,
-    "gpt56-git-delivery": 300,
+    "agentic-superpowers": 600,
+    "agentic-orchestrate-delivery": 900,
+    "agentic-design-planning": 300,
+    "agentic-writing-plans": 850,
+    "agentic-using-git-worktrees": 600,
+    "agentic-subagent-driven-development": 750,
+    "agentic-debugging": 300,
+    "agentic-verification": 300,
+    "agentic-purpose-bound-rigor": 500,
+    "agentic-delegation-review": 450,
+    "agentic-git-delivery": 300,
 }
 PACKAGE_WORD_LIMIT = 5800
 ALLOWED_RESOURCE_DIRS = {
-    "gpt56-orchestrate-delivery": {"references", "assets"},
-    "gpt56-subagent-driven-development": {"references", "scripts"},
+    "agentic-orchestrate-delivery": {"references", "assets"},
+    "agentic-subagent-driven-development": {"references", "scripts"},
 }
 failures: list[str] = []
 
@@ -69,7 +69,7 @@ def load_json(path: Path) -> object:
 
 manifest = load_json(ROOT / ".codex-plugin" / "plugin.json")
 if isinstance(manifest, dict):
-    check(manifest.get("name") == "gpt56-superpowers", "plugin name must match the repository")
+    check(manifest.get("name") == "agentic-superpowers", "plugin name must match the repository")
     check(
         isinstance(manifest.get("version"), str)
         and re.fullmatch(r"\d+\.\d+\.\d+", manifest["version"]) is not None,
@@ -152,7 +152,7 @@ for name in SKILL_NAMES:
         and path.name not in ALLOWED_RESOURCE_DIRS.get(name, set())
     }
     check(not extra_dirs, f"{name} contains unnecessary resource directories: {sorted(extra_dirs)}")
-    check("$gpt56-" not in skill_text, f"{name} body must not require another sibling Skill")
+    check("$agentic-" not in skill_text, f"{name} body must not require another sibling Skill")
     word_counts[name] = words(skill_text)
 
 for name, limit in SKILL_WORD_LIMITS.items():
@@ -160,15 +160,15 @@ for name, limit in SKILL_WORD_LIMITS.items():
 package_words = sum(word_counts.values())
 check(package_words <= PACKAGE_WORD_LIMIT, f"package prompt budget exceeded: {package_words} > {PACKAGE_WORD_LIMIT}")
 
-sdd_root = SKILLS_ROOT / "gpt56-subagent-driven-development"
+sdd_root = SKILLS_ROOT / "agentic-subagent-driven-development"
 for relative in (
     "references/implementer-prompt.md",
     "references/reviewer-prompt.md",
     "scripts/sdd-tools.cjs",
 ):
-    check((sdd_root / relative).is_file(), f"missing gpt56-subagent-driven-development/{relative}")
+    check((sdd_root / relative).is_file(), f"missing agentic-subagent-driven-development/{relative}")
 
-orchestration_root = SKILLS_ROOT / "gpt56-orchestrate-delivery"
+orchestration_root = SKILLS_ROOT / "agentic-orchestrate-delivery"
 for relative in (
     "references/lifecycle.md",
     "references/decision-and-escalation.md",
@@ -179,12 +179,12 @@ for relative in (
     "assets/worker-report.md",
     "assets/review-report.md",
 ):
-    check((orchestration_root / relative).is_file(), f"missing gpt56-orchestrate-delivery/{relative}")
+    check((orchestration_root / relative).is_file(), f"missing agentic-orchestrate-delivery/{relative}")
 
-writing_plan_path = SKILLS_ROOT / "gpt56-writing-plans" / "SKILL.md"
+writing_plan_path = SKILLS_ROOT / "agentic-writing-plans" / "SKILL.md"
 writing_plan_text = writing_plan_path.read_text(encoding="utf-8") if writing_plan_path.is_file() else ""
 for heading in ("## Delivery Contract", "## Define the delivery contract"):
-    check(heading in writing_plan_text, f"gpt56-writing-plans is missing stable heading: {heading}")
+    check(heading in writing_plan_text, f"agentic-writing-plans is missing stable heading: {heading}")
 delivery_patterns = {
     "cross-task closure outside numbered tasks": r"cross-task.{0,80}(?:closure|completion).{0,100}outside.{0,40}(?:numbered )?task",
     "last numbered task is a product result": r"final numbered task.{0,80}(?:acceptance-ready|product result)",
@@ -199,14 +199,14 @@ delivery_patterns = {
 for label, pattern in delivery_patterns.items():
     check(
         re.search(pattern, writing_plan_text, flags=re.IGNORECASE | re.DOTALL) is not None,
-        f"gpt56-writing-plans delivery contract is missing {label}",
+        f"agentic-writing-plans delivery contract is missing {label}",
     )
 
 implementer_path = sdd_root / "references" / "implementer-prompt.md"
 implementer_prompt = implementer_path.read_text(encoding="utf-8") if implementer_path.is_file() else ""
 check(
     re.search(r"worker rule.{0,80}not a global delivery\s+opt-out", implementer_prompt, re.DOTALL) is not None
-    and re.search(r"controller.{0,80}gpt56-git-delivery.{0,80}completion commit", implementer_prompt, re.DOTALL)
+    and re.search(r"controller.{0,80}agentic-git-delivery.{0,80}completion commit", implementer_prompt, re.DOTALL)
     is not None,
     "implementer prompt must preserve controller-owned completion delivery",
 )

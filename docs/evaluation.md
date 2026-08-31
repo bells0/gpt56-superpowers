@@ -1,6 +1,6 @@
 # Evaluation
 
-The checked-in scenario matrix tests routing intent and package invariants. It is not a claim that a live GPT-5.6 benchmark occurred.
+The checked-in scenario matrix tests routing intent and package invariants. It is not a claim that a live benchmark occurred for the current or any future [model profile](model-profiles.md).
 
 ## Fourteen representative scenarios
 
@@ -26,11 +26,11 @@ The checked-in scenario matrix tests routing intent and package invariants. It i
 ## Current evidence
 
 - Deterministic validation checks all eleven Skill structures, per-Skill trigger budgets, forbidden forced ritual language, declared workflow resources, dependency-aware routing, and the fourteen-scenario specification.
-- Transaction smoke tests exercise fresh and upgrade installs, exact restore semantics, conflicts, injected install and restore failures, version-0.3, version-0.6, and version-1 compatibility, path aliases, locks, spaces, and broken links.
+- Transaction smoke tests exercise fresh and upgrade installs, exact restore semantics, conflicts, injected install and restore failures, legacy `gpt56-*` migration, version-0.3, version-0.6, version-0.7, and version-1 compatibility, path aliases, locks, spaces, and broken links.
 - A three-case blind forward review on 2026-07-20 covered an implicit simple-change commit, an explicit no-commit request, and a multi-repository completion. All three followed the version-0.3 local-commit contract.
-- Three focused forward scenarios on 2026-07-27 covered evidence-grounded implementation plans, dirty-checkout worktree isolation, and Sol-controlled subagent execution. The first Writing Plans pass exposed invented repository details; the revised evidence classification passed the second blind scenario.
+- Three focused GPT-5.6 Sol scenarios on 2026-07-27 covered evidence-grounded implementation plans, dirty-checkout worktree isolation, and controller-owned subagent execution. The first Writing Plans pass exposed invented repository details; the revised evidence classification passed the second blind scenario.
 
-The blind review tests semantic separation in the discovery descriptions. It does not exercise Codex's production implicit router and is not a live GPT-5.6 outcome, latency, token, or cost benchmark.
+The blind review tests semantic separation in the discovery descriptions. It does not exercise Codex's production implicit router and is not a repository-wide live outcome, latency, token, or cost benchmark.
 
 ## Compare effectiveness
 

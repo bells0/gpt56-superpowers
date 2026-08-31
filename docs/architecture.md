@@ -2,24 +2,24 @@
 
 ## Goal
 
-Give GPT-5.6 a small set of precise development lenses without re-teaching reliable base-model behavior or forcing every task through one workflow.
+Give evolving coding agents a small set of precise development lenses without re-teaching reliable base-model behavior or forcing every task through one workflow.
 
 ## Hub and spokes
 
 The suite contains eleven focused Skills:
 
 ```text
-gpt56-superpowers                       Sol-led cross-phase coordination
-├── gpt56-orchestrate-delivery          opt-in standardized delivery lifecycle
-├── gpt56-design-planning               material ambiguity
-├── gpt56-writing-plans                 implementation-ready plans
-├── gpt56-using-git-worktrees           justified repository isolation
-├── gpt56-subagent-driven-development   bounded plan execution
-├── gpt56-debugging                     non-obvious failures
-├── gpt56-verification                  claim-matched evidence
-├── gpt56-purpose-bound-rigor           necessity for workflow defenses
-├── gpt56-delegation-review             independent work or judgment
-└── gpt56-git-delivery                  repository delivery state
+agentic-superpowers                       controller-led cross-phase coordination
+├── agentic-orchestrate-delivery          opt-in standardized delivery lifecycle
+├── agentic-design-planning               material ambiguity
+├── agentic-writing-plans                 implementation-ready plans
+├── agentic-using-git-worktrees           justified repository isolation
+├── agentic-subagent-driven-development   bounded plan execution
+├── agentic-debugging                     non-obvious failures
+├── agentic-verification                  claim-matched evidence
+├── agentic-purpose-bound-rigor           necessity for workflow defenses
+├── agentic-delegation-review             independent work or judgment
+└── agentic-git-delivery                  repository delivery state
 ```
 
 The diagram describes ownership, not a required call chain. Every spoke is a direct entry point. Orchestrated Delivery is the explicit exception for users who want a standardized current-truth → Spec → Plan → Execution → Review → Verification → Acceptance → Closure lifecycle; its narrow trigger prevents that workflow from becoming a tax on ordinary tasks. Design may hand settled requirements to Writing Plans; a suitable plan may hand independently ownable outcomes to Subagent Development; Worktree Isolation is optional; Verification and Git Delivery close only the claims and repository actions that need them.
@@ -52,13 +52,17 @@ Orchestrated Delivery codifies the controller-led method only when the user sele
 
 Each spoke owns one decision domain. Trigger overlap is minimized by separating design uncertainty, implementation planning, isolation, bounded execution, causal uncertainty, evidence selection, coordination value, and Git delivery state. Git & Delivery additionally owns suite-wide atomic commit boundaries for repository changes.
 
+### Stable identity, versioned model profiles
+
+Repository, plugin, and Skill identifiers describe durable agentic-engineering responsibilities rather than a model generation. Model-specific prompting inputs, assumptions, and evaluation status live in [model profiles](model-profiles.md). A future model update changes a profile and the affected contracts, not every public identifier.
+
 ### Grounded implementation plans
 
 Writing Plans distinguishes user-provided facts, repository observations, proposed choices, and unresolved facts. Exact paths, symbols, commands, and current behavior must come from evidence rather than model completion.
 
 ### Conditional isolation and subagents
 
-Worktree Isolation activates only for an explicit request or a concrete safety benefit. Subagent Development activates only for implementation-ready plans with independently ownable outcomes; Sol retains shared state, integration decisions, and final evidence.
+Worktree Isolation activates only for an explicit request or a concrete safety benefit. Subagent Development activates only for implementation-ready plans with independently ownable outcomes; the controller retains shared state, integration decisions, and final evidence.
 
 ### Atomic completion commits
 
@@ -85,9 +89,9 @@ The direct path is the default for local, reversible work. A non-default defense
 
 Delegation is justified by independent deliverables, elapsed-time savings, or fresh judgment that can change a material decision. Review is focused on named risks rather than added as a universal stage.
 
-## Mapping to GPT-5.6 guidance
+## Current guidance mapping
 
-| Official guidance | Implementation |
+| Current model-profile guidance | Stable implementation |
 |---|---|
 | State outcomes and stop rules | Six-part core contract and completion conditions |
 | Remove repeated process instructions | Nine focused bodies loaded only at matching boundaries; no mandatory chain |
@@ -109,4 +113,4 @@ Repository validation enforces per-Skill budgets based on each contract's comple
 - complete package: at most 5,800 words;
 - only declared SDD resources and no mandatory `$skill` call chain.
 
-Version 0.7 keeps the coordinator under 600 words and the complete package under 5,800 words. These are guardrails, not targets; normal routing loads only the matching bodies and any explicitly needed resource.
+Version 0.8 keeps the coordinator under 600 words and the complete package under 5,800 words. These are guardrails, not targets; normal routing loads only the matching bodies and any explicitly needed resource.

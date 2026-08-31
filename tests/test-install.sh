@@ -7,6 +7,20 @@ TMP_ROOT="$TMP_BASE/path with spaces"
 export CODEX_HOME="$TMP_ROOT/codex home"
 
 MANAGED_SKILLS=(
+  agentic-superpowers
+  agentic-orchestrate-delivery
+  agentic-design-planning
+  agentic-writing-plans
+  agentic-using-git-worktrees
+  agentic-subagent-driven-development
+  agentic-debugging
+  agentic-verification
+  agentic-purpose-bound-rigor
+  agentic-delegation-review
+  agentic-git-delivery
+)
+
+VERSION_07_MANAGED_SKILLS=(
   gpt56-superpowers
   gpt56-orchestrate-delivery
   gpt56-design-planning
@@ -42,7 +56,7 @@ VERSION_03_MANAGED_SKILLS=(
   gpt56-git-delivery
 )
 
-LEGACY_SKILLS=(
+LEGACY_OBRA_SKILLS=(
   brainstorming
   dispatching-parallel-agents
   executing-plans
@@ -59,6 +73,8 @@ LEGACY_SKILLS=(
   writing-skills
 )
 
+ALL_LEGACY_SKILLS=("${VERSION_07_MANAGED_SKILLS[@]}" "${LEGACY_OBRA_SKILLS[@]}")
+
 cleanup() {
   rm -rf "$TMP_BASE"
 }
@@ -67,7 +83,7 @@ trap cleanup EXIT
 make_legacy() {
   root="$1"
   mkdir -p "$root"
-  for name in "${LEGACY_SKILLS[@]}"; do
+  for name in "${ALL_LEGACY_SKILLS[@]}"; do
     mkdir -p "$root/$name"
     printf '%s\n' "$name" > "$root/$name/SKILL.md"
   done
@@ -114,17 +130,18 @@ ln -s "$BROKEN_DEST" "$BASE_SKILLS/using-superpowers"
 
 run_install "$BASE_SKILLS" "$BASE_BACKUPS"
 assert_managed_links "$BASE_SKILLS"
-grep -Fq '<!-- gpt56-superpowers:purpose-bound-rigor:start -->' "$CODEX_HOME/AGENTS.md"
+grep -Fq '<!-- agentic-superpowers:purpose-bound-rigor:start -->' "$CODEX_HOME/AGENTS.md"
+! grep -Fq '<!-- gpt56-superpowers:purpose-bound-rigor:start -->' "$CODEX_HOME/AGENTS.md"
 grep -Fqx '# Personal global guidance' "$CODEX_HOME/AGENTS.md"
 cmp "$CODEX_HOME/agents/execution-efficiency-auditor.toml" \
   "$REPO_ROOT/.codex/agents/execution-efficiency-auditor.toml"
-for name in "${LEGACY_SKILLS[@]}"; do
+for name in "${ALL_LEGACY_SKILLS[@]}"; do
   [[ ! -e "$BASE_SKILLS/$name" && ! -L "$BASE_SKILLS/$name" ]]
 done
 BASE_BACKUP="$(find "$BASE_BACKUPS" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
 grep -Fqx 'format_version=2' "$BASE_BACKUP/INSTALL_INFO"
 [[ "$(grep -c '^created=' "$BASE_BACKUP/INSTALL_INFO")" -eq "${#MANAGED_SKILLS[@]}" ]]
-[[ "$(grep -c '^moved=' "$BASE_BACKUP/INSTALL_INFO")" -eq 14 ]]
+[[ "$(grep -c '^moved=' "$BASE_BACKUP/INSTALL_INFO")" -eq 25 ]]
 
 backup_count_before="$(find "$BASE_BACKUPS" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')"
 run_install "$BASE_SKILLS" "$BASE_BACKUPS"
@@ -145,62 +162,66 @@ run_restore "$BASE_SKILLS" "$BASE_BACKUPS" "$BASE_BACKUP"
 assert_no_managed "$BASE_SKILLS"
 grep -Fqx '# Personal global guidance' "$CODEX_HOME/AGENTS.md"
 [[ ! -e "$CODEX_HOME/agents/execution-efficiency-auditor.toml" ]]
-for name in "${LEGACY_SKILLS[@]}"; do
+for name in "${ALL_LEGACY_SKILLS[@]}"; do
   [[ -e "$BASE_SKILLS/$name" || -L "$BASE_SKILLS/$name" ]]
 done
 [[ -L "$BASE_SKILLS/using-superpowers" ]]
 [[ "$(readlink "$BASE_SKILLS/using-superpowers")" == "$BROKEN_DEST" ]]
 
-# Upgrade from version 0.1: preserve the existing core and remove only newly added links on restore.
+# Upgrade from version 0.7: move every old public ID and restore it exactly.
 UPGRADE_SKILLS="$TMP_ROOT/upgrade skills"
 UPGRADE_BACKUPS="$TMP_ROOT/upgrade backups"
+UPGRADE_OLD_SOURCE="$TMP_ROOT/old checkout/gpt56-superpowers/skills"
 mkdir -p "$UPGRADE_SKILLS"
-ln -s "$REPO_ROOT/skills/gpt56-superpowers" "$UPGRADE_SKILLS/gpt56-superpowers"
+for name in "${VERSION_07_MANAGED_SKILLS[@]}"; do
+  ln -s "$UPGRADE_OLD_SOURCE/$name" "$UPGRADE_SKILLS/$name"
+done
 run_install "$UPGRADE_SKILLS" "$UPGRADE_BACKUPS"
 assert_managed_links "$UPGRADE_SKILLS"
 UPGRADE_BACKUP="$(find "$UPGRADE_BACKUPS" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
-grep -Fqx 'preserved=gpt56-superpowers' "$UPGRADE_BACKUP/INSTALL_INFO"
-[[ "$(grep -c '^created=' "$UPGRADE_BACKUP/INSTALL_INFO")" -eq "$((${#MANAGED_SKILLS[@]} - 1))" ]]
+[[ "$(grep -c '^created=' "$UPGRADE_BACKUP/INSTALL_INFO")" -eq "${#MANAGED_SKILLS[@]}" ]]
+[[ "$(grep -c '^moved=' "$UPGRADE_BACKUP/INSTALL_INFO")" -eq "${#VERSION_07_MANAGED_SKILLS[@]}" ]]
 run_restore "$UPGRADE_SKILLS" "$UPGRADE_BACKUPS" "$UPGRADE_BACKUP"
-[[ -L "$UPGRADE_SKILLS/gpt56-superpowers" ]]
-for name in "${MANAGED_SKILLS[@]:1}"; do
-  [[ ! -e "$UPGRADE_SKILLS/$name" && ! -L "$UPGRADE_SKILLS/$name" ]]
+assert_no_managed "$UPGRADE_SKILLS"
+for name in "${VERSION_07_MANAGED_SKILLS[@]}"; do
+  [[ -L "$UPGRADE_SKILLS/$name" ]]
+  [[ "$(readlink "$UPGRADE_SKILLS/$name")" == "$UPGRADE_OLD_SOURCE/$name" ]]
 done
 
 # A conflicting narrow Skill is backed up and restored exactly.
 CONFLICT_SKILLS="$TMP_ROOT/conflict skills"
 CONFLICT_BACKUPS="$TMP_ROOT/conflict backups"
-mkdir -p "$CONFLICT_SKILLS/gpt56-debugging"
-printf '%s\n' personal > "$CONFLICT_SKILLS/gpt56-debugging/marker"
+mkdir -p "$CONFLICT_SKILLS/agentic-debugging"
+printf '%s\n' personal > "$CONFLICT_SKILLS/agentic-debugging/marker"
 run_install "$CONFLICT_SKILLS" "$CONFLICT_BACKUPS"
 CONFLICT_BACKUP="$(find "$CONFLICT_BACKUPS" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
-grep -Fqx 'moved=gpt56-debugging' "$CONFLICT_BACKUP/INSTALL_INFO"
+grep -Fqx 'moved=agentic-debugging' "$CONFLICT_BACKUP/INSTALL_INFO"
 run_restore "$CONFLICT_SKILLS" "$CONFLICT_BACKUPS" "$CONFLICT_BACKUP"
 for name in "${MANAGED_SKILLS[@]}"; do
-  [[ "$name" == "gpt56-debugging" ]] && continue
+  [[ "$name" == "agentic-debugging" ]] && continue
   [[ ! -e "$CONFLICT_SKILLS/$name" && ! -L "$CONFLICT_SKILLS/$name" ]]
 done
-[[ -d "$CONFLICT_SKILLS/gpt56-debugging" && ! -L "$CONFLICT_SKILLS/gpt56-debugging" ]]
-grep -Fqx personal "$CONFLICT_SKILLS/gpt56-debugging/marker"
+[[ -d "$CONFLICT_SKILLS/agentic-debugging" && ! -L "$CONFLICT_SKILLS/agentic-debugging" ]]
+grep -Fqx personal "$CONFLICT_SKILLS/agentic-debugging/marker"
 
 # Restore refuses replacement of a link whose previous target is waiting in backup.
 COLLISION_SKILLS="$TMP_ROOT/moved collision skills"
 COLLISION_BACKUPS="$TMP_ROOT/moved collision backups"
-mkdir -p "$COLLISION_SKILLS/gpt56-debugging"
-printf '%s\n' original > "$COLLISION_SKILLS/gpt56-debugging/marker"
+mkdir -p "$COLLISION_SKILLS/agentic-debugging"
+printf '%s\n' original > "$COLLISION_SKILLS/agentic-debugging/marker"
 run_install "$COLLISION_SKILLS" "$COLLISION_BACKUPS"
 COLLISION_BACKUP="$(find "$COLLISION_BACKUPS" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
-rm "$COLLISION_SKILLS/gpt56-debugging"
-mkdir -p "$COLLISION_SKILLS/gpt56-debugging"
-printf '%s\n' replacement > "$COLLISION_SKILLS/gpt56-debugging/marker"
+rm "$COLLISION_SKILLS/agentic-debugging"
+mkdir -p "$COLLISION_SKILLS/agentic-debugging"
+printf '%s\n' replacement > "$COLLISION_SKILLS/agentic-debugging/marker"
 if run_restore "$COLLISION_SKILLS" "$COLLISION_BACKUPS" "$COLLISION_BACKUP" 2>/dev/null; then
   echo "restore should refuse a moved-target collision" >&2
   exit 1
 fi
 [[ ! -f "$COLLISION_BACKUP/RESTORED" ]]
-grep -Fqx replacement "$COLLISION_SKILLS/gpt56-debugging/marker"
+grep -Fqx replacement "$COLLISION_SKILLS/agentic-debugging/marker"
 for name in "${MANAGED_SKILLS[@]}"; do
-  [[ "$name" == "gpt56-debugging" ]] && continue
+  [[ "$name" == "agentic-debugging" ]] && continue
   [[ -L "$COLLISION_SKILLS/$name" ]]
 done
 
@@ -210,15 +231,15 @@ USER_BACKUPS="$TMP_ROOT/user replacement backups"
 mkdir -p "$USER_SKILLS"
 run_install "$USER_SKILLS" "$USER_BACKUPS"
 USER_BACKUP="$(find "$USER_BACKUPS" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
-rm "$USER_SKILLS/gpt56-verification"
-mkdir -p "$USER_SKILLS/gpt56-verification"
-printf '%s\n' user-owned > "$USER_SKILLS/gpt56-verification/marker"
+rm "$USER_SKILLS/agentic-verification"
+mkdir -p "$USER_SKILLS/agentic-verification"
+printf '%s\n' user-owned > "$USER_SKILLS/agentic-verification/marker"
 run_restore "$USER_SKILLS" "$USER_BACKUPS" "$USER_BACKUP"
 for name in "${MANAGED_SKILLS[@]}"; do
-  [[ "$name" == "gpt56-verification" ]] && continue
+  [[ "$name" == "agentic-verification" ]] && continue
   [[ ! -e "$USER_SKILLS/$name" && ! -L "$USER_SKILLS/$name" ]]
 done
-grep -Fqx user-owned "$USER_SKILLS/gpt56-verification/marker"
+grep -Fqx user-owned "$USER_SKILLS/agentic-verification/marker"
 
 # Inject a third-link failure and require complete rollback.
 FAIL_SKILLS="$TMP_ROOT/failure skills"
@@ -245,7 +266,7 @@ if env SKILLS_ROOT="$FAIL_SKILLS" BACKUP_ROOT="$FAIL_BACKUPS" \
   exit 1
 fi
 assert_no_managed "$FAIL_SKILLS"
-for name in "${LEGACY_SKILLS[@]}"; do
+for name in "${ALL_LEGACY_SKILLS[@]}"; do
   [[ -f "$FAIL_SKILLS/$name/SKILL.md" ]]
 done
 [[ "$(find "$FAIL_BACKUPS" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')" -eq 0 ]]
@@ -277,7 +298,7 @@ if env SKILLS_ROOT="$RESTORE_FAIL_SKILLS" BACKUP_ROOT="$RESTORE_FAIL_BACKUPS" \
   exit 1
 fi
 assert_managed_links "$RESTORE_FAIL_SKILLS"
-for name in "${LEGACY_SKILLS[@]}"; do
+for name in "${ALL_LEGACY_SKILLS[@]}"; do
   [[ -e "$RESTORE_FAIL_BACKUP/$name" || -L "$RESTORE_FAIL_BACKUP/$name" ]]
   [[ ! -e "$RESTORE_FAIL_SKILLS/$name" && ! -L "$RESTORE_FAIL_SKILLS/$name" ]]
 done
@@ -327,6 +348,54 @@ printf '%s\n' READY > "$V06_BACKUP/READY"
 run_restore "$V06_SKILLS" "$V06_BACKUPS" "$V06_BACKUP"
 for name in "${VERSION_06_MANAGED_SKILLS[@]}"; do
   [[ ! -e "$V06_SKILLS/$name" && ! -L "$V06_SKILLS/$name" ]]
+done
+
+# Version-0.7 eleven-Skill manifests remain restorable after the namespace migration.
+V07_SKILLS="$TMP_ROOT/version 0.7 skills"
+V07_BACKUPS="$TMP_ROOT/version 0.7 backups"
+V07_BACKUP="$V07_BACKUPS/txn-00000000000000000001"
+V07_SOURCE="$TMP_ROOT/historical checkout/gpt56-superpowers/skills"
+mkdir -p "$V07_SKILLS" "$V07_BACKUP"
+for name in "${VERSION_07_MANAGED_SKILLS[@]}"; do
+  ln -s "$V07_SOURCE/$name" "$V07_SKILLS/$name"
+done
+{
+  printf 'format_version=2\n'
+  printf 'source_root=%s\n' "$V07_SOURCE"
+  printf 'skills_root=%s\n' "$V07_SKILLS"
+  printf 'installed_at=20260831T000000Z\n'
+  for name in "${VERSION_07_MANAGED_SKILLS[@]}"; do printf 'managed=%s\n' "$name"; done
+  for name in "${VERSION_07_MANAGED_SKILLS[@]}"; do printf 'created=%s\n' "$name"; done
+  printf 'state=READY\n'
+} > "$V07_BACKUP/INSTALL_INFO"
+printf '%s\n' READY > "$V07_BACKUP/READY"
+run_restore "$V07_SKILLS" "$V07_BACKUPS" "$V07_BACKUP"
+for name in "${VERSION_07_MANAGED_SKILLS[@]}"; do
+  [[ ! -e "$V07_SKILLS/$name" && ! -L "$V07_SKILLS/$name" ]]
+done
+
+# Default restore discovery falls back to the historical backup root.
+DEFAULT_OLD_SKILLS="$TMP_ROOT/default old skills"
+DEFAULT_OLD_ROOT="$CODEX_HOME/skill-backups/gpt56-superpowers"
+DEFAULT_OLD_BACKUP="$DEFAULT_OLD_ROOT/txn-00000000000000000001"
+DEFAULT_OLD_SOURCE="$TMP_ROOT/default historical checkout/gpt56-superpowers/skills"
+mkdir -p "$DEFAULT_OLD_SKILLS" "$DEFAULT_OLD_BACKUP"
+for name in "${VERSION_07_MANAGED_SKILLS[@]}"; do
+  ln -s "$DEFAULT_OLD_SOURCE/$name" "$DEFAULT_OLD_SKILLS/$name"
+done
+{
+  printf 'format_version=2\n'
+  printf 'source_root=%s\n' "$DEFAULT_OLD_SOURCE"
+  printf 'skills_root=%s\n' "$DEFAULT_OLD_SKILLS"
+  printf 'installed_at=20260830T000000Z\n'
+  for name in "${VERSION_07_MANAGED_SKILLS[@]}"; do printf 'managed=%s\n' "$name"; done
+  for name in "${VERSION_07_MANAGED_SKILLS[@]}"; do printf 'created=%s\n' "$name"; done
+  printf 'state=READY\n'
+} > "$DEFAULT_OLD_BACKUP/INSTALL_INFO"
+printf '%s\n' READY > "$DEFAULT_OLD_BACKUP/READY"
+env SKILLS_ROOT="$DEFAULT_OLD_SKILLS" bash "$REPO_ROOT/scripts/restore-original.sh" >/dev/null
+for name in "${VERSION_07_MANAGED_SKILLS[@]}"; do
+  [[ ! -e "$DEFAULT_OLD_SKILLS/$name" && ! -L "$DEFAULT_OLD_SKILLS/$name" ]]
 done
 
 # Version-1 manifests remain restorable.
@@ -381,7 +450,7 @@ assert_no_managed "$ALIAS_SKILLS"
 [[ -z "$(find "$ALIAS_SKILLS" -mindepth 1 -maxdepth 1 -name 'txn-*' -print -quit)" ]]
 
 NESTED_CODEX="$TMP_ROOT/nested home/.codex"
-NESTED_REPO="$NESTED_CODEX/skills/gpt56-superpowers"
+NESTED_REPO="$NESTED_CODEX/skills/agentic-superpowers"
 mkdir -p "$(dirname "$NESTED_REPO")"
 cp -R "$REPO_ROOT" "$NESTED_REPO"
 if env CODEX_HOME="$NESTED_CODEX" bash "$NESTED_REPO/scripts/install-local.sh" >/dev/null 2>&1; then
@@ -390,4 +459,4 @@ if env CODEX_HOME="$NESTED_CODEX" bash "$NESTED_REPO/scripts/install-local.sh" >
 fi
 [[ -d "$NESTED_REPO" && ! -L "$NESTED_REPO" ]]
 
-echo "PASS: eleven-Skill transactions, v0.3/v0.6/v1 compatibility, rollback, collisions, locks, and path safety"
+echo "PASS: eleven-Skill transactions, gpt56 migration, v0.3/v0.6/v0.7/v1 compatibility, rollback, collisions, locks, and path safety"

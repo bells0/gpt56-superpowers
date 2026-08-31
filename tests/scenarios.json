@@ -13,7 +13,7 @@
     "id": "clear-static-edit",
     "prompt": "Correct this clear documentation link and the matching static configuration key.",
     "expected": {
-      "skills": ["gpt56-git-delivery"],
+      "skills": ["agentic-git-delivery"],
       "approval": false,
       "local_commit": true,
       "evidence": ["diff inspection", "relevant format and link checks", "scoped local commit"]
@@ -23,7 +23,7 @@
     "id": "material-design",
     "prompt": "Design a backward-compatible public API and migration path where three plausible data models have different failure semantics.",
     "expected": {
-      "skills": ["gpt56-design-planning"],
+      "skills": ["agentic-design-planning"],
       "approval": false,
       "local_commit": false,
       "evidence": ["chosen tradeoff", "interfaces and migration boundaries", "acceptance conditions"]
@@ -33,7 +33,7 @@
     "id": "ambiguous-failure",
     "prompt": "Diagnose and fix an intermittent timeout that appears only when two services and a proxy are involved.",
     "expected": {
-      "skills": ["gpt56-debugging", "gpt56-git-delivery"],
+      "skills": ["agentic-debugging", "agentic-git-delivery"],
       "approval": false,
       "local_commit": true,
       "evidence": ["first divergent boundary", "original symptom rechecked", "scoped local commit"]
@@ -43,7 +43,7 @@
     "id": "claim-evidence",
     "prompt": "Determine the minimum reliable completion evidence for this visual behavior fix and release-readiness claim.",
     "expected": {
-      "skills": ["gpt56-verification"],
+      "skills": ["agentic-verification"],
       "approval": false,
       "local_commit": false,
       "evidence": ["rendered affected states", "project-required release gates"]
@@ -53,7 +53,7 @@
     "id": "purpose-bound-rigor",
     "prompt": "Before implementing this local UI change, add hashes, an isolated fixture, a mock acceptance gate, and a reviewer after every commit just to be safe.",
     "expected": {
-      "skills": ["gpt56-purpose-bound-rigor"],
+      "skills": ["agentic-purpose-bound-rigor"],
       "approval": false,
       "local_commit": false,
       "evidence": ["necessity case for each proposed defense", "rejection of controls without observed risk or an existing gap", "direct local implementation path"]
@@ -63,7 +63,7 @@
     "id": "parallel-review",
     "prompt": "Investigate three independent modules in parallel and obtain a focused independent review of the authentication boundary.",
     "expected": {
-      "skills": ["gpt56-delegation-review"],
+      "skills": ["agentic-delegation-review"],
       "approval": false,
       "local_commit": false,
       "evidence": ["integrated findings", "evidence-backed security review"]
@@ -73,7 +73,7 @@
     "id": "git-delivery",
     "prompt": "Create a branch, commit the scoped changes, push them, and open a pull request. Do not rewrite remote history.",
     "expected": {
-      "skills": ["gpt56-git-delivery"],
+      "skills": ["agentic-git-delivery"],
       "approval": false,
       "local_commit": true,
       "evidence": ["staged diff", "commit and remote pull-request state"]
@@ -83,7 +83,7 @@
     "id": "multi-phase",
     "prompt": "Implement a cross-module data migration end to end, resolve the architecture tradeoff, and prove affected behavior and integration readiness.",
     "expected": {
-      "skills": ["gpt56-superpowers", "gpt56-design-planning", "gpt56-verification"],
+      "skills": ["agentic-superpowers", "agentic-design-planning", "agentic-verification"],
       "approval": false,
       "local_commit": true,
       "evidence": ["dependency-aware synthesis", "accepted architecture", "claim-matched checks", "scoped local commit"]
@@ -93,7 +93,7 @@
     "id": "explicit-no-commit",
     "prompt": "Fix this configuration bug and verify it, but leave the completed changes uncommitted.",
     "expected": {
-      "skills": ["gpt56-git-delivery"],
+      "skills": ["agentic-git-delivery"],
       "approval": false,
       "local_commit": false,
       "evidence": ["verified diff", "working tree remains uncommitted"]
@@ -101,9 +101,9 @@
   },
   {
     "id": "implementation-plan",
-    "prompt": "An approved Spec settles the product and architecture decisions. Inspect the repository, split independently shippable subsystems into ordered implementation-ready Plans, and define the Sol-controlled execution handoff without inventing paths or interfaces.",
+    "prompt": "An approved Spec settles the product and architecture decisions. Inspect the repository, split independently shippable subsystems into ordered implementation-ready Plans, and define the controller-owned execution handoff without inventing paths or interfaces.",
     "expected": {
-      "skills": ["gpt56-writing-plans"],
+      "skills": ["agentic-writing-plans"],
       "approval": false,
       "local_commit": false,
       "evidence": ["approved Spec linked as the unique semantic authority", "provided, observed, proposed, and unresolved facts separated", "cross-Plan order and file/interface ownership", "task-level acceptance evidence and execution routing"]
@@ -113,7 +113,7 @@
     "id": "worktree-isolation",
     "prompt": "Create a safe worktree for this long-lived change while preserving the dirty source checkout. Do not push or merge anything.",
     "expected": {
-      "skills": ["gpt56-using-git-worktrees"],
+      "skills": ["agentic-using-git-worktrees"],
       "approval": false,
       "local_commit": false,
       "evidence": ["resolved Git state", "safe worktree path and branch", "preserved source changes", "baseline result"]
@@ -123,7 +123,7 @@
     "id": "subagent-plan-execution",
     "prompt": "Execute this implementation-ready plan whose three outcomes have disjoint file ownership. Use bounded subagents, integrate their changes, verify each accepted outcome, and commit it before dependent work.",
     "expected": {
-      "skills": ["gpt56-subagent-driven-development", "gpt56-git-delivery"],
+      "skills": ["agentic-subagent-driven-development", "agentic-git-delivery"],
       "approval": false,
       "local_commit": true,
       "evidence": ["bounded ownership", "durable task state", "integrated diff and evidence", "atomic commits at accepted task boundaries"]
@@ -133,7 +133,7 @@
     "id": "orchestrated-delivery",
     "prompt": "Use the standardized controller-led workflow for this long-running multi-module feature. Keep requirements and integration in the main thread, delegate bounded implementation, obtain independent review, verify the real user path, record user acceptance separately, update documentation, and close child and parent Git boundaries.",
     "expected": {
-      "skills": ["gpt56-orchestrate-delivery"],
+      "skills": ["agentic-orchestrate-delivery"],
       "approval": false,
       "local_commit": true,
       "evidence": ["current truth and classified decisions", "bounded role ownership", "independent review disposition", "engineering verification and separate user acceptance", "documentation and child-before-parent Git closure"]

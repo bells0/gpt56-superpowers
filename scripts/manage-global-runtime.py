@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install or restore GPT-5.6 global guidance and the optional audit agent."""
+"""Install, migrate, or restore Agentic Superpowers global runtime state."""
 
 from __future__ import annotations
 
@@ -11,9 +11,15 @@ import tempfile
 from pathlib import Path
 
 
-START = "<!-- gpt56-superpowers:purpose-bound-rigor:start -->"
-END = "<!-- gpt56-superpowers:purpose-bound-rigor:end -->"
+START = "<!-- agentic-superpowers:purpose-bound-rigor:start -->"
+END = "<!-- agentic-superpowers:purpose-bound-rigor:end -->"
+LEGACY_START = "<!-- gpt56-superpowers:purpose-bound-rigor:start -->"
+LEGACY_END = "<!-- gpt56-superpowers:purpose-bound-rigor:end -->"
 AGENT_NAME = "execution-efficiency-auditor.toml"
+MANAGED_AGENT_MARKERS = (
+    "# managed-by: agentic-superpowers",
+    "# managed-by: gpt56-superpowers",
+)
 
 
 def read(path: Path) -> str:
@@ -35,14 +41,24 @@ def managed_block(fragment: Path) -> str:
 
 
 def find_block(text: str) -> tuple[int, int, str] | None:
-    start = text.find(START)
-    end = text.find(END)
-    if start < 0 and end < 0:
-        return None
-    if start < 0 or end < start or text.find(START, start + 1) >= 0 or text.find(END, end + 1) >= 0:
-        raise ValueError("global AGENTS guidance contains malformed gpt56-superpowers markers")
-    finish = end + len(END)
-    return start, finish, text[start:finish]
+    found: list[tuple[int, int, str]] = []
+    for start_marker, end_marker in ((START, END), (LEGACY_START, LEGACY_END)):
+        start = text.find(start_marker)
+        end = text.find(end_marker)
+        if start < 0 and end < 0:
+            continue
+        if (
+            start < 0
+            or end < start
+            or text.find(start_marker, start + 1) >= 0
+            or text.find(end_marker, end + 1) >= 0
+        ):
+            raise ValueError("global AGENTS guidance contains malformed Agentic Superpowers markers")
+        finish = end + len(end_marker)
+        found.append((start, finish, text[start:finish]))
+    if len(found) > 1:
+        raise ValueError("global AGENTS guidance contains multiple Agentic Superpowers blocks")
+    return found[0] if found else None
 
 
 def guidance_target(codex_home: Path) -> Path:
@@ -77,7 +93,7 @@ def install(codex_home: Path, source_agent: Path, fragment: Path, receipt: Path)
 
     agent_target = codex_home / "agents" / AGENT_NAME
     previous_agent = read(agent_target) if agent_target.is_file() else None
-    if previous_agent is not None and "# managed-by: gpt56-superpowers" not in previous_agent:
+    if previous_agent is not None and not any(marker in previous_agent for marker in MANAGED_AGENT_MARKERS):
         raise ValueError(f"refusing to replace unmanaged custom agent: {agent_target}")
 
     receipt.parent.mkdir(parents=True, exist_ok=True)

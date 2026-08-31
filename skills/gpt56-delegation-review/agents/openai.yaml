@@ -1,6 +1,0 @@
-interface:
-  display_name: "GPT-5.6 Sol Delegation & Review"
-  short_description: "Delegate bounded work under Sol control"
-  default_prompt: "Use $gpt56-delegation-review to coordinate this independent work or focused review under Sol control."
-policy:
-  allow_implicit_invocation: true

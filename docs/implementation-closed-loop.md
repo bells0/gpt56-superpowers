@@ -2,7 +2,7 @@
 
 这份说明用于长期固定工作流，目标是减少反复和偏差：**先确认需求契约（Spec），再形成可执行 Plan，再实施**。
 
-在 Codex 中需要完整执行这套标准流程时，直接使用 `gpt56-orchestrate-delivery`。本文件保留为面向人的简要说明；Skill 额外固化了主线程职责、角色契约、独立审查、工程验证、用户验收以及文档和 Git 收口。
+在 Codex 中需要完整执行这套标准流程时，直接使用 `agentic-orchestrate-delivery`。本文件保留为面向人的简要说明；Skill 额外固化了主线程职责、角色契约、独立审查、工程验证、用户验收以及文档和 Git 收口。
 
 ## 适用场景
 
@@ -23,7 +23,7 @@
 - 验收标准（可观察）
 
 如果存在以下任一项：产品/UX/架构/迁移语义开放 → 先走
-`gpt56-design-planning`，否则可以直接进入下一步。
+`agentic-design-planning`，否则可以直接进入下一步。
 
 ### 2) Plan（实施计划）
 
@@ -37,8 +37,8 @@
 
 建议固定用：
 
-- `gpt56-writing-plans`：把 Spec 转为可执行 Plan
-- `gpt56-subagent-driven-development`：当 Plan 出现“独立可并行写入”且风险可控时，分发并行执行（Sol 保持主控）
+- `agentic-writing-plans`：把 Spec 转为可执行 Plan
+- `agentic-subagent-driven-development`：当 Plan 出现“独立可并行写入”且风险可控时，分发并行执行（主线程保持主控）
 
 Plan 仍未确定时不应边写边改；边界不清晰要回到 Plan。
 

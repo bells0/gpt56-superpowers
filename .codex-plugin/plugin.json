@@ -1,16 +1,17 @@
 {
-  "name": "gpt56-superpowers",
-  "version": "0.7.0",
+  "name": "agentic-superpowers",
+  "version": "0.8.0",
   "description": "A dependency-aware development suite with eleven Skills, an optional controller-led delivery workflow, global purpose-bound rigor, and an on-demand audit agent.",
   "author": {
     "name": "Wonderbell",
     "url": "https://github.com/bells0"
   },
-  "homepage": "https://github.com/bells0/gpt56-superpowers#readme",
-  "repository": "https://github.com/bells0/gpt56-superpowers",
+  "homepage": "https://github.com/bells0/agentic-superpowers#readme",
+  "repository": "https://github.com/bells0/agentic-superpowers",
   "license": "MIT",
   "keywords": [
-    "gpt-5.6",
+    "agentic-engineering",
+    "model-adaptive",
     "codex",
     "skills",
     "development-workflow",
@@ -18,9 +19,9 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "GPT-5.6 Superpowers",
-    "shortDescription": "Eleven focused development Skills for GPT-5.6 Sol",
-    "longDescription": "A Sol-first coordinator, an explicit controller-led delivery workflow, and focused Skills for design, implementation planning, worktree isolation, bounded subagent execution, debugging, verification, purpose-bound rigor, delegation and review, and atomic Git delivery.",
+    "displayName": "Agentic Superpowers",
+    "shortDescription": "Eleven model-evolving development Skills",
+    "longDescription": "A model-neutral accountable coordinator, an explicit controller-led delivery workflow, and focused Skills for design, implementation planning, worktree isolation, bounded subagent execution, debugging, verification, purpose-bound rigor, delegation and review, and atomic Git delivery.",
     "developerName": "Wonderbell",
     "category": "Developer Tools",
     "capabilities": [
@@ -35,7 +36,7 @@
       "Git"
     ],
     "defaultPrompt": [
-      "Use the smallest matching GPT-5.6 Superpowers Skill for this development task."
+      "Use the smallest matching Agentic Superpowers Skill for this development task."
     ]
   }
 }
